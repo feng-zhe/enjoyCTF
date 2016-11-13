@@ -1,0 +1,22 @@
+{
+  "name": "ctf-tools",
+  "version": "1.0.0",
+  "description": "the small tools used by CTF",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/feng-zhe/ctf-tools.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/feng-zhe/ctf-tools/issues"
+  },
+  "homepage": "https://github.com/feng-zhe/ctf-tools#readme",
+  "dependencies": {
+    "text-table": "^0.2.0"
+  }
+}
