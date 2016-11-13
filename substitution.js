@@ -4,6 +4,10 @@ const table = require('text-table');
 
 // gather the statistics of n_gram
 module.exports.n_gram = (text, length, lines = 5) => {
+    const std = [];
+    std[2] = ['th', 'he', 'in', 'er', 'an', 're', 'nd', 'on', 'en', 'at', 'ou', 'ed', 'ha', 'to', 'or', 'it', 'is', 'hi', 'es', 'ng'];
+    std[3] = ['the', 'and', 'ing', 'her', 'hat', 'his', 'tha', 'ere', 'for', 'ent', 'ion', 'ter', 'was', 'you', 'ith', 'ver', 'all', 'wit', 'thi', 'tio'];
+    std[4] = ['that', 'ther', 'with', 'tion', 'here', 'ould', 'ight', 'have', 'hich', 'whic', 'this', 'thin', 'they', 'atio', 'ever', 'from', 'ough', 'were', 'hing', 'ment'];
     const counter = new Map();
     // record all grams with length
     for (let i = 0; i <= text.length - length; i++) {
@@ -20,16 +24,22 @@ module.exports.n_gram = (text, length, lines = 5) => {
     const sorted = map2sorted(counter);
     // output
     const output = [
-        ['n_gram', 'Frequency']
+        ['n_gram', 'Frequency', 'Std_gram']
     ];
     for (let i = 0; i < lines && i < sorted.length; i++) {
-        output.push([sorted[i].name, sorted[i].value]);
+        output.push([sorted[i].name, sorted[i].value, std[length] ? std[length][i] : '']);
     }
+    console.log('**********' + length + '-grams' + '**********');
     console.log(table(output));
 }
 
 // gather the statistics of words
 module.exports.word = (text, length, lines = 5) => {
+    const std = [];
+    std[1] = ['a', 'i'];
+    std[2] = ['of', 'to', 'in', 'it', 'is', 'be', 'as', 'at', 'so', 'we', 'he', 'by', 'or', 'on', 'do', 'if', 'me', 'my', 'up', 'an', 'go', 'no', 'us', 'am'];
+    std[3] = ['the', 'and', 'for', 'are', 'but', 'not', 'you', 'all', 'any', 'can', 'had', 'her', 'was', 'one', 'our', 'out', 'day', 'get', 'has', 'him', 'his', 'how', 'man', 'new', 'now', 'old', 'see', 'two', 'way', 'who', 'boy', 'did', 'its', 'let', 'put', 'say', 'she', 'too', 'use'];
+    std[4] = ['that', 'with', 'have', 'this', 'will', 'your', 'from', 'they', 'know', 'want', 'been', 'good', 'much', 'some', 'time'];
     const counter = new Map();
     const words = text.split(/\s/);
     for (const word of words) {
@@ -44,11 +54,12 @@ module.exports.word = (text, length, lines = 5) => {
     const sorted = map2sorted(counter);
     // output
     const output = [
-        ['Word', 'Frequency']
+        ['Word', 'Frequency', 'StdWord']
     ];
     for (let i = 0; i < lines && i < sorted.length; i++) {
-        output.push([sorted[i].name, sorted[i].value]);
+        output.push([sorted[i].name, sorted[i].value, std[length] ? std[length][i] : '']);
     }
+    console.log('**********words**********');
     console.log(table(output));
 }
 
@@ -258,5 +269,6 @@ module.exports.letter = (text, lines = 5) => {
     for (let i = 0; i < lines; i++) {
         output.push([sorted[i].name, sorted[i].value, standards[i].name, standards[i].value]);
     }
+    console.log('**********letter**********');
     console.log(table(output));
 }
