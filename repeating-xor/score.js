@@ -32,9 +32,9 @@ for (let offset = 0; offset < KLEN; offset++) {
     result.push(bestk);
 }
 
-// try to discrypt the ciphertext with each key
+// try to decrypt the ciphertext with each key
 const keys = lib.listAll(result);
 for (const key of keys) {
     console.log('with key: ' + lib.arr2char(key));
-    console.log(lib.discrypt(ORIG, key));
+    console.log(lib.decrypt(ORIG, key));
 }

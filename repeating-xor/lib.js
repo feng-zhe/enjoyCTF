@@ -36,7 +36,11 @@ function listAll(arrOfArr) {
     return result;
 }
 
-function discrypt(ciphertext, key) {
+/*
+ * ciphertext: the array of integer value of each character in ciphertext
+ * key:  the array of value of each character in key
+ */
+function decrypt(ciphertext, key) {
     let longkey = [];
     while (longkey.length < ciphertext.length) {
         longkey = longkey.concat(key);
@@ -51,4 +55,4 @@ function discrypt(ciphertext, key) {
 module.exports.hex2arr = hex2arr;
 module.exports.arr2char = arr2char;
 module.exports.listAll = listAll;
-module.exports.discrypt = discrypt;
+module.exports.decrypt = decrypt;
