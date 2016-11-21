@@ -1,5 +1,5 @@
 'use strict';
-const subst = require('./substitution.js');
+const subst = require('../libs/frequency');
 
 const map = new Map();
 // the substitution rules
@@ -7,7 +7,7 @@ map.set('y','e');
 map.set('u','a');
 map.set('k','i');
 
-const encrypted = require('fs').readFileSync('./encrypted.txt', 'utf8').toLowerCase();
+const encrypted = require('fs').readFileSync('./encrypted', 'utf8').toLowerCase();
 let text = encrypted;
 
 subst.n_gram(text, 2);
