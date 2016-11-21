@@ -16,6 +16,9 @@ function arr2char(arr) {
     return result;
 }
 
+/*
+ * list all possibility result arr by picking one element from one array
+ */
 function listAll(arrOfArr) {
     const current = [];
     const result = [];
@@ -37,17 +40,17 @@ function listAll(arrOfArr) {
 }
 
 /*
- * ciphertext: the array of integer value of each character in ciphertext
+ * cipherArr: the array of integer value of each character in ciphertext
  * key:  the array of value of each character in key
  */
-function decrypt(ciphertext, key) {
+function decrypt(cipherArr, key) {
     let longkey = [];
-    while (longkey.length < ciphertext.length) {
+    while (longkey.length < cipherArr.length) {
         longkey = longkey.concat(key);
     }
     const xored = [];
-    for (let i = 0; i < ciphertext.length; i++) {
-        xored.push(longkey[i] ^ ciphertext[i]);
+    for (let i = 0; i < cipherArr.length; i++) {
+        xored.push(longkey[i] ^ cipherArr[i]);
     }
     return arr2char(xored);
 }
