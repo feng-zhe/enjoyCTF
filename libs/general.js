@@ -55,6 +55,21 @@ function listAll(arrOfArr) {
     return result;
 }
 
+/*
+ * cipherArr: the array of integer value of each character in ciphertext
+ * key:  the array of value of each character in key
+ */
+function decrypt(cipherArr, key) {
+    let longkey = [];
+    while (longkey.length < cipherArr.length) {
+        longkey = longkey.concat(key);
+    }
+    const xored = [];
+    for (let i = 0; i < cipherArr.length; i++) {
+        xored.push(longkey[i] ^ cipherArr[i]);
+    }
+    return arr2char(xored);
+}
 
 function xor(arr1, arr2) {
     const arr = [];
@@ -65,9 +80,26 @@ function xor(arr1, arr2) {
     return arr;
 }
 
+function hammingOfArr(arr) {
+    function hammingOfByte(val) {
+        let ones = 0;
+        for (const c of val.toString(2)) {
+            if (c === '1') ones++;
+        }
+        return ones;
+    }
+    let hamming = 0;
+    for (const val of arr) {
+        hamming += hammingOfByte(val);
+    }
+    return hamming;
+}
+
 module.exports.hex2arr = hex2arr;
 module.exports.arr2hex = arr2hex;
 module.exports.arr2char = arr2char;
 module.exports.char2arr = char2arr;
 module.exports.listAll = listAll;
+module.exports.decrypt = decrypt;
 module.exports.xor = xor;
+module.exports.hammingOfArr = hammingOfArr;

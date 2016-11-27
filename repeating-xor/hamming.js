@@ -1,28 +1,21 @@
 'use strict';
 const fs = require('fs');
 const table = require('text-table');
-const hex2arr = require('./lib').hex2arr;
+const lib = require('../libs/general');
 
 const ciphertext = fs.readFileSync('./ciphertext').toString();
 
 function arrHamming(arr1, arr2) {
-    function hammingWeight(val) {
-        let ones = 0;
-        for (const c of val.toString(2)) {
-            if (c === '1') ones++;
-        }
-        return ones;
-    }
     const length = arr1.length < arr2.length ? arr1.length : arr2.length;
-    let hamming = 0;
-    for (let i = 0; i < length; i++) {
-        hamming += hammingWeight(arr1[i] ^ arr2[i]);
+    const xored = [];
+    for(let i = 0; i< length; i++){
+        xored.push(arr1[i] ^ arr2[i]);
     }
-    return hamming;
+    return lib.hammingOfArr(xored);
 }
 
 // Get the key length. Try from 1 to 12 bytes
-const orig = hex2arr(ciphertext);
+const orig = lib.hex2arr(ciphertext);
 const header = [
     ['key length', 'hamming weight']
 ];
