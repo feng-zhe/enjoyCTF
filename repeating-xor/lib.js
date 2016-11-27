@@ -8,6 +8,22 @@ function hex2arr(hexstr) {
     return arr;
 }
 
+function arr2hex(arr) {
+    let hexstr = '';
+    for (const val of arr) {
+        hexstr += val.toString(16);
+    }
+    return hexstr;
+}
+
+function char2arr(str) {
+    const arr = [];
+    for (let i = 0; i < str.length; i++) {
+        arr.push(str.charCodeAt(i));
+    }
+    return arr;
+}
+
 function arr2char(arr) {
     let result = '';
     for (const val of arr) {
@@ -52,7 +68,19 @@ function decrypt(ciphertext, key) {
     return arr2char(xored);
 }
 
+function xor(arr1, arr2) {
+    const arr = [];
+    const len = arr1.length > arr2.length ? arr2.length : arr1.length;
+    for (let i = 0; i < len; i++) {
+        arr.push(arr1[i] ^ arr2[i]);
+    }
+    return arr;
+}
+
 module.exports.hex2arr = hex2arr;
+module.exports.arr2hex = arr2hex;
 module.exports.arr2char = arr2char;
+module.exports.char2arr = char2arr;
 module.exports.listAll = listAll;
 module.exports.decrypt = decrypt;
+module.exports.xor = xor;
