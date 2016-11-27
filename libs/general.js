@@ -71,6 +71,9 @@ function decrypt(cipherArr, key) {
     return arr2char(xored);
 }
 
+/*
+ * xor the two arr of values
+ */
 function xor(arr1, arr2) {
     const arr = [];
     const len = arr1.length > arr2.length ? arr2.length : arr1.length;
