@@ -42,10 +42,17 @@ function listAll(arrOfArr) {
     function traverse(index) {
         if (index < arrOfArr.length) {
             const arr = arrOfArr[index];
-            for (const val of arr) {
-                current.push(val);
+            if (arr.length === 0) {
+                // when empty, set to 0
+                current.push(0);
                 traverse(index + 1);
                 current.pop();
+            } else {
+                for (const val of arr) {
+                    current.push(val);
+                    traverse(index + 1);
+                    current.pop();
+                }
             }
         } else { // index===result.length
             result.push(current.slice());
@@ -83,6 +90,24 @@ function xor(arr1, arr2) {
     return arr;
 }
 
+/*
+ * xor then to string
+ */
+function xor2char(arr1, arr2, CHARSET) {
+    const xored = xor(arr1, arr2);
+    let str = '';
+    for (const val of xored) {
+        const c = String.fromCharCode(val);
+        if (CHARSET !== undefined) {
+            if (CHARSET.indexOf(c) !== -1) str += c;
+            else str += '?';
+        } else {
+            str += c;
+        }
+    }
+    return str;
+}
+
 function hammingOfArr(arr) {
     function hammingOfByte(val) {
         let ones = 0;
@@ -105,4 +130,5 @@ module.exports.char2arr = char2arr;
 module.exports.listAll = listAll;
 module.exports.decrypt = decrypt;
 module.exports.xor = xor;
+module.exports.xor2char = xor2char;
 module.exports.hammingOfArr = hammingOfArr;
