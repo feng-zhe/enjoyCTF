@@ -1,0 +1,12 @@
+1. play to the fourth floor, we have to pick one flag. Then, which one?
+
+2. found those code in /server/game.js:
+****************************************
+case "revealFlag":
+    if (entity.items[action.item].effects[i].check == 64) {
+        outcome.flag = process.env["PICO_CTF_FLAG"];
+    }
+break;
+****************************************
+
+and analyse them with code in /server/config.js, we will figure out the row is 13 and column is 5.
