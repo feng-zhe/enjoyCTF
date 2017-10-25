@@ -1,0 +1,7 @@
+The injection point is where it reads password, if we can overwrite the accessLevel in login(), and bypas all the user name in if-else clause, the function will return the overwritten value :)
+
+When it asks for password, enter:
+
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.
+
+(the last '.' is included)
