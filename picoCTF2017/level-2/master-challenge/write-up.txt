@@ -1,0 +1,2 @@
+I failed to solve this one. Because I thought it is just a few png files "hex-injected" into an arbitrary file. In this way, you can extract some png files but it could be very ambiguous.
+The unhappy result could also be a hint :). This is not an arbitrary file. Figure it out first.
