@@ -1,0 +1,2 @@
+Read the source code in server/ai.js, figure out the path calculation logic.
+The important point is at r=4,c=1, you have to attack at no one so that the spatulas has to move right.
