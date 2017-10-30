@@ -1,0 +1,4 @@
+Read the source code of the website, we found it mentions a cookies.sqlite file under very PRIVATE place.
+And consider the image is loaded from folder private/, we can find the private/cookies.sqlite file.
+Then we use online sqlite reader to read content, find the corresponding value ID.
+Then we change our ID value in cookies to the one found. Refresh the browser, we get our flag.
