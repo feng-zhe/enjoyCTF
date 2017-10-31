@@ -1,0 +1,1 @@
+I failed to solve this one at my first attemp. After reading others' posts, I understand that we have to use the register function properly.
