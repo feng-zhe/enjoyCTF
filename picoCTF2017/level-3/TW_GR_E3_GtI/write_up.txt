@@ -1,0 +1,4 @@
+Reading the source code, we can easily found that the point is in the function executeMove in server/game.js, especially the picking item logic.
+And according to the server/config.js, we know the id of flag is 12. So we just need to find the same item with id 12, then drop it at last floor and pick it up.
+The only problem is how I can know the id of a item? Because the play can only carry eight items to the next floor.
+Don't forgot that the website uses socket.io and there has to be a client.js on frontend whose code is used to maintaining frontend status.
