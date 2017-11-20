@@ -31,6 +31,8 @@ def cube_root(n):
         high *= 2
     low = high/2                # high is above the answer, low is below the answer
     while low < high:
+        if high-low==1:
+            raise ValueError('root is not integer')
         mid = (low+high)/2
         mid3 = mid**3
         if mid3==n:
