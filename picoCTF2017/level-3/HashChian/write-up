@@ -1,0 +1,2 @@
+After registering a user, I found the first hash seed was actually the MD5 of the user's id. So the whole hash chian can be found with user id.
+Then the required user id is revealed if you enter 'f' to get the flag
