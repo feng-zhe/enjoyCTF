@@ -1,0 +1,3 @@
+Findings:
+- There is a mistake made during indexing the matrix. It should be `m->data[r*m->ncols+c]`. Then we have read/write primitive to write beyond the border. But how to utilize the primtives on heap to call shell?
+- Could be some kind of heap overflow attack in which the attack overwrites the internal link of heap nodes and then frees them to overwrite any address with any data.
