@@ -5,7 +5,8 @@ I've learnt:
 1. printf %n attack and many tricks of it
 2. use PLT to find GOT in pwndbg
 3. GOT entry it self is fixed. its value is dynamically loaded
-4. leverage other part of the program to call the affected function
+4. the dynamically loaded functions have the same distance to the lib base on disk and memory
+5. leverage other part of the program to call the affected function
 '''
 from pwn import *
 import sys
