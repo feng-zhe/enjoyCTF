@@ -1,3 +1,8 @@
 Findings:
-- There is a mistake made during indexing the matrix. It should be `m->data[r*m->ncols+c]`. Then we have read/write primitive to write beyond the border. But how to utilize the primtives on heap to call shell?
-- Could be some kind of heap overflow attack in which the attack overwrites the internal link of heap nodes and then frees them to overwrite any address with any data.
+1. There is a mistake made during indexing the matrix. It should be `m->data[r*m->ncols+c]`. Then we have read/write primitive to write beyond the border. But how to utilize the primtives on heap to call shell?
+1. Could be some kind of heap overflow attack in which the attack overwrites the internal link of heap nodes and then frees them to overwrite any address with any data.
+1. I was wrong, it is not like windows, there is no internal struct on every heap allocated. The two allocated memory block is adhere to each other. We just need to overflow it to overwrite the next block's data pointer so that we can set value to anywhere. This is the **write primitive**.
+1. With the write primitive, we can set any address with any value. Of course we have to convert the hex to float via the python script.
+1. And there is a command called 'get', so we have the **read primitive**.
+1. So the rest part is almost the same as previous challenge "Config Console'. The only problem is how to pass the '/bin/sh' to system.
+1. Cannot fix it myself and did some google. Hint: check out the free(m->data).
