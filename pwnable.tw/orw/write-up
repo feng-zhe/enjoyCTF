@@ -1,0 +1,8 @@
+- about prctl, PR_SET_NO_NEW_PRIVS=38=0x26, Set the calling thread's no_new_privs bit to the value in arg2.  With no_new_privs set to 1, execve(2) promises not to grant privileges to do anything that could not have been done without the execve(2) call (for example, rendering the set- user-ID and set-group-ID mode bits, and file capabilities non- functional).  Once set, this bit cannot be unset.  The setting of this bit is inherited by children created by fork(2) and clone(2), and preserved across execve(2).
+- the overflow point cannot change prctl. So basically we cannot use execve. And tried int 80, it also failed.
+- it seems the overflow stack is pretty big (0xc8=200bytes)
+- write my own shellcode
+- but in case you want to gcc
+    - apt install g++-multilib libc6-dev-i386
+    - gcc -S -m32 -masm=intel-> generates assembly for i386
+- check other's write-up, the shellcraft module is great!
