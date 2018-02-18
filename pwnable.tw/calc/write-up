@@ -1,0 +1,31 @@
+- seems our input is in function 'calc'
+    - get_expr
+        - read input and remove unallowed characters
+        - only '+-*/%' and ('/', '9']='1'~'9'
+        - has length check, no overflow possible
+    - init_pool
+        - it sets buffer zero. But only the first 0x63.
+        - pool buff 'ebp - 0x5a0'
+        - pool buff has lower address above reading buff.
+        - after run, the first pool buff byte a value and put in eax. Then sub 1. And 'ebp + eax*4 - 0x59c' to find the calculation result
+    - parse_expr
+        - ebp-0x8c -> input string stack
+        - ebp-0x90 -> pool stack
+        - has gs:0x14 protection
+        - sequence
+            - first, zero the 0x64 bytes from ebp-0x70
+            - ebp-0x84 -> pointer counter
+            - while (it is a number) {
+                - increase counter by 1
+                - jmp back and read one byte again
+            - }
+            - calc how many bytes have been read and malloc (size+1)
+            - memcpy size from input string to heap, add 0 to the size+1
+            - strcmp?
+            - atoi() on the allocated heap
+            - the first byte in pool stores the result
+            - read next char
+            - eval?
+    - printf("%d"): not useful
+- seems there is a '__stack_chk_fail' to do the stack check
+- call 0x8048240 -> call bzero(void *s, size_t n)
