@@ -1,0 +1,4 @@
+- for f in $(find . -name '-file*'); do cat $f && echo ''; done
+
+
+=> koReBOKuIDDepwhWk7jZC0RTdopnAYKh
