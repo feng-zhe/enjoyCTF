@@ -1,0 +1,2 @@
+- on my kali64 vm: ssh -o IPQoS=throughput bandit0@bandit.labs.overthewire.org -p 2220
+- cat readme => boJ9jbbUNNfktd78OOpsqOltutMc3MY1
