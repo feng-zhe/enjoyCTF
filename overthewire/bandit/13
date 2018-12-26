@@ -1,0 +1,6 @@
+- (host) scp -P 2220 bandit13@bandit.labs.overthewire.org:sshkey.private ./sshkey.private
+- (host) chmod 400 ./sshkey.private
+- (host) ssh -p 2220 -i ./sshkey.private bandit14@bandit.labs.overthewire.org
+- cat /etc/bandit_pass/bandit14
+
+=> 4wcYUJFw0k0XLShlDzztnTBHiqxU3b3e

@@ -1,0 +1,17 @@
+- mkdir zhe0ops
+- cp /home/bandit12/data.txt /tmp/zhe0ops/
+- xxd -r data.txt > file1
+- file file1
+- mv file1 file1.gz
+- gzip -d file1.gz
+- file file1
+- mv file1 file1.bz
+- bzip2 -d file1.bz
+- file file1
+- mv file1 file1.gz
+- gzip -d file1.gz
+- file file1
+- tar -xvf file1
+- (same latter, but remember to rename it to .gz or bz)
+
+=> 8ZjyCRiBWFYkneahHwxCv3wb2a1ORpYL

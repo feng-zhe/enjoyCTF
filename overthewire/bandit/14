@@ -1,0 +1,4 @@
+- nc -nv 127.0.0.1 30000 
+- (paste bandit14 password)
+
+=> BfMYroe26WYalil77FoDi9qh59eK5xNr
