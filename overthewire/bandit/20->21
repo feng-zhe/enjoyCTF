@@ -1,0 +1,16 @@
+ssh -o IPQoS=throughput bandit20@bandit.labs.overthewire.org -p 2220
+and use its password.
+do this again to have another terminal.
+
+file suconnect
+    => uconnect: setuid ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=74c0f6dc184e0412b6dc52e542782f43807268e1, not stripped
+
+nc -lnvp 33333
+    => start listener on 33333
+
+./suconnect 33333
+
+and then paste the current password in nc's terminal:
+GbKksEFF4yrVs6il55v6gwY5aVje5f0j
+
+=> returns gE269g2h3mw3pwgrj0Ha9Uoqen1c9DGr
