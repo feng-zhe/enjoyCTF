@@ -1,1 +1,1 @@
-The file name N means solution to "N -> N+1"
+Contains my solution to Overthewire bandit challenges.
