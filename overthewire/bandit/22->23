@@ -1,0 +1,22 @@
+login as bandit22
+
+cat /etc/cron.d/cronjob_bandit23
+cat /usr/bin/cronjob_bandit23.sh
+=>
+"
+#!/bin/bash
+
+myname=$(whoami)
+mytarget=$(echo I am user $myname | md5sum | cut -d ' ' -f 1)
+
+echo "Copying passwordfile /etc/bandit_pass/$myname to /tmp/$mytarget"
+
+cat /etc/bandit_pass/$myname > /tmp/$mytarget
+"
+
+echo I am user bandit23 | md5sum | cut -d ' ' -f 1
+=> 8ca319486bfbbc3663ea0fbe81326349
+this is the mytarget
+
+cat /tmp/8ca319486bfbbc3663ea0fbe81326349
+=> jc1udXuA1tiHqjIsL8yaapX5XIAI6i0n
