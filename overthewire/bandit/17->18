@@ -1,0 +1,7 @@
+chmod 600 ./17_rsa
+
+ssh -o IPQoS=throughput -i ./17_rsa bandit17@bandit.labs.overthewire.org -p 2220
+
+diff password.old password.new
+
+=> kfBf3eYk5BPBRzwjqutbbfE887SVc5Yd

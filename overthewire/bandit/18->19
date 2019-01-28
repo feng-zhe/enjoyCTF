@@ -1,0 +1,9 @@
+ssh can specify the command after login. We change the shell from bash to sh.
+
+ssh -o IPQoS=throughput bandit18@bandit.labs.overthewire.org -p 2220 -t /bin/sh
+
+the option -t makes it a normal tty, otherwise there is no prompt '$'.
+
+then 'cat readme'
+    => IueksS7Ubh8G3DCwVzrTd8rAVOwq3M5x
+
