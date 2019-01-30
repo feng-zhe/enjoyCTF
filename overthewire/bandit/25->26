@@ -1,0 +1,22 @@
+ls
+=> bandit26.sshkey
+
+copy the content to local file bandit26.sshkey
+
+cat /etc/passwd | grep bandit26
+=> bandit26:x:11026:11026:bandit level 26:/home/bandit26:/usr/bin/showtext
+
+showtext
+=> more: stat of /home/bandit25/text.txt failed: No such file or directory
+
+cat /usr/bin/showtext
+=>
+#!/bin/sh
+export TERM=linux
+more ~/text.txt
+exit 0
+
+so it will read current user's home's text.txt
+
+https://medium.com/@coturnix97/overthewires-bandit-25-26-shell-355d78fd2f4d
+=> 5czgV9L3Xx8JPOyRbXh6lQbmIOWvPT6Z
