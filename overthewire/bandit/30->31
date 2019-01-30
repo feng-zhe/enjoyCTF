@@ -1,0 +1,14 @@
+clone it
+
+git tag
+=> secret
+
+git checkout secret
+=> failed
+
+https://www.jonyschats.nl/writeups/bandit-level-30-to-31/
+
+it seems this is a corrupted git. And the tag refers to a nonexisted commit.
+
+git show secret
+=> 47e603bb428404d265f59c42920d81e5

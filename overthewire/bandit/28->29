@@ -1,0 +1,12 @@
+similar to previous one.
+
+git log -10
+=> the last commit is "fix info leak"
+
+git diff 073c27c130e6ee407e12faad1dd3848a110c4f95 186a1038cc54d1358d42d468cdc8e3cc28a93fcb
+=>
+## credentials
+
+ - username: bandit29
+-- password: xxxxxxxxxx
++- password: bbc96594b4e001778eee9975372716b2

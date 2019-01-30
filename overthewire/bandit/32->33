@@ -1,0 +1,22 @@
+in previous level's ssh
+cat /etc/passwd | grep 'bandit32'
+=> bandit32:x:11032:11032:bandit level 32:/home/bandit32:/home/bandit32/uppershell
+
+so we are using this uppershell
+
+login to bandit32, every command will be capitalized automatically.
+
+It may be special chars in bash, like '$0', '$1' ...
+
+Somehow $0 gives me the shell directly.
+
+$0
+
+cat /etc/bandit_pass/bandit33
+=> c9c3199ddf4121b10cf581a98d51caee
+
+googled and find these two blogs
+https://www.nagekar.com/2018/08/overthewire-bandit-27-33.html
+https://int3rsys.github.io/Bandit27-34/
+
+so another solution is to create a symbol link in tmp folder and go there and execute that one.

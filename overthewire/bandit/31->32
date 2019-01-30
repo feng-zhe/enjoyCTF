@@ -1,0 +1,16 @@
+clone it
+
+read the README.md, so we need to push a file there
+
+there is a .gitignore, we need to change it.
+
+rm .gitignore
+
+echo 'May I come in' > key.txt
+
+git add --all && git commit -m 'zhefeng'
+=>
+...
+remote: Well done! Here is the password for the next level:
+remote: 56a9bf19c63d650ce78e6ec0354ee45e
+...
