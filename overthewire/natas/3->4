@@ -1,0 +1,8 @@
+in the source code, it says:<!-- No more information leaks!! Not even Google will find it this time... -->
+
+let's use google site:http://natas3.natas.labs.overthewire.org/
+(But actually visit the /robots.txt can reveal the same directory)
+=> /s3cr3t 
+
+visit it and find the user.txt:
+=> natas4:Z9tkRkWmpt9Qr7XrR5jWRkgOU901swEZ

