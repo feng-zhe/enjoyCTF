@@ -1,0 +1,5 @@
+points:
+- LFI
+- password reuse
+
+The password is in the LFI and get the root directly. Don' overthink it.

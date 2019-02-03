@@ -1,1 +1,4 @@
+Points:
+- smb exploit
+
 smb service => nmap script scan => msfconsole => root
