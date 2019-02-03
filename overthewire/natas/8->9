@@ -1,0 +1,15 @@
+source code => bin2hex(strrev(base64_encode($secret)))
+
+write php code:
+<?php
+
+$target = "3d3d516343746d4d6d6c315669563362";
+echo base64_decode(strrev(hex2bin($target)));
+
+?>
+
+=> oubWYf2kBq
+
+use it in the input
+=> W0mMhUcRRnG8dcghE4qvk3JA9lGt8nDl
+

