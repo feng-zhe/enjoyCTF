@@ -1,0 +1,12 @@
+(love this one)
+Points:
+- MSF local_exploit_suggester
+- if msf failed to get a shell, may be it is because the server is too slow. We need burp suit to see what's going on and what we can do with the rest.
+- MSF may use the wrong LHOST if you use a VPN. Pay attention to the log and set it if necessary.
+
+I learnt so much from this box.
+What is the service on a strange port? Find it.
+The lag in the server is on purpose. So what I learnt in PWK for the same software doesn't work.
+MSF module will fail. But use burp suit, proxy, options, add a new proxy. And see what's going on in repeater.
+
+Also there is a useful tool called unicorn, it is helpful to get meterpreter shell when you already have a user shell. But I did it manually as what I learnt in PWK.
