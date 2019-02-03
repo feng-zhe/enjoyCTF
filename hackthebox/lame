@@ -1,0 +1,7 @@
+Points:
+- all ports scanning
+- nmap priv esc
+
+all ports scan => secret service => user shell
+
+enumerate => nmap => nmap --interactive => !sh => we get root
