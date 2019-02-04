@@ -1,0 +1,8 @@
+(This box is a little strange)
+Points:
+- dirbuster: there is an option in dirbuster to brute force file with specific extension.
+- learn information from the name of the box
+
+Use dirbuster to find the hidden script file. Then the box name tells me there could be a very famous exploit. Find it and use it. Remember to add the discovered hidden file to the list. => use shell
+
+Read the output of the LinEnum.sh and there is a very easy why to priv esc. Do what it says and don't try the parts separately.
