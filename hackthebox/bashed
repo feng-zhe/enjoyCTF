@@ -1,0 +1,7 @@
+Points:
+- dirbuster
+- sudo
+
+dirbuster => find hidden php shell => msfvenom generate python one-liner rev shell => normal shell
+
+LinEnum.sh finds I can sudo to another use without password, but what can I do with this user? => use find to find directories/files owned by this user or its group.
