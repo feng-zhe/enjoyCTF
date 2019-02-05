@@ -1,0 +1,20 @@
+(For the priv esc part, very hard to me actually, first time to know VNC)
+Points:
+- base64
+- password reuse
+- vncviewer
+- ssh tunneling
+- log poisoning
+
+web => find encrypted password => decrypt it => user shell by ssh
+
+find secret file => download to host => unzip with same password => but useless file, right now.
+
+check netstat -an and the ps aux to see there is a service only listen to local 5801 and 5901 ports.
+=> tunneling needed => ssh -D 1080 -L6801:127.0.0.1:5801 -L6901:127.0.0.1:5901 charix@10.10.10.84
+
+The 6801 and 6901 is on the attack kali machine.
+
+Then on kali machine => vncviewer -passwd secret 127.0.0.1::6901 => get root.
+
+(also the intended way for the user shell is the log poisoning)
