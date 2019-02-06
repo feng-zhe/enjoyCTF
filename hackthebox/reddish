@@ -1,0 +1,14 @@
+# Points:
+- Learn new things
+
+
+# Details:
+
+All port scan => find secret port => http service
+
+It says "cannot /GET" => try POST => get something => try the path => get web app
+
+watch some tutorial and make a flow => get rev user shell
+
+(the rest is too complicated for me right now, TODO)
+
