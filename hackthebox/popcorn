@@ -1,0 +1,6 @@
+(very good box for web upload exploit)
+points:
+- web upload filter by pass
+- burpsuite to change file 
+
+note the priv esc, if you use PAM exploit, after chmod +x and ./exploit.sh, it throws bash grammar issue because you have to go to vim, :set fileformat=unix, then :x. Then download it to target.
