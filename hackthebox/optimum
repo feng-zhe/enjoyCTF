@@ -1,0 +1,10 @@
+(Love this box, learnt a lot for windows priv esc)
+Points:
+- easy web CVE to get user shell
+- use windows exploit enumerators to get the suggestions.
+
+https://github.com/rasta-mouse/Sherlock
+https://github.com/rasta-mouse/Watson
+
+Try the output suggested vulnerabilities. If you use MSF, remember to set right target.
+Note, sometimes `show options` doesn't show all the target options. Use `show targets` and `set target` (no 's')
