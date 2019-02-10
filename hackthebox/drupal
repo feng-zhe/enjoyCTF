@@ -1,0 +1,8 @@
+Points:
+- droopescan
+- burp to see why it doesn't work and make a guess or brute-force it.
+- meterpreter and migrate or enum windows exploits by ps1 scripts.
+
+Remember to google "xxxscan" for well known software.
+Find version of the target software and google its exploit. If version matches but it doesn't work, it means you need a close look, via burp, to find out why.
+Do not blindly try everything.
