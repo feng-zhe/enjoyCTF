@@ -1,0 +1,17 @@
+Points:
+- nmap scan => there is a .git
+- wget -r -np http://10.10.10.70/.git/ => download the git rep
+- couchdb usage
+- sudo -l
+- read exploit code if it needs modification.
+
+
+After getting the git rep, we can read the main logic.
+Note that when you exploit the /check, pay attention to the escaped characters and you have to change it to url encoding. Otherwise it will be transmitted directly. e.g. r'\n'. 
+So write a python script to do that, which is much easier because you don't have to care about it!
+
+It seems the nc doesn't have -e option, use solution here in section netcat http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
+
+some couchdb priv esc is for remote usage, read its code, know the point => create admin user => read passwords => get user
+
+sometimes the enumeration script will miss some part, if you didn't see it in the output of the script. Run it yourself. In this case, it is about sudo. Then google that type of attack.
