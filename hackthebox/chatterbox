@@ -1,0 +1,11 @@
+(Love this box! Learn how to get powershell reverse shell! More convenient!)
+Points:
+- all port scan => achat
+- find exploit and change the CMD in msfvenom command to download and execute powershell reverse tcp.
+- use PowerUp.ps1 to get low hanging fruits
+- classic password reuse vuln
+
+Details:
+- some payload will fail may be because of the vuln itself. => use CMD
+- powershell rev => nishang/Shells/Invoke-PowerShellTcp.ps1. And remember to add command at last. Refer the examples in comments.
+
