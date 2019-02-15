@@ -1,0 +1,8 @@
+Points:
+- click "host manager" => enter default password => 403, but see what it tell you
+- or just use nikto, it tells you too.
+- use the credential to go to /manager. Nikto finds this.
+- upload war or use MSF
+
+
+classic problem for tomcat manager upload vuln.
