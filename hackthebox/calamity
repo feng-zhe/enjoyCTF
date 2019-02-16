@@ -1,0 +1,14 @@
+(Love it. Although first part is CTF-like, but learnt a lot about audio steganography)
+Points:
+- dirbuster => admin.php and uploads/ => sqli (do it in burp suite so that we can see the returned html) => true password
+- login => php shell => load shell.php to uploads/ => visit uploads/shell.php => get user shell
+- (to get user, not www-data) think like the author: why there are two wav files playing the same song? => something hidden. Use audacity to analyze the wav files. Import two of them and invert them and play => password: 18547936..*
+- (TODO): the intended BOF way.
+
+Details:
+- use 'exiftool xx.wav' to check whether there is hidden info.
+- use 'audiodiff.audio_equal(<file 1>, <file 2>') to compare their wave form. And this audiodiff needs ffmpeg installed.
+- apt install audacity (on kali)
+- the 'boot to root' priv esc with lxc is really powerful. Shown in the video!
+- I've submitted a pull request to the lxc-alpine-builder, because the link is outdated and I spent two hours finding the new link:http://dl-cdn.alpinelinux.org/alpine/ from https://github.com/lxc/lxc-templates/blob/master/templates/lxc-alpine.in
+- currently the box is in a very strange status. It will stop ssh randomly.
