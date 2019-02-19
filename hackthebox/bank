@@ -1,4 +1,5 @@
 Points:
+- /etc/hosts
 - dirbuster => be patient => find /balance-transfer/ => find user and password
 - login and upload png => burp it and change content => read response html and find we should change file name to '.htb' => reverse shell
 - enum and find a strange suid file => run it and done
@@ -8,3 +9,4 @@ Details:
 - alternative is to change the response header from 302 to 200, we can still request for that page. And we can find surprise. 
 - after you get the user, read .php files and get the mysql credential. But they are not very useful here.
 - alternative priv sec is to change /etc/passwd. It is writable.
+- 'dig axfr ...' is not that helpful here.
