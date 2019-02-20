@@ -1,0 +1,9 @@
+Points:
+- association, deduction
+- default credential
+- 'strings /dev/sdb' to read the device directly
+
+Details:
+- /etc/hosts => blocked => view source code => find 'pi.hole' domain => use Rasp-Pi default credential to ssh (very hard to see this)
+- the testdisk and photorec failed.
+- other ports are rabbit holes.
