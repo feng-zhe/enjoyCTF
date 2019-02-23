@@ -1,0 +1,22 @@
+Points:
+- smb => find group file policy file Groups.xml (this file is before 2012)
+- gpp-decrypt => find user&pass
+- GetADUsers.py => user has access to AD
+- GetUserSPNS.py => get admin's password hash
+- Hashcat is fine but I used john the ripper because hashcat doesn't work in my VM and would ruin my host.
+=> get admin password
+- psexec.py to get shell as admin
+
+New Tools:
+- smbmap
+- gpp-decrypt (decrypt password in group.xml)
+- impacket
+    - GetADUsers.py
+    - GetUserSPNS.py
+    - psexec.py
+- BloodHoundAD (optional, to show Administrator can be logged in through kerberos)
+
+Details:
+- since there are smb port opening, i should first try nmap smb scripts. although it doest work here, the methodology is important.
+- kerberos may complain the time skew problem. use ntpdate to fix it. REMEMBER to remove the 'time sync' property of the VM setting.
+- love this box, learnt a lot about smb
