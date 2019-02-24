@@ -1,0 +1,15 @@
+(TODO, try&learn merlin)
+Points:
+- dirbuster => remember our target is iis, choose to brute force aspx
+- we need powershell payload which go via https or http/2
+- (in video, it also uses the intended tool called "merlin" which is cool and goes via http/2)
+- suggester to priv esc if you use meterpreter
+
+New Tools:
+- merlin
+- unicorn
+
+Details:
+- merlin: https://github.com/Ne0nd0g/merlin, but some of its modules needs internet access.
+- need to reset the machine sometimes.
+- somehow the unicorn approach get stuck in my case.
