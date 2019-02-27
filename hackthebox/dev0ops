@@ -1,0 +1,12 @@
+(note from this box, I will only write hints for next time)
+Points:
+- Try as it says on webpage. We need a payload, where can we find a good payload for this?
+- what file should we read? What file we know?
+- failed in burp, try different types.
+- we can read history
+
+New Tools:
+- PayloadsAllTheThings
+
+Details:
+- If dirbuster complaints about error, try others, e.g. gobuster.
