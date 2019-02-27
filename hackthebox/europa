@@ -1,5 +1,5 @@
 Points:
-- sslscan => find alternative name
+- sslscan => find alternative name (maybe nmap can tell it too)
 - go to browser and click the certificate => see the issuer information => admin@europacorp.htb
 - SQLi
 - google 'php regular replace exploit'
