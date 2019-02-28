@@ -1,0 +1,17 @@
+Points:
+- nmap ssl part => alternative DNS
+- wpscan => login admin => don't login as admin, we see another user.
+- read what the post says
+- crypto => one-time pad
+- crypto => use google
+
+Tools:
+- rumkin.com, rumkin cipher.
+    - one-time pad
+    - vigenere
+
+Details:
+- It seems the plugin upload will fail because the folder is not writable.
+- wordpress 'editor' vulnerability => still not writable.
+- use thunderbird instead of telnet.
+- this one-time pad, the cipher is got by (plain text + pad) % MOD.
