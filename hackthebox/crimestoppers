@@ -1,0 +1,20 @@
+(love this one, and Mr. Robot)
+Points:
+- dirbuster + url we see => whiterose.txt
+    - alternative: look at the cookies
+- php://filter/convert.base64-encode/resource=xxx
+    - no '.php', you godda try
+- there is hint in the source code => "or is it?"
+- be aware that the code will add ".php" to it.
+- remember to try the url encoding
+- thunderbird => copy it and edit host's thunderbird profile => read emails
+    - also use our old friend firefox_decrypt => get password
+- ssh via ipv6
+
+New Tools:
+- radare2
+
+Details:
+- very interesting to know that ipv6 may open 22 by looking at the size of /etc/iptables/rules.v4 and ..v6 and guessing.
+- when scp via ipv6, use the ssh -6 dom@[<ipv6>]:<target file path> .
+- this time it is a .so file, so we cannot run it directly. That's why we need reverse engineering
