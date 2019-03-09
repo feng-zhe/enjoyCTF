@@ -1,5 +1,8 @@
 (love this box, new idea)
 Points:
 - register another user whose name is 'admin' after filtering
-    - alternative: use burp intruder, bit flip. (not free version)
+    - alternative: use burp intruder, bit flip. (not free version), or PadBuster(padding oracle attack)
 - priv esc is piece of cake.
+
+Details:
+- you cannot tell the attacker whether it is a padding error.
