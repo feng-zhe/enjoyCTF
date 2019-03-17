@@ -1,0 +1,1 @@
+read the code, make the fd to 0, which is stdin.
