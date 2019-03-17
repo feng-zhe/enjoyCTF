@@ -1,0 +1,10 @@
+(love this box, learnt how to deal with slow all port scan, and how can two users work together!)
+Lessons Learnt:
+- "nmap -p- xxxx --max-retries 0", then "nmap -sV -sC -p <ports>"
+- finger-user-enum from https://github.com/pentestmonkey/finger-user-enum
+- brute-force ssh. (note hydra doesn't work for this box, server ssh key exchange algorithm is too old.)
+    - use medusa
+    - /user/share/seclists/Password
+- one user get another one, work together and then priv esc!
+- wget options!
+- also there are many other attack vectors mentioned in tutorial video!
