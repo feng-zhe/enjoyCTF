@@ -1,0 +1,3 @@
+Points:
+- The version of Apache is not normal, related system ubuntu is old
+- nmap --script vuln <target> => scan vulnerability
