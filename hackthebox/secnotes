@@ -1,0 +1,6 @@
+(love this box, classic user name exploit)
+Lessons Learnt:
+- user name is controlled by us.
+- mount -t cifs -o username=tyler,password='92g!mA8BGjOirkL%OG*&',uid=0,gid=0 //target_ip/target_dir /mnt/mydir
+    - note it is better to be <target ip> not hostname
+- alternative: send link to tyler change his password.
