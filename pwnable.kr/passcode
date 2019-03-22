@@ -1,3 +1,5 @@
 scanf usage is wrong.
 
 welcome() => control the default value of passcode1 => scanf() to change exit@got.plt value
+
+python -c "xxxx" | ./passcode
