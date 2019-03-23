@@ -1,0 +1,7 @@
+More than one way to do it. just need to pass the filter.
+
+/bin/cat fla*
+or
+/bin/s?
+or
+/bin/cat 'f'lag
