@@ -5,3 +5,5 @@ or
 /bin/s?
 or
 /bin/cat 'f'lag
+or
+export f=flag; ./cmd1 "/bin/cat \$f"
