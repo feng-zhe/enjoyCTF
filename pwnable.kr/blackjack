@@ -1,0 +1,3 @@
+Two ways:
+1. The betting() only check once. Enter a very large number twice. Win.
+2. Enter a very small negative number. Lose.
