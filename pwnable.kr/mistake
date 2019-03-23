@@ -1,0 +1,1 @@
+Operator priority. The '=' is lower than '>'. So fd will be 0 which is the input.
