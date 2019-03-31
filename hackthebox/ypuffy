@@ -1,6 +1,7 @@
-(love it, learned about ldap)
+(love it, learned about ldap and ssh authorizedprincipalscommand)
 Points:
 - ldap is misconfigured. Can see this from nmap.
+- unintended root is so easy. Try ssh one.
 
 Details:
 - Don't know how to use ldapsearch, -h and wireshark. Nmap script can do the same.
