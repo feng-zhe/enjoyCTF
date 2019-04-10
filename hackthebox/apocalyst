@@ -1,0 +1,8 @@
+(love this box)
+Hints:
+- what should we do when there are so many pages redirected to the same page?
+- pay attention to the output of enumeration scripts
+
+
+Spoiler:
+- gobuster's '-l' option let you see the size of the body.
