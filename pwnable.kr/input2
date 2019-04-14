@@ -1,0 +1,58 @@
+(learnt!)
+failed attempts: create file, redirection tricks.
+
+hint: execve, dup2
+
+** spoiler **
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+int main(){
+
+    // argv
+    char *argv[101];
+    for(int i=0;i<100;i++){
+        argv[i] = "a";
+    }
+    argv[100] = NULL;
+    argv['A'] = "\x00";
+    argv['B'] = "\x20\x0a\x0d";
+    argv['C'] = "8888";       // port 8888
+
+    // stdio
+    // write files
+    FILE *f0 = fopen("f0", "wb");
+    FILE *f2 = fopen("f2", "wb");
+    char buff0[] = "\x00\x0a\x00\xff";
+    fwrite(buff0, 4, 1, f0);
+    char buff2[] = "\x00\x0a\x02\xff";
+    fwrite(buff2, 4, 1, f2);
+    fclose(f0);
+    fclose(f2);
+    // relink
+    int if0 = open("f0", O_RDONLY);
+    int if2 = open("f2", O_RDONLY);
+    dup2(if0, 0);
+    dup2(if2, 2);
+    close(if0);
+    close(if2);
+
+    // env
+    char *envp[2];
+    envp[0] = "\xde\xad\xbe\xef=\xca\xfe\xba\xbe";
+    envp[1] = NULL;
+    
+    // file
+    FILE *f = fopen("./\x0a", "wb");        // has to use fopen() not open()
+    char buff[] = "\x00\x00\x00\x00";
+    fwrite(buff, sizeof(buff), 1, f);
+    fclose(f);
+    
+    // network
+    // used python pwntools
+
+    execve("input", argv, envp);
+}

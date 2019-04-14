@@ -1,0 +1,14 @@
+(love it. learnt a lot about fuzzing)
+#Hint:
+- gobuster claims some pages can be visited while in firefox they are not => Look at their request headers.
+- wfuzz
+- in bash, insert the '\' in front of a normal char will do nothing. But it can escape some filter.
+- maybe the target is expecting a param, splited it from the input.
+
+#New Tools
+- wfuzz
+
+#Details
+- find /usr/share/seclists | grep -i param => burp-parameter-name.txt
+- find /usr/share/seclists | grep -i char
+- the WAF filter out some patterns, not just chars and words

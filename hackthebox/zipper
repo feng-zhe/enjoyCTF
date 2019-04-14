@@ -1,0 +1,10 @@
+Hint:
+- what does the hidden port means?
+- shell from agent is ephemeral, maybe we can talk to it from server, and ask it run commands
+- linux command `nohup` and `&`
+- try different commands to get reverse shell, some just don't work
+- two ways to priv esc. $PATH way is not intended. Intented way is easy too.
+
+Details:
+- My alternative is to write a script to add another user and change script by using API and the credentials.
+- when 'su' says 'must be run from a terminal', run "script -q /dev/null". The same is helpful for interactive case, like run mysql cli in rev shell.

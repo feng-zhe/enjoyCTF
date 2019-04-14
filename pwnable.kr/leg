@@ -1,0 +1,6 @@
+In ARM, there are two models: ARM state and Thumb state.
+In Thumb state, PC points to the one after the next instruction, when current inst. is executed.
+In ARM state, PC points to the next instruction.
+Read the bx instruction manual, it explains why there is "add r6, pc, #1" and "bx r6".
+
+0x00008ce4 + (0x00008d08 + 4) + 0x00008d80 = 108400

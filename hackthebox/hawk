@@ -1,8 +1,9 @@
-(todo, sadly it was removed from active boxes list this Sunday)
+(love this box)
 Points:
 - ftp anonymous => encrypted file => base64 -d => bruteforce-salted-openssl
-- enable module which enables php code.
-- find database username and password => also is the user pass for ssh
+- drupal => enable module which enables php code.
+- find database username and password => also is the user pass for ssh (password reuse attack)
+    - google where the drupal stores the database key. Don't grep blindly.
 - ssh forward the local port to target's local H2 port.
 - the sql exec doesn't accept some characters. Write shell into script file and execute that script.
 
@@ -13,4 +14,6 @@ Details:
 - find this: https://dilsec.com/2017/03/27/ew_skuzzy-1-ctf-walktrough/, but kali can install bruteforce-salted-openssl directly.
 - to determine which is the cipher used in openssl encryption, write a bash script to brute-forcely try them and find the ones with same length of the encryption text.
 - export TERM=xterm => so we can clear screen in reversed shell cmd
-- ssh tunnel is very nice in this video. He shows both the local and reverse ssh tunneling. The reverse tunneling is "i have a service, but I want tunnel it to remove server's local port". The local tunneling is "I don't have a service, but I want to tunnel other box's service to my local port".
+- ssh tunnel is very nice in this video. He shows both the local and reverse ssh tunneling. The reverse tunneling is "i have a service, but I want tunnel it to remote server's local port". The local tunneling is "I don't have a service, but I want to tunnel other box's service to my local port".
+- there could be url in exploit.py, visit it.
+- write a bash script file on disk and call it in h2 sql. nice way to bypass the limits in h2 sql.
