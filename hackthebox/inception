@@ -1,0 +1,18 @@
+(love this box! But so hard!)
+Hints:
+- RTFSC
+- webdav <=> upload?
+- farewal => normal shell dies
+- password reused by a user, not root
+- use init.d to know how service is started
+- crontab => APT update => apt update pre-invoke attack
+
+Details:
+- files under /etc/apache2/ are interesting. such as 'sites-enabled'.
+- could use ippsec's http rev shell script
+- roxychains nmap -sT 127.0.0.1 -p 22 -n
+    - not the 10.10.10.67, maybe because of firewall
+    - because we only have http proxy, use 'nmap -sT' (but proxychain + nmap doesn't work in this box)
+- APT attack:
+    - APT::Update::Pre-Invoke {"/bin/bash /tmp/zhe0ops.sh"}
+    - put it to /etc/apt/apt.conf.d/
