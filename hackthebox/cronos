@@ -1,5 +1,5 @@
 Points:
-- port 53 => dig axfr @10.10.10.13 cronos.htb => to do zone transfer and see how many sites
+- port 53 => dig axfr @10.10.10.13 cronos.htb => to do dns zone transfer and see how many sites
 - virtual hosting => try /ect/hosts => same ip, multiple names splited by space
 - try sql injection. Remember the last space ' '.
 - priv esc is really easy. Remember the box's name.
