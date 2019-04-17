@@ -1,0 +1,18 @@
+Hint:
+- xdebug
+- aircrack-ng or hashcat
+- openssh might have a vuln to enum user name (OpenSSH 2.3 < 7.7 - Username Enumeration)
+- misuse docker to get root
+
+Details:
+- dnsrecon (not useful in this box)
+    - dnsrecon -n 10.10.10.83 -r 10.0.0.0/8 --db olympus.db
+    - dnsrecon -n 10.10.10.83 -r 172.16.0.0/12 --db olympus.db
+    - dnsrecon -n 10.10.10.83 -r 192.168.0.0/16 --db olympus.db
+- exiftool <image> (not useful in this box)
+- chrome has a xdebug plugin
+- start xdebug plugin and listen. Then use burp to send to /?XDEBUG_SESSION_START=<any name> to box
+- if use hashcat, you need to git clone hashcat-utils and use its ./cap2hccapx.bin
+- after crack the WPA key, set it in wireshark to decrypt it, wireshark -> preference -> IEEE 802.11 -> decrypt keys
+- guess greek characters names
+- docker misuse: https://www.electricmonk.nl/log/2017/09/30/root-your-docker-host-in-10-seconds-for-fun-and-profit/
