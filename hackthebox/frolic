@@ -1,0 +1,93 @@
+(love this box, good box to practice decoding and decrypting)
+Hints:
+- Piece of cake
+- new tool: fcrackzip
+- recursively gobuster
+
+Details:
+- fcrackzip -v -D -u -p /usr/share/wordlists/rockyou.txt dec.zip
+
+Logs:
+22/tcp   open  ssh         OpenSSH 7.2p2 Ubuntu 4ubuntu2.4 (Ubuntu Linux; protocol 2.0)
+139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+1880/tcp open  http        Node.js (Express middleware)
+9999/tcp open  http        nginx 1.10.3 (Ubuntu)
+
+port 9999:
+/admin (Status: 301)
+=> admin:superduperlooperpassword_lol
+/admin/success.html => Ook! language => Nothing here check /asdiSIAJJ0QWE9JAS
+/asdiSIAJJ0QWE9JAS => UEsDBBQACQAIAMOJN00j/lsUsAAAAGkCAAAJABwAaW5kZXgucGhwVVQJAAOFfKdbhXynW3V4CwAB
+BAAAAAAEAAAAAF5E5hBKn3OyaIopmhuVUPBuC6m/U3PkAkp3GhHcjuWgNOL22Y9r7nrQEopVyJbs
+K1i6f+BQyOES4baHpOrQu+J4XxPATolb/Y2EU6rqOPKD8uIPkUoyU8cqgwNE0I19kzhkVA5RAmve
+EMrX4+T7al+fi/kY6ZTAJ3h/Y5DCFt2PdL6yNzVRrAuaigMOlRBrAyw0tdliKb40RrXpBgn/uoTj
+lurp78cmcTJviFfUnOM5UEsHCCP+WxSwAAAAaQIAAFBLAQIeAxQACQAIAMOJN00j/lsUsAAAAGkC
+AAAJABgAAAAAAAEAAACkgQAAAABpbmRleC5waHBVVAUAA4V8p1t1eAsAAQQAAAAABAAAAABQSwUG
+AAAAAAEAAQBPAAAAAwEAAAAA
+=> base64 -d => zip file => unzip, password needed.
+=> tried imnothuman and superduperlooperpassword_lol, no dice.
+=> use fcrackzip => password is 'password'
+=> inflate the index.php, encrypted
+=> the last two is '0d0a' which is the hex value of ascii new line chars
+=> hex to string
+=>
+KysrKysgKysrKysgWy0+KysgKysrKysgKysrPF0gPisrKysgKy4tLS0gLS0uKysgKysrKysgLjwr
+KysgWy0+KysgKzxdPisKKysuPCsgKytbLT4gLS0tPF0gPi0tLS0gLS0uLS0gLS0tLS0gLjwrKysg
+K1stPisgKysrPF0gPisrKy4gPCsrK1sgLT4tLS0KPF0+LS0gLjwrKysgWy0+KysgKzxdPisgLi0t
+LS4gPCsrK1sgLT4tLS0gPF0+LS0gLS0tLS4gPCsrKysgWy0+KysgKys8XT4KKysuLjwgCg==
+=> based64 -d
+=>
++++++ +++++ [->++ +++++ +++<] >++++ +.--- --.++ +++++ .<+++ [->++ +<]>+
+++.<+ ++[-> ---<] >---- --.-- ----- .<+++ +[->+ +++<] >+++. <+++[ ->---
+<]>-- .<+++ [->++ +<]>+ .---. <+++[ ->--- <]>-- ----. <++++ [->++ ++<]>
+++..<
+=> brainfuck language
+=> decode => idkwhatispass
+
+
+/test (Status: 301)
+=> phpinfo(), PHP Version 7.0.32-0ubuntu0.16.04.1
+
+/backup (Status: 301)
+=> password.txt user.txt loop/
+/backup/password.txt => password - imnothuman
+/backup/user.txt => user - admin
+/backup/loop/ => forbidden
+
+/dev (Status: 301)
+=> forbidden
+/dev/test => test file => 'test'
+/dev/backup => '/playsms' => /playsms visitable => use admin:idkwhatispass can login
+
+/loop (Status: 301)
+=> forbidden
+
+summary:
+user: admin
+passwords: idkwhatispass , imnothuman , superduperlooperpassword_lol
+
+# get local user
+after find the exploit for playsms 1.4, get the local user shell.
+
+# priv esc
+read config.php => db cred:
+core_config['db']['user'] = 'root';    // database username
+$core_config['db']['pass'] = 'ayush';   // database password
+$core_config['db']['name'] = 'playsms'; // database name
+
+from .node-read/settings.js =>
+username: "admin",
+password: "$2a$08$M6GkqpR1GdCDkQYXsR4zGOCl4gA/vWgNBSNKzCRr2RFKyYJNf08q.",
+=> john => password is 'password' (OMG, again?!)
+=> try to login the node-red, no dice. This is a rabbit hole.
+
+enumeration find there is SUID file:
+-rwsr-xr-x 1 root root 7480 Sep 25  2018 /home/ayush/.binary/rop
+tested in box by ldd ./rop, the aslr is not on.
+ldd => libc base is 0xb7e19000
+readelf => 'system' offset is 0003ada0
+srings => '/bin/sh' offset is 15ba0b
+
+=> write a simple python script, upload to the box, run and get root
+
