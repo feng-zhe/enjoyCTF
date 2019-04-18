@@ -9,6 +9,6 @@
 - wfuzz
 
 #Details
-- find /usr/share/seclists | grep -i param => burp-parameter-name.txt
+- find /usr/share/seclists | grep -i param => find the dictionaries we can use
 - find /usr/share/seclists | grep -i char
 - the WAF filter out some patterns, not just chars and words
