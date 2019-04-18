@@ -122,8 +122,6 @@ try it, myexec says:
 seclogin() called
 TODO: Placeholder for now, function not implemented yet
 
-try to change LD_LIBRARY_PATH and use our seclogin()
-
 find:
 https://www.boiteaklou.fr/Abusing-Shared-Libraries.html#3-setuid-bit-on-ldconfig
 https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html#fn:pic
