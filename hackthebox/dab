@@ -128,3 +128,5 @@ https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html#fn:pic
 https://github.com/jivoi/pentest/blob/master/shell/rootshell.c
 
 and add stdlib.h
+
+why do the LD_LIBRARY_PATH and LD_PRELOAD not work? Because for suid files, they use these two from owner's context
