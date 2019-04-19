@@ -1,0 +1,106 @@
+(love this box, ssh tunneling and ovpn config attack. TODO: do it again. So hard)
+Hints:
+- foothold is easy
+- ifconfig shows there are many VMs => upload nmap for further test
+- ssh tunnel.
+- after get in the DNS server, find what is Vault's IP
+- nmap can fake its sending port
+- gpg --list-keys
+
+Details:
+- ssh tunnel, when sshed in dave, keep pressing shift and then `c to create ~C, then we have an ssh command prompt
+    - ssh> -L 8001:192.168.122.4:80 (or)
+    - ssh> -D 1080
+- burp to use proxy
+    - user options -> socks proxy
+- if it hangs, revert the machine
+
+TODO: 
+- learn socat used in ippsec's video
+- learn the last mentioned VNC + reboot attack
+
+Log:
+#init
+22
+80
+
+# http 80
+Sparklays
+Sparklays.com
+Slowdaddy
+
+tried using them in host header, no dice
+
+tried /sparklays/ => 403 forbidden
+
+gobuster on / and /sparklays/
+gobuster -u http://vault.htb/sparklays/ -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -x php,txt,html
+
+/ => nothing
+
+/sparklays/
+./login.php => access denied
+./admin.php => login page
+./design => /design/ => 403
+
+gobuster on /sparklays/design/
+./design.html => can upload
+./uploads => 403 forbidden
+
+assume the user is sparklays
+brute-force the password by wfuzz => no dice
+sqlmap => no dice
+
+gobuster on /sparklays/design/uploads/ => nothing
+
+try to upload php file by /sparklays/design/design.html => rejected
+rename to shell.jpg => upload successfully, but cannot open
+shell.jpg.php, php4 => reject
+php5 => success! => rev shell
+
+# priv sec - get ssh
+
+/home/alex:
+
+.mozilla
+.sudo_as_admin_successful
+Desktop/.root.txt.swp => rootubunturoot.txt
+Downloads/server.iso => ubuntu-server 16.04.4 i386 iso
+but uname shows current box is x64
+
+/home/dave:
+
+.root.txt.swp => b0nano 2.5.daveubunturoot.txt
+
+Desktop/: (but these three files are created by Alex)
+file 'Servers' =>
+DNS + Configurator - 192.168.122.4
+Firewall - 192.168.122.5
+The Vault - x
+
+file 'key' => itscominghome
+
+file 'ssh' =>
+dave
+Dav3therav3123
+
+ssh in!
+
+# priv esc - root
+(ippsec's video)
+web app => ovpn code execution => DNS server
+
+DNS server finds dave:dav3gerous567
+
+find ip of vault, scan but --source-port 53 because we are DNS, 53 is allowed by firewall => 987 is open => nc -p 53 (because 53 is not blocked by firewall) => find vault has ssh on 987
+
+ncat -l 7001 --sh-exec "ncat 192.168.5.2 987 -p 53" &
+ssh -p 7001 dave@localhost
+(so that we can ssh from 53 port to outside)
+
+need gpg key find it on DNS server
+gpg --list-keys
+
+use scp on IPv6 to copy files
+to get ipv6 of neighbors: ping6 -I ens3 ff02::1
+
