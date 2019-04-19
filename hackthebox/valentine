@@ -1,4 +1,4 @@
 (love this box! Methodology and nmap script)
 Points:
-- The version of Apache is not normal, related system ubuntu is old
+- The version of Apache (2.2.22) is not normal, related system ubuntu is old
 - nmap --script vuln <target> => scan vulnerability
