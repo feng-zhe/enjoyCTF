@@ -98,4 +98,5 @@ the binary iptctl has no ALSR itself. (lib does have) => rop chain
 use plt entry address, which is fixed
 objdump -D -j .plt iptctl | grep @plt
 note functions use rdi(first arg) and rsi(second) as input, so we need pop rdi and pop rsi
+r2 => /R pop rsi
 (cat /tmp/out.txt ; cat) | ./iptctl -i => to run and make it stay alive
