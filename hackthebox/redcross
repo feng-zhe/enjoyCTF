@@ -1,0 +1,101 @@
+(love this box, hard for me)
+(Many path to attack this. See ippsec's video. Here only record one way.)
+Hint:
+- fuzz a lot, gobuster and host header
+- change PHPSESSID to see what happens
+
+Details:
+- find documentation dir, fuzz .pdf,.txt
+- guest:guest
+
+logs:
+# init
+22/tcp  open  ssh      OpenSSH 7.4p1 Debian 10+deb9u3 (protocol 2.0)
+80/tcp  open  http     Apache httpd 2.4.25
+443/tcp open  ssl/http Apache httpd 2.4.25
+
+redirected to https://intra.redcross.htb/   
+add it into /etc/hosts
+
+# 80
+/ redirect to https://intra.redcross.htb/?page=login
+gobuster => wildcard response => https
+
+# 443
+(from ippsec)
+https certs => user name penelope
+
+/ => redirect to https://intra.redcross.htb/?page=login
+brute force it, interesting results =>
+/init.php
+/pages/:
+./contact.php
+./login.php
+./actions.php
+./header.php
+./bottom.php
+./app.php
+
+contact.php, tried to apply php code, => filtered . Maybe it is because of some content filtering?
+(but XSS in phone number input is ok. it is an alternative)
+
+sqlmap => failed 
+
+guess the password, guest:guest => get in
+the param o can be sqli. => 
+tables: messages, requests, users
+for table users, it has columns: id, username, password, mail, role
+=>
+admin:$2y$10$z/d5GiwZuFqjY1jRiKIPzuPXKt0SthLOyU438ajqRBtrb7ZADpwq.
+penelope:$2y$10$tY9Y955kyFB37GnW4xrC0.J.FzmkrQhxD..vKCQICvwOEgwfxqgAS
+charles:$2y$10$bj5Qh0AbUM5wHeu/lTfjg.xPxjRQkqU6T8cs683Eus/Y89GHs.G7i
+tricia:$2y$10$Dnv/b2ZBca2O4cp0fsBbjeQ/0HnhvJ7WrC/ZN3K7QKqTa9SSKP6r.
+
+hashcat => charles:cookiemonster
+
+gobuster finds ../documentation/account-signup.pdf => find guest:guest
+
+replace the PHPSESSID with the one found in infra.redcross.htb in admin.redcross.htb to get in
+
+## admin.redcross.htb
+create user => zhe0ops : odQ1T071
+ssh ok. But restricted
+find iptctl.c
+
+firewall rules page =>
+allow our ip, re-nmap
+find command injection point => rev shell
+
+(optional)use haraka 2.8.8 exploit => get penelope
+
+# priv esc
+init.php =>
+$dbuser='dbcross';
+$dbpass='LOSPxnme4f5pH5wp';
+
+firewall.php =>
+user=www password=aaXwrtUO9_aa&"
+
+user.php =>
+dbname=unix user=unixnss password=fios@ew023xnw
+
+actions.php =>
+dbname=unix user=unixusrmgr password=dheu%7wjx8B&
+
+psql => 
+tricia   | $1$WFsH/kvS$5gAjMYSvbpZFNu//uMPmp. => useless
+create a new user by INSERT with /bin/bash and ssh login
+
+# root 1
+one way to root => read the psql conf and get the powerful user:pass and can add powerful user.
+
+# root 2
+cat /etc/group => find sudo group => create a new user with gid
+ssh => sudo => root
+
+# root 3
+the binary iptctl has no ALSR itself. (lib does have) => rop chain
+use plt entry address, which is fixed
+objdump -D -j .plt iptctl | grep @plt
+note functions use rdi(first arg) and rsi(second) as input, so we need pop rdi and pop rsi
+(cat /tmp/out.txt ; cat) | ./iptctl -i => to run and make it stay alive
