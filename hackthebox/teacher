@@ -1,0 +1,53 @@
+Hint:
+- piece of cake to get shell
+- you don't have to change a executable file, if you can edit sensitive files.
+    - note: chmod -R doesn't work on links. But chmod directly works on links.
+
+New tools:
+pspy - monitor linux process. Good to use it to find screte scheduled tasks.
+
+Logs:
+# init
+only 80
+
+# 80
+contact@blackhatuni.com
+
+gobuster => 
+/moodle
+an open source learning platform
+
+course: algebra
+teacher: Giovanni Chhatta
+
+/moodle/login/index.php
+
+tried guest:guest => in, but nothing we can do
+
+go through all links and images, one image 5.png contains error. => contains info => cat =>
+user: Giovanni
+pass: Th4C00lTheacha
+The last char of password is missing
+
+wfuzz => '#'
+pass: Th4C00lTheacha#
+
+login
+
+follow https://blog.ripstech.com/2018/moodle-remote-code-execution/
+=> shell
+
+# priv esc
+config.php =>
+$CFG->dbname    = 'moodle';
+$CFG->dbuser    = 'root';
+$CFG->dbpass    = 'Welkom1!';
+
+from database:
+admin       | $2y$10$7VPsdU9/9y2J4Mynlt6vM.a4coqHRXsNTOq/1aA6wCWTsF2wtrDO2
+Giovannibak | 7a860966115182402ed06375cf0a22af
+
+=> Giovannibak:expelled
+
+=> su Giovannibak, ok
+
