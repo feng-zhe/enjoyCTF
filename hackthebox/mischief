@@ -11,6 +11,8 @@ New Tool:
 - https://github.com/trickster0/Enyx => snmp IPv6 enum
     - or apt install snmp-mibs-downloader and edit /etc/snmp/snmp.conf and comment out everything(one line), then the snmptwalk gives names instead of numbers
 - getfact <file> => see extended acl
+- snmp-mibs-downloader
+    - /etc/snmp/snmp.conf, comment out 'mibs'
 
 Logs:
 # init contatct
