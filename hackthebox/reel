@@ -1,0 +1,23 @@
+(TODO, too hard for me now, client phising + too much powershell)
+Hint:
+- file hidden info => exiftool
+- he talks about rtf, google
+
+New Tools:
+- CVE-2017-0199: https://github.com/bhdresh/CVE-2017-0199.git
+    - generate malicious RTF files
+- pwsh (little bug, don't do it in interactive)
+- sendemail
+- nishang/Client/Out-HTA.ps1
+- BloodHound (Reveal relationships within an Active Directory env)
+- PowerSploit-dev (dev branch!)
+
+Details:
+- ttl in ping, 127 => maybe windows, 64 => maybe linux
+- ftp: mget * => download all
+- cannot store file. Use 'nishang/Client/Out-HTA.ps1 -PayloadURL ps-shell.ps1' to execute in memory
+- nginx upload
+- google "powershell decrypt secure string" => get tom user and can ssh
+    - or $cred.GetNetworkCredential() | fl
+
+
