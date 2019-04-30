@@ -3,3 +3,16 @@ points:
 - password reuse
 
 The password is in the LFI and get the root directly. Don' overthink it.
+
+# alternative 1
+send client email containing php code and LFI the /var/mail/asterisk to execute it
+
+# alternative 2
+use scripts on exploit db, but it has some problems.
+tools: svmap, svwar => find callmenum
+also use burp, send to localhost, and forward to target
+
+# priv esc
+nmap --interactive
+or
+dirty cow
