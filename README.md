@@ -44,10 +44,11 @@ https://gist.github.com/feng-zhe/3f7c802df4b47bc9d70eeb8bdbd190e8
 - find all files in /home => `find /home -type f`
 - LinEnum.sh, linux-exploit-suggester.sh, linuxprivchecker.py
 ## Windows
-[ps scripts](https://gist.github.com/feng-zhe/b47e251d9cc5d9bdf6504de182b1b2e0)
-[manually enum](https://gist.github.com/feng-zhe/7913c7cc5b11f23cf99db058bb9edb00)
-[runas attack](https://gist.github.com/feng-zhe/0e6d4dfd75d248d6450658618458d579)
-[service replace](https://gist.github.com/feng-zhe/fc00f38428bb8974ed8ced67879ed374)
+- [ps scripts](https://gist.github.com/feng-zhe/b47e251d9cc5d9bdf6504de182b1b2e0)
+- [manually enum](https://gist.github.com/feng-zhe/7913c7cc5b11f23cf99db058bb9edb00)
+- [runas attack](https://gist.github.com/feng-zhe/0e6d4dfd75d248d6450658618458d579)
+- [service replace](https://gist.github.com/feng-zhe/fc00f38428bb8974ed8ced67879ed374)
+- If using MSF, try to migrate to a x64 process and run local\_exploit\_suggest.
 
 # Manually Test User Pass
 - admin:admin

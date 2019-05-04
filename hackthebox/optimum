@@ -5,6 +5,11 @@ Points:
 
 https://github.com/rasta-mouse/Sherlock
 https://github.com/rasta-mouse/Watson
+powershell Empire/data/module_source/privesc/Invoke-MS16032.ps1
 
-Try the output suggested vulnerabilities. If you use MSF, remember to set right target.
+Try the output suggested vulnerabilities. If you use MSF, remember to set right target.(msf priv esc didn't work for me anyway)
 Note, sometimes `show options` doesn't show all the target options. Use `show targets` and `set target` (no 's')
+
+Note! if you use powershell.exe, it is by default the C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe, which is just a 32bits on 64bits windows process! It cannot capture any thread handle!
+use this => C:\Windows\SysNative\WindowsPowerShell\v1.0\powershell.exe
+(or C:\Windows\System32\..., yes, it is called 32 but has 64-bit programs)
