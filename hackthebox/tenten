@@ -2,6 +2,7 @@
 Points:
 - brute force the web page manually, replace the digit => find interesting name
 - wpscan => user name and vulnerable plugin => search for the file
+- some idot may upload a picture as their resume
 - steghide => find hidden files
 - read the id_rsa file => "Proc-Type: 4,ENCRYPTED" => it is encrypted
 - ssh2john id_rsa > enc; john enc rockyou.txt => get plain private key file
