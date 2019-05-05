@@ -1,0 +1,7 @@
+Hint
+- it has some protection, so use `echo IEX(...) | powershell -noprofile -` to bypass script execution
+- I used drupalgeddon2 at first. May have some problems later. And somehow we have to use webshell to call priv esc exe
+- but video uses a php script from exploit-db
+    - need to change '/rest_endpoint' to '/rest' to upload file
+    - alternative is to use the session.json and set the cookie "session_name:session_id". Then moduels -> php filter -> new content
+- somehow the priv esc exe in zip file is working. Maybe our browswer destories it after download because it views that exe as virus.
