@@ -1,3 +1,4 @@
+(Soon will be moved to my [gitbook](https://pentest-henryzhefeng.gitbook.io/hacktheplanet/))
 # Philosophy
 - first, test the potential vuln (or each step of it) by minimum cost
 

@@ -1,3 +1,4 @@
 Points:
 - very similar to granpa, same process can do it
-- can use the other http options to upload file. MKCOL, PUT, MOVE.
+- alternative: can use the other http options to upload file. MKCOL, PUT, MOVE.
+    - davtest
