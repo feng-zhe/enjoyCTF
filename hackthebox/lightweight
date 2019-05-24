@@ -1,0 +1,8 @@
+(love this box, learnt capabilities)
+Hints:
+- in enumeration, pay attention to what in the '[+] Files with POSIX capabilities set'
+- try hear different interface
+- cannot ssh the user, maybe we can switch the account?
+- getcap. man capabilities
+- https://gtfobins.github.io/
+- /etc/sudoers
