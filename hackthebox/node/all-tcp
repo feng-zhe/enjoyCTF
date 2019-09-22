@@ -1,0 +1,9 @@
+Starting Nmap 7.70 ( https://nmap.org ) at 2019-06-17 21:54 PDT
+Nmap scan report for node.htb (10.10.10.58)
+Host is up (0.076s latency).
+Not shown: 65533 filtered ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+3000/tcp open  ppp
+
+Nmap done: 1 IP address (1 host up) scanned in 122.59 seconds
