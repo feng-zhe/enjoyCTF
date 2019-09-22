@@ -1,0 +1,22 @@
+# init
+22
+80
+3000
+
+# 80 & 3000
+curl 3000 => {"message":"Hi Shiv, To get access please find the credentials with given query"}
+=> rabbit hole!
+
+80/support => helpdeskz => searchsploit => find one => read code => need sync time
+
+try it, even someone tells you "file not allowed". => got the shell
+
+# priv esc
+find database cred in /var/www/html/includes/config.php
+$config['Database']['username'] = 'root';
+$config['Database']['password'] = 'helpme';
+
+find sha1 for user helpme@helpme.com, pass: godhelpmeplz
+
+read .bash_history => follow it => find user helpme@helpme.com, pass:5d3c93182bb20f07b994a7f617e99cff
+=> md5(godhelpmeplz)
