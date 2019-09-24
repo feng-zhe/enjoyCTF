@@ -1,0 +1,14 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2019-09-22 17:25 PDT
+Nmap scan report for 10.10.10.17
+Host is up (0.077s latency).
+Not shown: 65530 filtered ports
+PORT    STATE SERVICE  VERSION
+22/tcp  open  ssh      OpenSSH 7.2p2 Ubuntu 4ubuntu2.1 (Ubuntu Linux; protocol 2.0)
+25/tcp  open  smtp     Postfix smtpd
+110/tcp open  pop3     Dovecot pop3d
+143/tcp open  imap     Dovecot imapd
+443/tcp open  ssl/http nginx 1.10.0 (Ubuntu)
+Service Info: Host:  brainfuck; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 146.43 seconds

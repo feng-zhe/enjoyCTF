@@ -1,0 +1,12 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2019-09-22 17:26 PDT
+Stats: 0:00:18 elapsed; 0 hosts completed (1 up), 1 undergoing UDP Scan
+UDP Scan Timing: About 0.31% done
+Nmap scan report for 10.10.10.17
+Host is up (0.076s latency).
+Not shown: 65532 open|filtered ports
+PORT    STATE  SERVICE
+110/udp closed pop3
+143/udp closed imap
+443/udp closed https
+
+Nmap done: 1 IP address (1 host up) scanned in 1224.13 seconds
