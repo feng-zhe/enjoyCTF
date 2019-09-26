@@ -1,0 +1,28 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2019-09-24 21:19 PDT
+Nmap scan report for shocker.htb (10.10.10.56)
+Host is up (0.076s latency).
+Not shown: 980 closed ports
+PORT      STATE         SERVICE         VERSION
+13/udp    open|filtered daytime
+517/udp   open|filtered talk
+664/udp   open|filtered secure-aux-bus
+944/udp   open|filtered unknown
+1022/udp  open|filtered exp2
+1028/udp  open|filtered ms-lsa
+1050/udp  open|filtered cma
+18319/udp open|filtered unknown
+19687/udp open|filtered unknown
+19718/udp open|filtered unknown
+20154/udp open|filtered unknown
+20876/udp open|filtered unknown
+32345/udp open|filtered unknown
+32778/udp open|filtered sometimes-rpc20
+39714/udp open|filtered unknown
+40805/udp open|filtered unknown
+48078/udp open|filtered unknown
+48455/udp open|filtered unknown
+49155/udp open|filtered unknown
+62575/udp open|filtered unknown
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 1200.57 seconds

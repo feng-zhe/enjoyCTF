@@ -1,0 +1,11 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2019-09-24 21:19 PDT
+Nmap scan report for shocker.htb (10.10.10.56)
+Host is up (0.078s latency).
+Not shown: 65533 closed ports
+PORT     STATE SERVICE VERSION
+80/tcp   open  http    Apache httpd 2.4.18 ((Ubuntu))
+2222/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 416.66 seconds

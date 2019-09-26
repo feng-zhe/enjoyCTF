@@ -1,0 +1,9 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2019-09-24 22:49 PDT
+Stats: 21:59:05 elapsed; 0 hosts completed (1 up), 1 undergoing UDP Scan
+UDP Scan Timing: About 71.33% done; ETC: 05:39 (8:50:12 remaining)
+Warning: 10.10.10.68 giving up on port because retransmission cap hit (10).
+Nmap scan report for 10.10.10.68
+Host is up (0.086s latency).
+All 1000 scanned ports on 10.10.10.68 are closed (920) or open|filtered (80)
+
+Nmap done: 1 IP address (1 host up) scanned in 80266.16 seconds
