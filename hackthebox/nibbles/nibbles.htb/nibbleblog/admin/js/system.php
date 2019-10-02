@@ -1,0 +1,1 @@
+var HTML_PATH_ROOT = "/nibbleblog/";var HTML_PATH_ADMIN = "/nibbleblog/admin/";var HTML_PATH_ADMIN_AJAX = "/nibbleblog/admin/ajax/";var HTML_PATH_ADMIN_JS = "/nibbleblog/admin/js/";var HTML_PATH_ADMIN_TEMPLATES = "/nibbleblog/admin/templates/";var _MAX_FILE_SIZE = 1024 * 3000;
