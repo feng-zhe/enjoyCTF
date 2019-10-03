@@ -1,0 +1,48 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2019-10-02 21:13 PDT
+Initiating Ping Scan at 21:13
+Scanning 10.10.10.7 [4 ports]
+Completed Ping Scan at 21:13, 0.11s elapsed (1 total hosts)
+Initiating SYN Stealth Scan at 21:13
+Scanning beep.htb (10.10.10.7) [65535 ports]
+Discovered open port 111/tcp on 10.10.10.7
+Discovered open port 993/tcp on 10.10.10.7
+Discovered open port 3306/tcp on 10.10.10.7
+Discovered open port 143/tcp on 10.10.10.7
+Discovered open port 443/tcp on 10.10.10.7
+Discovered open port 995/tcp on 10.10.10.7
+Discovered open port 110/tcp on 10.10.10.7
+Discovered open port 25/tcp on 10.10.10.7
+Discovered open port 22/tcp on 10.10.10.7
+Discovered open port 80/tcp on 10.10.10.7
+Discovered open port 4559/tcp on 10.10.10.7
+Discovered open port 4190/tcp on 10.10.10.7
+SYN Stealth Scan Timing: About 49.47% done; ETC: 21:15 (0:00:32 remaining)
+Discovered open port 5038/tcp on 10.10.10.7
+Discovered open port 878/tcp on 10.10.10.7
+Discovered open port 4445/tcp on 10.10.10.7
+Discovered open port 10000/tcp on 10.10.10.7
+Completed SYN Stealth Scan at 21:14, 58.58s elapsed (65535 total ports)
+Nmap scan report for beep.htb (10.10.10.7)
+Host is up (0.082s latency).
+Not shown: 65519 closed ports
+PORT      STATE SERVICE
+22/tcp    open  ssh
+25/tcp    open  smtp
+80/tcp    open  http
+110/tcp   open  pop3
+111/tcp   open  rpcbind
+143/tcp   open  imap
+443/tcp   open  https
+878/tcp   open  unknown
+993/tcp   open  imaps
+995/tcp   open  pop3s
+3306/tcp  open  mysql
+4190/tcp  open  sieve
+4445/tcp  open  upnotifyp
+4559/tcp  open  hylafax
+5038/tcp  open  unknown
+10000/tcp open  snet-sensor-mgmt
+
+Read data files from: /usr/bin/../share/nmap
+Nmap done: 1 IP address (1 host up) scanned in 58.88 seconds
+           Raw packets sent: 65640 (2.888MB) | Rcvd: 85953 (4.763MB)
