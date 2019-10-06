@@ -1,6 +1,8 @@
-Starting Nmap 7.70 ( https://nmap.org ) at 2019-06-10 00:57 EDT
+Starting Nmap 7.80 ( https://nmap.org ) at 2019-10-05 18:33 PDT
+Stats: 0:00:04 elapsed; 0 hosts completed (1 up), 1 undergoing UDP Scan
+UDP Scan Timing: About 5.00% done; ETC: 18:34 (0:01:35 remaining)
 Nmap scan report for nineveh.htb (10.10.10.43)
 Host is up (0.074s latency).
 All 1000 scanned ports on nineveh.htb (10.10.10.43) are open|filtered
 
-Nmap done: 1 IP address (1 host up) scanned in 75.37 seconds
+Nmap done: 1 IP address (1 host up) scanned in 75.52 seconds
