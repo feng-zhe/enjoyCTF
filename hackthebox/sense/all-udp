@@ -1,0 +1,8 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2019-10-06 11:16 PDT
+Stats: 0:05:00 elapsed; 0 hosts completed (1 up), 1 undergoing UDP Scan
+UDP Scan Timing: About 5.98% done; ETC: 12:40 (1:18:35 remaining)
+Nmap scan report for 10.10.10.60
+Host is up (0.076s latency).
+All 65535 scanned ports on 10.10.10.60 are open|filtered
+
+Nmap done: 1 IP address (1 host up) scanned in 5023.90 seconds
