@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Sun Oct  6 15:53:15 2019 as: nmap -sC -sV -oA solidstate 10.10.10.51
+Host: 10.10.10.51 ()	Status: Up
+Host: 10.10.10.51 ()	Ports: 22/open/tcp//ssh//OpenSSH 7.4p1 Debian 10+deb9u1 (protocol 2.0)/, 25/open/tcp//smtp//JAMES smtpd 2.3.2/, 80/open/tcp//http//Apache httpd 2.4.25 ((Debian))/, 110/open/tcp//pop3//JAMES pop3d 2.3.2/, 119/open/tcp//nntp//JAMES nntpd (posting ok)/	Ignored State: closed (995)
+# Nmap done at Sun Oct  6 15:53:35 2019 -- 1 IP address (1 host up) scanned in 20.58 seconds

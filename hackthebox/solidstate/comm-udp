@@ -1,0 +1,11 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2019-10-06 17:48 PDT
+Nmap scan report for solidstate.htb (10.10.10.51)
+Host is up (0.075s latency).
+Not shown: 996 closed ports
+PORT     STATE         SERVICE
+631/udp  open|filtered ipp
+1900/udp open|filtered upnp
+5353/udp open|filtered zeroconf
+5355/udp open|filtered llmnr
+
+Nmap done: 1 IP address (1 host up) scanned in 1093.37 seconds
