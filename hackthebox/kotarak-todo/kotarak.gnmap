@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Mon Oct  7 20:54:39 2019 as: nmap -sC -sV -oA kotarak 10.10.10.55
+Host: 10.10.10.55 ()	Status: Up
+Host: 10.10.10.55 ()	Ports: 22/open/tcp//ssh//OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)/, 8009/open/tcp//ajp13//Apache Jserv (Protocol v1.3)/, 8080/open/tcp//http//Apache Tomcat 8.5.5/	Ignored State: closed (997)
+# Nmap done at Mon Oct  7 20:54:51 2019 -- 1 IP address (1 host up) scanned in 11.85 seconds

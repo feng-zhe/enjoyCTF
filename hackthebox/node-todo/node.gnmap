@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Fri Oct 11 00:31:13 2019 as: nmap -sC -sV -oA node 10.10.10.58
+Host: 10.10.10.58 (node.htb)	Status: Up
+Host: 10.10.10.58 (node.htb)	Ports: 22/open/tcp//ssh//OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)/, 3000/open/tcp//hadoop-datanode//Apache Hadoop/	Ignored State: filtered (998)
+# Nmap done at Fri Oct 11 00:31:36 2019 -- 1 IP address (1 host up) scanned in 22.53 seconds
