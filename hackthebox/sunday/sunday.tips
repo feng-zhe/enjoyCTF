@@ -3,6 +3,7 @@ Lessons Learnt:
 - "nmap -p- xxxx --max-retries 0", then "nmap -sV -sC -p <ports>"
 - finger-user-enum from https://github.com/pentestmonkey/finger-user-enum
 - brute-force ssh. (note hydra doesn't work for this box, server ssh key exchange algorithm is too old.)
+    - Hydra v9.0 now support it.
     - use medusa
     - /user/share/seclists/Password
 - one user get another one, work together and then priv esc!

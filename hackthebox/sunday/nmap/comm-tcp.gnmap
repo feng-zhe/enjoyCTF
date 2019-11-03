@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Sat Nov  2 12:22:28 2019 as: nmap -sC -sV -oA nmap/comm-tcp 10.10.10.76
+Host: 10.10.10.76 ()	Status: Up
+Host: 10.10.10.76 ()	Ports: 79/open/tcp//finger//Sun Solaris fingerd/, 111/open/tcp//rpcbind///	Ignored State: closed (998)
+# Nmap done at Sat Nov  2 12:27:38 2019 -- 1 IP address (1 host up) scanned in 310.36 seconds
