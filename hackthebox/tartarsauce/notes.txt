@@ -1,0 +1,3 @@
+define('DB_NAME', 'wp');
+define('DB_USER', 'wpuser');
+define('DB_PASSWORD', 'w0rdpr3$$d@t@b@$3@cc3$$');
