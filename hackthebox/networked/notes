@@ -1,0 +1,16 @@
+/index.php (Status: 200)
+/uploads (Status: 301)
+/photos.php (Status: 200)
+/upload.php (Status: 200)
+/lib.php (Status: 200)
+/backup (Status: 301)
+
+the /backup gives a backup.tar and contains php code.
+
+/upload needs an image.
+
+read the code, upload a file with interesting name => get shell.
+
+there is a cron job, create a special filename. Note! nc can use not only -e but also -c bash.
+
+we can just enter something to the bash script. Get root.

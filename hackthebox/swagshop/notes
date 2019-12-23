@@ -1,0 +1,9 @@
+magescan
+=>
+Version   | 1.9.0.0, 1.9.0.1 
+
+app/etc/local.xml
+=>
+<username>root</username><password>fMVWh7bDHpgZkyfqQXreTjU9</password>
+
+(Try to locate admin login page. Guess)

@@ -1,0 +1,60 @@
+some rabbit holes.
+in html & https cret, there is friendzone.red. use this as webpage name. see some other pages.
+RTFSC => https://friendzone.red/js/js/
+=>
+Testing some functions !
+I'am trying not to break things !
+WjhBVjUxYlJydDE1NzYzNjUyMTRYeHByaG 
+=> the last part changes every time.
+=> RTFSC <!-- dont stare too much , you will be smashed ! , it's all about times and zones ! -->
+=> I think this is a rabbit hole and it uses times and zonse to calculate this salted string.
+
+gobuster http://friendzone.red/
+=>
+/wordpress => nothing
+/robots.txt => nothing
+
+gobuster https://friendzone.red/
+=>
+/admin
+/js
+=>gobuster the /admin => nothing
+=>gobuster /js => nothing
+=>gobuster /js/js => nothing
+
+burp => /js/js => find cookie is zonedman=justgotzoned => tried to change, nothing happenend =>
+
+use `dig axfr @10.10.10.123 friendzone.red` to find some DNS info.
+; <<>> DiG 9.11.5-P4-5.1+b1-Debian <<>> axfr @10.10.10.123 friendzone.red
+...
+administrator1.friendzone.red. 604800 IN A      127.0.0.1
+hr.friendzone.red.      604800  IN      A       127.0.0.1
+uploads.friendzone.red. 604800  IN      A       127.0.0.1
+...
+=> but all of them look like a dating website. Even for some non-exist prefixes.
+=> THIS IS WRONG! I forget to add them to /etc/hosts
+
+
+use smbclient -L 10.10.10.123
+=>
+Files           Disk      FriendZone Samba Server Files /etc/Files
+general         Disk      FriendZone Samba Server Files
+Development     Disk      FriendZone Samba Server Files
+=>
+Files=> needs root pasword
+general => 
+creds for the admin THING:
+admin:WORKWORKHhallelujah@#
+Development => nothing.
+
+tried to use admin to login ftp => failed.
+
+(there is a very "OBVIOUS" DNS shown to you at first place, TODO)
+
+Find a LFI => get foothold
+
+read files get 
+db_user=friend
+db_pass=Agpyu12!0.213$
+=> is ssh cred
+
