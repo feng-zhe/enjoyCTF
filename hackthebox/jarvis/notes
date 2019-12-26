@@ -1,0 +1,14 @@
+only 22, 80
+
+website mentioned:
+supersecurehotel@logger.htb
+supersecurehotel.htb
+
+localhost:DBadmin:*2D2B7A5E4E637B8FBA1D17F40318F277D29964D0
+=> imissyou
+
+/phpmyadmin => search exploit => get foothold.
+
+sudo -l => use $(...) => get user.
+
+SUID => GTFObins => get root.
