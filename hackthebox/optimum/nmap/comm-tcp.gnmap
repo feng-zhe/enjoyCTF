@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Sat Jan 11 10:22:47 2020 as: nmap -sC -sV -oA nmap/comm-tcp 10.10.10.8
+Host: 10.10.10.8 ()	Status: Up
+Host: 10.10.10.8 ()	Ports: 80/open/tcp//http//HttpFileServer httpd 2.3/	Ignored State: filtered (999)
+# Nmap done at Sat Jan 11 10:23:05 2020 -- 1 IP address (1 host up) scanned in 17.87 seconds
