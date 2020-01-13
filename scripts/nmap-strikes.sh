@@ -5,3 +5,4 @@ nmap -sC -sV -oA nmap/comm-tcp $ip &>/dev/null &
 nmap -p- -sV $ip > nmap/all-tcp &
 nmap -sU $ip > nmap/comm-udp &
 nmap -p- -sU $ip > nmap/all-udp &
+nmap --script=vuln $ip > nmap/vuln &
