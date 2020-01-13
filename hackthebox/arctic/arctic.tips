@@ -4,6 +4,7 @@ Points:
 - if msf failed to get a shell, may be it is because the server is too slow. We need burp suit to see what's going on and what we can do with the rest.
 - MSF may use the wrong LHOST if you use a VPN. Pay attention to the log and set it if necessary.
 - Locate the MSF module and change the timeout!
+- LFI cannot be used, tested, it seems they banned it.
 
 I learnt so much from this box.
 What is the service on a strange port? Find it.
