@@ -1,0 +1,39 @@
+# Nmap 7.70 scan initiated Sun Jan 19 15:40:08 2020 as: nmap -sC -sV -oA nmap/comm-tcp 10.10.10.82
+Nmap scan report for 10.10.10.82
+Host is up (0.075s latency).
+Not shown: 988 closed ports
+PORT      STATE SERVICE      VERSION
+80/tcp    open  http         Microsoft IIS httpd 8.5
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/8.5
+|_http-title: IIS Windows Server
+135/tcp   open  msrpc        Microsoft Windows RPC
+139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
+1521/tcp  open  oracle-tns   Oracle TNS listener 11.2.0.2.0 (unauthorized)
+49152/tcp open  msrpc        Microsoft Windows RPC
+49153/tcp open  msrpc        Microsoft Windows RPC
+49154/tcp open  msrpc        Microsoft Windows RPC
+49155/tcp open  msrpc        Microsoft Windows RPC
+49158/tcp open  msrpc        Microsoft Windows RPC
+49160/tcp open  oracle-tns   Oracle TNS listener (requires service name)
+49161/tcp open  msrpc        Microsoft Windows RPC
+Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: 40s, deviation: 0s, median: 40s
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: supported
+| smb2-security-mode: 
+|   2.02: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2020-01-19 15:43:11
+|_  start_date: 2020-01-19 14:54:06
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sun Jan 19 15:42:37 2020 -- 1 IP address (1 host up) scanned in 148.84 seconds

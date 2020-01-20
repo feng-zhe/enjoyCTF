@@ -1,0 +1,4 @@
+# Nmap 7.70 scan initiated Sun Jan 19 15:40:08 2020 as: nmap -sC -sV -oA nmap/comm-tcp 10.10.10.82
+Host: 10.10.10.82 ()	Status: Up
+Host: 10.10.10.82 ()	Ports: 80/open/tcp//http//Microsoft IIS httpd 8.5/, 135/open/tcp//msrpc//Microsoft Windows RPC/, 139/open/tcp//netbios-ssn//Microsoft Windows netbios-ssn/, 445/open/tcp//microsoft-ds//Microsoft Windows Server 2008 R2 - 2012 microsoft-ds/, 1521/open/tcp//oracle-tns//Oracle TNS listener 11.2.0.2.0 (unauthorized)/, 49152/open/tcp//msrpc//Microsoft Windows RPC/, 49153/open/tcp//msrpc//Microsoft Windows RPC/, 49154/open/tcp//msrpc//Microsoft Windows RPC/, 49155/open/tcp//msrpc//Microsoft Windows RPC/, 49158/open/tcp//msrpc//Microsoft Windows RPC/, 49160/open/tcp//oracle-tns//Oracle TNS listener (requires service name)/, 49161/open/tcp//msrpc//Microsoft Windows RPC/	Ignored State: closed (988)
+# Nmap done at Sun Jan 19 15:42:37 2020 -- 1 IP address (1 host up) scanned in 148.84 seconds
