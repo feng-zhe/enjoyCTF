@@ -14,3 +14,4 @@ Details:
 - merlin: https://github.com/Ne0nd0g/merlin, but some of its modules needs internet access.
 - need to reset the machine sometimes.
 - somehow the unicorn approach get stuck in my case.
+- somehow it seems https doesn't work for me but reverse tcp is fine.

@@ -1,0 +1,30 @@
+Starting Nmap 7.70 ( https://nmap.org ) at 2020-01-20 00:58 EST
+Pre-scan script results:
+| broadcast-avahi-dos: 
+|   Discovered hosts:
+|     224.0.0.251
+|   After NULL UDP avahi packet DoS (CVE-2011-1002).
+|_  Hosts are all up (not vulnerable).
+Nmap scan report for 10.10.10.93
+Host is up (0.079s latency).
+Not shown: 999 filtered ports
+PORT   STATE SERVICE
+80/tcp open  http
+|_http-csrf: Couldn't find any CSRF vulnerabilities.
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+| http-vuln-cve2015-1635: 
+|   VULNERABLE:
+|   Remote Code Execution in HTTP.sys (MS15-034)
+|     State: VULNERABLE
+|     IDs:  CVE:CVE-2015-1635
+|       A remote code execution vulnerability exists in the HTTP protocol stack (HTTP.sys) that is
+|       caused when HTTP.sys improperly parses specially crafted HTTP requests. An attacker who
+|       successfully exploited this vulnerability could execute arbitrary code in the context of the System account.
+|           
+|     Disclosure date: 2015-04-14
+|     References:
+|       https://technet.microsoft.com/en-us/library/security/ms15-034.aspx
+|_      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-1635
+
+Nmap done: 1 IP address (1 host up) scanned in 278.00 seconds
