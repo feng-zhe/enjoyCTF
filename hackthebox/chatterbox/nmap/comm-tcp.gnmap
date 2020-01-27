@@ -1,0 +1,4 @@
+# Nmap 7.70 scan initiated Sat Jan 25 23:40:10 2020 as: nmap -sC -sV -oA nmap/comm-tcp 10.10.10.74
+Host: 10.10.10.74 (chatterbox.htb)	Status: Up
+Host: 10.10.10.74 (chatterbox.htb)	Status: Up
+# Nmap done at Sat Jan 25 23:41:27 2020 -- 1 IP address (1 host up) scanned in 77.23 seconds
