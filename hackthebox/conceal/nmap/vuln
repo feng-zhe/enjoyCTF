@@ -1,0 +1,12 @@
+Starting Nmap 7.70 ( https://nmap.org ) at 2020-01-29 22:04 PST
+Pre-scan script results:
+| broadcast-avahi-dos: 
+|   Discovered hosts:
+|     224.0.0.251
+|   After NULL UDP avahi packet DoS (CVE-2011-1002).
+|_  Hosts are all up (not vulnerable).
+Nmap scan report for 10.10.10.116
+Host is up (0.093s latency).
+All 1000 scanned ports on 10.10.10.116 are filtered
+
+Nmap done: 1 IP address (1 host up) scanned in 130.53 seconds

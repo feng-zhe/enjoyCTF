@@ -1,0 +1,4 @@
+# Nmap 7.70 scan initiated Wed Jan 29 22:04:13 2020 as: nmap -sC -sV -oA nmap/comm-tcp 10.10.10.116
+Host: 10.10.10.116 ()	Status: Up
+Host: 10.10.10.116 ()	Status: Up
+# Nmap done at Wed Jan 29 22:05:29 2020 -- 1 IP address (1 host up) scanned in 75.31 seconds
