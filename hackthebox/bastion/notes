@@ -1,0 +1,41 @@
+Windows Server 2016 Standard 14393 (Windows Server 2016 Standard 6.3)
+
+# enum
+## ssh
+OpenSSH for_Windows_7.9
+
+## nbt/smb
+find shared folder Backups
+find note.txt =>
+"
+Sysadmins: please don't transfer the entire backup file locally, the VPN to the subsidiary office is too slow.
+"
+
+find two vhd files, too big. Google, it is windows backup file. Virutal Hard Disk.
+
+How to mount it to kali? It is too big to download. Find this https://medium.com/@klockw3rk/mounting-vhd-file-on-kali-linux-through-remote-share-f2f9542c1f25
+
+follow the instructions but get "failed to set MSR 0xe1 to 0x0"
+find http://libguestfs.org/guestfs.3.html#force_tcg => fix it by `export LIBGUESTFS_BACKEND_SETTINGS=force_tcg`
+
+the "c4" one has content but the other doesn't.
+
+tried to find ssh cred, failed.
+
+go to windows/system32/config, dump the ntml hash by
+samdump2 SYSTEM SAM
+=>
+*disabled* Administrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+*disabled* Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+L4mpje:1000:aad3b435b51404eeaad3b435b51404ee:26112010952d963c8dc4217daec986d9:::
+
+online cracker => bureaulampje
+
+get the foothold.
+
+## TODO
+smb: other files might be interesting
+
+# Priv Esc
+(Do it again. If auto check tools fail, maybe you just need to go through files patiently. What app is installed?)
+thXLHM96BeKL0ER2

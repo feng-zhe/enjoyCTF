@@ -1,0 +1,19 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-03-26 20:23 PDT
+Nmap scan report for 10.10.10.134
+Host is up (0.084s latency).
+Not shown: 996 closed ports
+PORT    STATE SERVICE
+22/tcp  open  ssh
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+135/tcp open  msrpc
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+139/tcp open  netbios-ssn
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+445/tcp open  microsoft-ds
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+
+Host script results:
+|_smb-vuln-ms10-054: false
+|_smb-vuln-ms10-061: ERROR: Script execution failed (use -d to debug)
+
+Nmap done: 1 IP address (1 host up) scanned in 29.57 seconds

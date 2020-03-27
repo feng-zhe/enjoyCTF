@@ -1,0 +1,39 @@
+# InfoG
+
+## FTP
+can read but no write to inetpub
+
+## smb
+nothing
+
+## http
+### Enum
+nmap vuln scan gives "Litespeed Web Server Source Code Disclosure (CVE-2010-2333)", not sure how to use it.
+PRTG/18.1.37.13946
+Indy httpd 18.1.37.13946
+
+find https://github.com/M4LV0/PRTG-Network-Monitor-RCE, but needs authentication.
+tried default cred prtgadmin:prtgadmin, doesn't work.
+try to find cred from ftp
+find this link https://kb.paessler.com/en/topic/463-how-and-where-does-prtg-store-its-data => there should be a "PRTG configuration.dat"
+(REMEMBER TO USE `ls -al` insteand of `ls` in ftp!!!!!)
+found it, search prtgadmin, find encrypted hash, john doesn't recognize it.
+find the "old.bak" version of the config, find:
+
+<dbpassword>
+<!-- User: prtgadmin -->
+PrTg@dmin2018
+</dbpassword>
+
+sadly, cannot login.
+(Think like a user!!!!! It ends with 2018, try 2019 or 2020!!!)
+
+change it to 2019 to get in.
+
+### Getting Foothold
+use the https://github.com/M4LV0/PRTG-Network-Monitor-RCE =>
+[*] exploit completed new user 'pentest' with password 'P3nT3st!' created have fun!
+(Or we can do it manually by creating our own setup->account->notification)
+
+/usr/share/doc/python3-impacket/examples/smbexec.py pentest:'P3nT3st!'@10.10.10.152
+=> root shell
