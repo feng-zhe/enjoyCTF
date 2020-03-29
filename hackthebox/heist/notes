@@ -1,0 +1,83 @@
+http and smb
+
+# Enum
+## smb
+nothing
+
+## http
+Microsoft-IIS/10.0
+
+click login as guest, find some comment:
+
+Hazard:
+ Hi, I've been experiencing problems with my cisco router. Here's a part of the configuration the previous admin had been using. I'm new to this and don't know how to fix it. :( 
+
+Support Admin:
+ Hi, thanks for posting the issue here. We provide fast support and help. Let me take a look and get back to you! 
+ 
+Hazard:
+ Thanks a lot. Also, please create an account for me on the windows server as I need to access the files. 
+
+The attachment is downloaded config.txt. Google the cisco router config.
+find this https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3850/software/release/3-2_0_se/system_management/configuration_guide/b_sm_32se_3850_cg_chapter_01001.html
+
+brute force the secret by creating a txt file with "test:$1$pdQG$o8nrSzsGXeaduXrjlvKc91"
+=>stealth1agent
+
+with this cred, call psexec
+/usr/share/doc/python3-impacket/examples/psexec.py hazard:stealth1agent@10.10.10.149
+=> error is "share is not writable". Not LOGON failure. So the cred is right.
+
+using smbmap, listed a lot of files under '.'. What is this? => just udner IPC$
+use smbmap download them all, => their size are all 0.
+tried with rout3r and admin cred, nothing.
+
+(get hint here => we have cisco config with encrypted password, google decrypter.)
+
+Decrypted password: $uperP@ssword
+Decrypted password: Q4)sJu\Y8qz*A3?d
+
+can we login the webpage with password "stealth1agent" => Noo
+
+use lookupsid.py to enum security identifiers in the domain.
+=>
+500: SUPPORTDESK\Administrator (SidTypeUser)
+501: SUPPORTDESK\Guest (SidTypeUser)
+503: SUPPORTDESK\DefaultAccount (SidTypeUser)
+504: SUPPORTDESK\WDAGUtilityAccount (SidTypeUser)
+513: SUPPORTDESK\None (SidTypeGroup)
+1008: SUPPORTDESK\Hazard (SidTypeUser)
+1009: SUPPORTDESK\support (SidTypeUser)
+1012: SUPPORTDESK\Chase (SidTypeUser)
+1013: SUPPORTDESK\Jason (SidTypeUser)
+
+use msf winrm_login module, find:
+10.10.10.149:5985 - Login Successful: WORKSTATION\chase:Q4)sJu\Y8qz*A3?d
+
+used a tool called evil-winrm, get the foothold
+
+# Priv Esc
+find todo.txt
+=>
+"
+Stuff to-do:
+1. Keep checking the issues list.
+2. Fix the router config.
+
+Done:
+1. Restricted access for guest user.
+"
+
+tried to use found passwords to run as hazard, failed.
+PowerUp.ps1 => nothing
+
+found mozilla profiles, but cannot copy because another process is using it.
+use firefox_decrypt 0.7.0 python2 version. Follow the https://www.andreafortuna.org/2017/12/27/how-to-cross-compile-a-python-script-into-a-windows-executable-on-linux/ to compile it to exe.
+But the firefox_decrypt.py complains some files are missing. Tried thousands ways, failed.
+
+(Get hint)
+although we cannot list files in wwwroot, but we can read the file content by calling it name: issues.php, login.php
+=> no use here, but good lesson
+
+procdump64.exe => find admin@support.htb password => it is administartor's password.
+

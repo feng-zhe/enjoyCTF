@@ -1,0 +1,27 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-03-28 12:25 PDT
+Nmap scan report for 10.10.10.149
+Host is up (0.11s latency).
+Not shown: 997 filtered ports
+PORT    STATE SERVICE
+80/tcp  open  http
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+| http-cookie-flags: 
+|   /login.php: 
+|     PHPSESSID: 
+|_      httponly flag not set
+|_http-csrf: Couldn't find any CSRF vulnerabilities.
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+| http-enum: 
+|_  /login.php: Possible admin folder
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+135/tcp open  msrpc
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+445/tcp open  microsoft-ds
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+
+Host script results:
+|_samba-vuln-cve-2012-1182: Could not negotiate a connection:SMB: Failed to receive bytes: ERROR
+|_smb-vuln-ms10-054: false
+|_smb-vuln-ms10-061: Could not negotiate a connection:SMB: Failed to receive bytes: ERROR
+
+Nmap done: 1 IP address (1 host up) scanned in 492.18 seconds
