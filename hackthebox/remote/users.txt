@@ -1,0 +1,8 @@
+admin@htb.local
+smith@htb.local
+ssmith@htb.local
+administrator
+admin
+smith
+ssmith
+john

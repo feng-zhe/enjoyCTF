@@ -1,0 +1,59 @@
+ftp,http,smb/nbt,rpc,5985 winrm,2049 mountd
+
+# Enum
+## ftp
+nothing
+
+## smb,nbt, mountd
+smb, nbt =>nothing
+find /site_backups, mount it.
+no write access.
+
+## http
+source code show it is using umbraco
+google how to tell umbraco version, in Web.config =>
+<add key="umbracoConfigurationStatus" value="7.12.4" />
+find an exploit for this version https://www.exploit-db.com/exploits/46153, it need auth
+
+try to locate database connectionsStrings, it uses a Umbraco.sdf file.
+<add name="umbracoDbDSN" connectionString="Data Source=|DataDirectory|\Umbraco.sdf;Flush Interval=1;" providerName="System.Data.SqlServerCe.4.0" />
+it is using a microsoft SQL server compact file
+
+find the file under App_Data, how to extract data from it?
+failed, all failed, even visual studio saied it is corrupted.
+
+read ./App_Data/Logs, find silly user who entered his password as username, via bash:
+use cat grep cut sort uniq to get a list of users
+=>
+Admin
+admin@htb.local
+smith
+smith@htb.local
+ssmith
+ssmith@htb.local
+Umbracoadmin123!!
+
+looks like the user accidentally entered the password in username. Tried crackmapexec and msf winrc_login but all failed.
+
+go back to the sdf files and use strings to get some information. Except for the users, also find information at the begin. Find some hash.
+
+admin@htb.local:baconandcheese
+smith@htb.local: (failed, hmacsha256)
+ssmith@htb.local:(failed, hmacsha256)
+
+still get nothing.
+=> after reset the machine, get in with baconandcheese
+
+run the modified exploit, get shell.
+
+# priv esc
+google "teamviewer extract password" => tried several tools, failed.
+then find this blog https://whynotsecurity.com/blog/teamviewer/
+
+download its decrypt python script. And use following command to extract registry value.
+reg query HKLM\SOFTWARE\WOW6432Node\TeamViewer\Version7
+(the registy path is also found from the blog)
+
+use the script and decrypt the password => !R3m0te!
+
+get root shell via psexec
