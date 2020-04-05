@@ -1,0 +1,6 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-04-01 09:26 PDT
+Nmap scan report for 10.10.10.178
+Host is up.
+All 1000 scanned ports on 10.10.10.178 are open|filtered
+
+Nmap done: 1 IP address (1 host up) scanned in 201.54 seconds

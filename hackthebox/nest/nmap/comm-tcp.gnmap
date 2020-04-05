@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Wed Apr  1 09:26:36 2020 as: nmap -sC -Pn -sV -oA nmap/comm-tcp 10.10.10.178
+Host: 10.10.10.178 ()	Status: Up
+Host: 10.10.10.178 ()	Ports: 445/open/tcp//microsoft-ds?///	Ignored State: filtered (999)
+# Nmap done at Wed Apr  1 09:27:38 2020 -- 1 IP address (1 host up) scanned in 62.39 seconds

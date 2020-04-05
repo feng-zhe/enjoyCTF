@@ -1,0 +1,133 @@
+445, 4386
+
+# Enum
+## smb
+Sharename       Type      Comment                                                                             
+---------       ----      -------                                                                             
+ADMIN$          Disk      Remote Admin
+C$              Disk      Default share            
+Data            Disk                          
+IPC$            IPC       Remote IPC          
+Secure$         Disk                                                                                          
+Users           Disk      
+
+Although smbmap listed other disks, but we only have access on the disk /Data and /Users.
+get two txts: 'Maintenance Alerts.txt', 'Welcome Email.txt'
+"
+There is currently no scheduled maintenance work
+"
+
+"
+We would like to extend a warm welcome to our newest member of staff, <FIRSTNAME> <SURNAME>
+
+You will find your home folder in the following location: 
+\\HTB-NEST\Users\<USERNAME>
+
+If you have any issues accessing specific services or workstations, please inform the 
+IT department and use the credentials below until all systems have been set up for you.
+
+Username: TempUser
+Password: welcome2019
+
+
+Thank you
+HR
+"
+
+/Users directories has access denied.
+using the TempUser and welcome2019 => find another txt "New Text Document.txt".
+but it is empty.
+
+tried to manipulate the password with 2020, 2018 and use crackmapexec
+=> but it turns out smith, l.frost, frost and ... are all valid with welcome<any year>
+=> but no use.
+
+Use smb recursive download =>
+
+find some user name in IT/Configs/Atlas/Temp.xml
+find history items in IT/Configs/NotepadPlusPlus
+<History nbMaxFile="15" inSubMenu="no" customLength="-1">       
+<File filename="C:\windows\System32\drivers\etc\hosts" />   
+<File filename="\\HTB-NEST\Secure$\IT\Carl\Temp.txt" />     
+<File filename="C:\Users\C.Smith\Desktop\todo.txt" /> 
+
+THe IT/Configs/RU_Scanner/RU_config.xml:
+<?xml version="1.0"?>
+<ConfigFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<Port>389</Port>
+<Username>c.smith</Username>
+<Password>fTEzAfYDoz1YzkqhQkH6GQFYKp1XY5hm7bjOP86yYxE=</Password>
+</ConfigFile>
+
+No other files can be downloaded via smb.
+
+decrypt by base64 =>
+}13=XJBAX*Wcf?βc
+
+but this maybe because some chars are not displayable.
+tried online decrypter, there is some char not printable
+
+## 4386 + smb
+nc => HQK Reporting Service V1.2
+
+google, didn't find exact match. But some how it keeps suggesting me to use some exploit related to MSSQL.
+Look at the box created date and the exploit date. Maybe it is what I need.
+=> nop, this is totally irrelevant.
+
+using telnet instead of nc, can interact with it.
+
+help -> know my functions
+runquery 1 -> failed somehow.
+setdir c:/, then LIST, => we can list remote file system
+but we may use it to read some database file it can recognize.
+
+after some trial and errors, it turns out it can say access denied but if we know the exact path to a file, we can still get in.
+tested, so as the smbclient.
+
+based on the nodepad++'s history=>
+find C:\Shares\Secure\IT\Carl\VB projects\WIP\RU, there is our RU scanner.
+smb secure$/IT/Carl/, find ip.txt mmc.txt
+
+just read the code of Ru scanner. Find the decrypt func. find an online VB compiler and run it with the password we find
+decrypted password =>
+xRxRxPANCAK3SxRxRx
+tried with service on port 4386. no dice.
+
+smb to c.smith => get user.txt
+
+keep reading c.smith's files, there is a empty "Debug Mode Password.txt"
+find "HQK Reporting" folder and its config file, it is the service we are talking with on port 4386.
+HQK Reporting/AD Integration Module/HqkLdap.exe
+this hqkldap.exe seems to have nothing to do with the RU scanner.
+
+## What we know
+nodepad++ history => carl => there is a RU scanner => decrypted c.smith's pass.
+smb with c.smith =>
+- there is HQK reporting service
+- it has a module HqkLdap.exe. 
+- The "Debug Mode Password.txt" is empty.
+
+strange thing is that:
+- ru_scanner's config says its port is 389. But that port is for Ldap. So maybe HqkLdap.exe is running.
+
+the ru_scanner source code gives nothing. I think the HqkLdap.exe is running on UDP 389.
+
+get hint from forum, NTFS alternative data stream, again!
+smb, allinfo, get "xxx:Password:$DATA", get the password
+=> WBQ201953D8w
+
+then use it as the debug password, we can run showquery to view data.
+
+find this under C:/Program Files/HQK/LDAP/Ldap.conf
+Domain=nest.local
+Port=389
+BaseOu=OU=WBQ Users,OU=Production,DC=nest,DC=local
+User=Administrator
+Password=yyEq0Uvvhq2uQOcWG8peLoeRQehqip/fKdeG/kjEVb4=
+
+Use dnSpy to reverse HqkLdap.exe, just prepare the files the project needs, debug and read the password
+=>
+"XtH4nkS4Pl4y1nGX"
+
+=> root!
+
