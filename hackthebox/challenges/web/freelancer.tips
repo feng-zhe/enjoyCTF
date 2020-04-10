@@ -1,0 +1,3 @@
+- Don't use my own sqli-time-get.py. No need blind. Could be simpler sqli.
+- Use sqlmap because it can read files too!
+- Use dirb for dir, gobuster for files!
