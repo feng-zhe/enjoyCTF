@@ -1,0 +1,1 @@
+don't overthink. Just think about encode, try it in local php. If json_decode works, try a flag with sqlmap which tells encoding.
