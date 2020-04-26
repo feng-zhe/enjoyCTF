@@ -1,0 +1,28 @@
+First time connect, it shows the following error:
+Database Connection Error: SQLSTATE[HY000] [2002] Connection refused  => mysql
+
+gobuster =>
+register.php
+login.php
+logout.php
+profile.php
+asserts/
+utils/
+
+utils/crypt.php
+
+registered a user admin
+=>
+cookie 'PHPSESSID' is rs0tl0fs5f70d1n408a6s6stj0
+cookie 'iknowmag1k' is a base64 and other encoded data.
+
+after base64 decrypted, tried:
+hash-identifier => not hash
+bruteforce-salted-openssl => reports it is not a salted openssl file.
+
+google php encrypt => find openssl_encrypt and [mcrypt_encrypt](https://www.php.net/manual/en/function.mcrypt-encrypt.php). 
+The openssl has been ruled out. Thus it could be mcrypt_encrypt. The manual says it is vuln to padding oracle attack.
+look into the base64 decrypted value, size can be divided by 8 => block size 8
+
+use padbuster and -plaintext to get the encrypted cookie which has role field set to 'admin'.
+=> get the flag.
