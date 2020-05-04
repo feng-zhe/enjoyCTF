@@ -2,13 +2,14 @@
 Hint:
 - file hidden info => exiftool
 - he talks about rtf, google
+- re-login to ssh so that the group change will take effect.
 
 New Tools:
 - CVE-2017-0199: https://github.com/bhdresh/CVE-2017-0199.git
     - generate malicious RTF files
+- nishang/Client/Out-HTA.ps1, the github repo doesn't work with its default HTA.
 - pwsh (little bug, don't do it in interactive)
 - sendemail
-- nishang/Client/Out-HTA.ps1
 - BloodHound (Reveal relationships within an Active Directory env)
 - PowerSploit-dev (dev branch!)
 
@@ -20,4 +21,6 @@ Details:
 - google "powershell decrypt secure string" => get tom user and can ssh
     - or $cred.GetNetworkCredential() | fl
 
-
+scratch pad:
+1ts-mag1c!!!
+Cr4ckMeIfYouC4n!

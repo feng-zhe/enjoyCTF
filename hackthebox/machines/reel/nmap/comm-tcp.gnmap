@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Sun Apr 26 18:18:15 2020 as: nmap -sC -Pn -sV -oA nmap/comm-tcp 10.10.10.77
+Host: 10.10.10.77 ()	Status: Up
+Host: 10.10.10.77 ()	Ports: 21/open/tcp//ftp//Microsoft ftpd/, 22/open/tcp//ssh//OpenSSH 7.6 (protocol 2.0)/, 25/open/tcp//smtp?///, 135/open/tcp//msrpc//Microsoft Windows RPC/, 139/open/tcp//netbios-ssn//Microsoft Windows netbios-ssn/, 445/open/tcp//microsoft-ds//Windows Server 2012 R2 Standard 9600 microsoft-ds (workgroup: HTB)/, 593/open/tcp//ncacn_http//Microsoft Windows RPC over HTTP 1.0/, 49159/open/tcp//msrpc//Microsoft Windows RPC/	Ignored State: filtered (992)
+# Nmap done at Sun Apr 26 18:21:50 2020 -- 1 IP address (1 host up) scanned in 215.50 seconds
