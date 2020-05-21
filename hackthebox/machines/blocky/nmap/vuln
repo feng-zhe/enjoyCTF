@@ -1,0 +1,70 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-05-19 22:31 PDT
+Nmap scan report for 10.10.10.37
+Host is up (0.19s latency).
+Not shown: 996 filtered ports
+PORT     STATE  SERVICE
+21/tcp   open   ftp
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+|_sslv2-drown: 
+22/tcp   open   ssh
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+80/tcp   open   http
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+| http-csrf: 
+| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=10.10.10.37
+|   Found the following possible CSRF vulnerabilities: 
+|     
+|     Path: http://10.10.10.37:80/
+|     Form id: search-form-5ec4c11f6f8d6
+|     Form action: http://10.10.10.37/
+|     
+|     Path: http://10.10.10.37:80/index.php/2017/07/
+|     Form id: search-form-5ec4c1241f38d
+|     Form action: http://10.10.10.37/
+|     
+|     Path: http://10.10.10.37:80/wp-login.php
+|     Form id: loginform
+|     Form action: http://10.10.10.37/wp-login.php
+|     
+|     Path: http://10.10.10.37:80/index.php/category/uncategorized/
+|     Form id: search-form-5ec4c12c5245f
+|     Form action: http://10.10.10.37/
+|     
+|     Path: http://10.10.10.37:80/index.php/2017/07/%5c%22
+|     Form id: search-form-5ec4c13110696
+|     Form action: http://10.10.10.37/
+|     
+|     Path: http://10.10.10.37:80/wp-login.php?action=lostpassword
+|     Form id: lostpasswordform
+|     Form action: http://10.10.10.37/wp-login.php?action=lostpassword
+|     
+|     Path: http://10.10.10.37:80/index.php/category/uncategorized/%5c%22
+|     Form id: search-form-5ec4c1346c300
+|_    Form action: http://10.10.10.37/
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+| http-enum: 
+|   /wiki/: Wiki
+|   /wp-login.php: Possible admin folder
+|   /phpmyadmin/: phpMyAdmin
+|   /readme.html: Wordpress version: 2 
+|   /: WordPress version: 4.8
+|   /wp-includes/images/rss.png: Wordpress version 2.2 found.
+|   /wp-includes/js/jquery/suggest.js: Wordpress version 2.5 found.
+|   /wp-includes/images/blank.gif: Wordpress version 2.6 found.
+|   /wp-includes/js/comment-reply.js: Wordpress version 2.7 found.
+|   /wp-login.php: Wordpress login page.
+|   /wp-admin/upgrade.php: Wordpress login page.
+|_  /readme.html: Interesting, a readme.
+| http-sql-injection: 
+|   Possible sqli for queries:
+|     http://10.10.10.37:80/wp-includes/js/jquery/?C=N%3bO%3dD%27%20OR%20sqlspider
+|     http://10.10.10.37:80/wp-includes/js/jquery/?C=S%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.37:80/wp-includes/js/jquery/?C=M%3bO%3dA%27%20OR%20sqlspider
+|_    http://10.10.10.37:80/wp-includes/js/jquery/?C=D%3bO%3dA%27%20OR%20sqlspider
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+| http-wordpress-users: 
+| Username found: notch
+|_Search stopped at ID #25. Increase the upper limit if necessary with 'http-wordpress-users.limit'
+8192/tcp closed sophos
+
+Nmap done: 1 IP address (1 host up) scanned in 348.77 seconds
