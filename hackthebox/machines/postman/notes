@@ -1,0 +1,87 @@
+# Init
+## Nmap
+### comm tcp
+22/tcp    open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   2048 46:83:4f:f1:38:61:c0:1c:74:cb:b5:d1:4a:68:4d:77 (RSA)
+|   256 2d:8d:27:d2:df:15:1a:31:53:05:fb:ff:f0:62:26:89 (ECDSA)
+|_  256 ca:7c:82:aa:5a:d3:72:ca:8b:8a:38:3a:80:41:a0:45 (ED25519)
+80/tcp    open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: The Cyber Geek's Personal Website
+10000/tcp open  http    MiniServ 1.910 (Webmin httpd)
+|_http-title: Site doesn't have a title (text/html; Charset=iso-8859-1).
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+### all tcp
+6379/tcp  open  redis   Redis key-value store 4.0.9
+
+nmap --script redis-info -sV -p 6379 10.10.10.160
+=>
+ 6379/tcp open  redis   Redis key-value store 4.0.9 (64 bits)
+ | redis-info:
+ |   Version: 4.0.9
+ |   Operating System: Linux 4.15.0-58-generic x86_64
+ |   Architecture: 64 bits
+ |   Process ID: 582
+ |   Used CPU (sys): 1.05
+ |   Used CPU (user): 0.53
+ |   Connected clients: 1
+ |   Connected slaves: 0
+ |   Used memory: 821.52K
+ |   Role: master
+ |   Bind addresses:
+ |     0.0.0.0
+ |     ::1
+ |   Client connections:
+ |_    10.10.14.3
+
+# Enum
+## 80 http
+gobuster =>
+/index.html (Status: 200)
+/images/ (Status: 200)
+/icons/ (Status: 403)
+/upload/ (Status: 200)
+/css/ (Status: 200)
+/js/ (Status: 200)
+/fonts/ (Status: 200)
+
+## 6379 redis
+Redis 4.x / 5.x - Unauthenticated Code Execution (Metasploit)                                                                                                             | exploits/linux/remote/47195.rb
+
+google pentest redist => https://book.hacktricks.xyz/pentesting/6379-pentesting-redis
+
+find a tool called redis-cli.
+
+had some info. But no use.
+
+## 10000 webmin
+searchsploit=>
+Webmin 1.910 - 'Package Updates' Remote Command Execution (Meta | exploits/linux/remote/46984.rb
+
+# Foothold
+## webmin exploit
+exploit needs auth.
+
+## redis
+### exploit
+tried but no shell.
+
+### redis-cli
+save authorized_keys to /var/lib/redis/.ssh !!! Don't just copy and paste from the tutorial.
+
+# Priv Esc
+## Get Matt
+Find .bash_history => there is a id_rsa.bak => find -type f -name id_rsa.bak 2>/dev/null => find it
+this key's file owner is Matt and Matt.
+ssh2john => john => get passphase: computer2008
+tried with ssh Matt, the connection is closed. Strange. tried on victim machine locally, failed again.
+/etc/ssh/sshd_config => Matt is denied.
+
+but definitely this priv rsa key should tell us something. Tried computer2008 when 'su Matt' => get Matt.
+
+## Get Root
+ps auxw => root is running Webmin => remember we have found that MSF exploit for Webmin 1.910
+=> try Matt:computer2008 => get root shell
+

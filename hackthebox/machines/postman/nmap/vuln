@@ -1,0 +1,52 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-05-20 23:02 PDT
+Nmap scan report for 10.10.10.160
+Host is up (0.093s latency).
+Not shown: 997 closed ports
+PORT      STATE SERVICE
+22/tcp    open  ssh
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+80/tcp    open  http
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+|_http-csrf: Couldn't find any CSRF vulnerabilities.
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+| http-enum: 
+|   /css/: Potentially interesting directory w/ listing on 'apache/2.4.29 (ubuntu)'
+|   /images/: Potentially interesting directory w/ listing on 'apache/2.4.29 (ubuntu)'
+|   /js/: Potentially interesting directory w/ listing on 'apache/2.4.29 (ubuntu)'
+|_  /upload/: Potentially interesting directory w/ listing on 'apache/2.4.29 (ubuntu)'
+| http-internal-ip-disclosure: 
+|_  Internal IP Leaked: 127.0.1.1
+| http-sql-injection: 
+|   Possible sqli for queries:
+|     http://10.10.10.160:80/js/?C=M%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.160:80/js/?C=S%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.160:80/js/?C=D%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.160:80/js/?C=N%3bO%3dD%27%20OR%20sqlspider
+|     http://10.10.10.160:80/js/?C=D%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.160:80/js/?C=S%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.160:80/js/?C=M%3bO%3dD%27%20OR%20sqlspider
+|     http://10.10.10.160:80/js/?C=N%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.160:80/js/?C=S%3bO%3dD%27%20OR%20sqlspider
+|     http://10.10.10.160:80/js/?C=M%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.160:80/js/?C=D%3bO%3dA%27%20OR%20sqlspider
+|_    http://10.10.10.160:80/js/?C=N%3bO%3dA%27%20OR%20sqlspider
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+10000/tcp open  snet-sensor-mgmt
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+| http-vuln-cve2006-3392: 
+|   VULNERABLE:
+|   Webmin File Disclosure
+|     State: VULNERABLE (Exploitable)
+|     IDs:  CVE:CVE-2006-3392
+|       Webmin before 1.290 and Usermin before 1.220 calls the simplify_path function before decoding HTML.
+|       This allows arbitrary files to be read, without requiring authentication, using "..%01" sequences
+|       to bypass the removal of "../" directory traversal sequences.
+|       
+|     Disclosure date: 2006-06-29
+|     References:
+|       http://www.exploit-db.com/exploits/1997/
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-3392
+|_      http://www.rapid7.com/db/modules/auxiliary/admin/webmin/file_disclosure
+|_sslv2-drown: 
+
+Nmap done: 1 IP address (1 host up) scanned in 63.10 seconds
