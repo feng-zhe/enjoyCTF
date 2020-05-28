@@ -1,0 +1,65 @@
+# init
+## nmap
+### comm tcp
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   2048 4b:98:df:85:d1:7e:f0:3d:da:48:cd:bc:92:00:b7:54 (RSA)
+|   256 dc:eb:3d:c9:44:d1:18:b1:22:b4:cf:de:bd:6c:7a:54 (ECDSA)
+|_  256 dc:ad:ca:3c:11:31:5b:6f:e6:a4:89:34:7c:9b:e5:50 (ED25519)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Apache2 Ubuntu Default Page: It works
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+### Other 
+same
+
+# Enum
+## 80 http
+gobuster =>
+/music => made by colorlib
+/artwork => made by colorlib
+/sierra => made by colorlib
+
+go to colorlib website and found there is such themes https://colorlib.com/wp/template/sierra/
+so is solmusic(to /music) and arcwork(to /artwork) theme.
+
+use httrack to download all pages, read their hts-log.txt and see there is a not found link:
+23:07:10        Error:  "Not Found" (404) at link 10.10.10.171/ona/images/favicon.ico (from 10.10.10.171/ona/)
+
+go to /ona, find OpenNetAdmin app.
+
+### OpenNetAdmin
+find exploit on github => get foothold
+
+# Priv Esc
+## Jimmy
+ona's config file => mysecretbindpassword
+
+find an internal port, curl http://127.0.0.1:52846 => a login page, domain: internal.openadmin.htb
+/var/www/ => /internal is created by jimmy.
+/home/ => jimmy and jonna.
+
+also port 3306 mysql
+google and find /opt/ona/www/local/config/database_settings.inc.php =>
+db_login' => 'ona_sys',
+'db_passwd' => 'n1nj4W4rri0R!',
+
+ha, classic password reuse issue => su jimmy => get in.
+
+## Joanna
+jimmy doesn't have user.txt, not our target.
+since we are jimmy, go to /var/www/internal for details.
+read the php files, looks like we need to visit this internal website and it will read joanna's id_rsa.
+the sha512 of the password should be 00e302ccdcf1c60b8ad50ea50cf72b939705f49f40f0dc658801b4680b7d758eebdc2e9f9ba8ba3ef8a8bb9a796d34ba2e856838ee9bdde852b8ec3b3a
+the db password's sha512 is not this.
+
+use ssh tunnelling -L52846:127.0.0.1:52846 in ssh mode opend by konami code.
+tried two websites to crack the hash => password is "Revealed".
+
+get jonna's id_rsa, ssh2john + john => decrypted, password "bloodninjas" => get in.
+
+## Root
+As joanna, sudo -l => (ALL) NOPASSWD: /bin/nano /opt/priv
+/opt/prv is created by root but not suid.
+oh... just google GTFObin and run `sudo /bin/nano /opt/priv`. => get root

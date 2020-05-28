@@ -1,0 +1,5 @@
+date	size'/'remotesize	flags(request:Update,Range state:File response:Modified,Chunked,gZipped)	statuscode	status ('servermsg')	MIME	Etag|Date	URL	localfile	(from URL)
+22:50:42	274/274	---M--	404	error ('Not%20Found')	text/html	date:Tue,%2026%20May%202020%2005:51:28%20GMT	http://10.10.10.171/robots.txt		(from )
+22:50:42	10918/10918	---M-Z	200	added ('OK')	text/html	etag:%222aa6-597dbd5dcea8b-gzip%22	http://10.10.10.171/	10.10.10.171/index.html	(from )
+22:50:43	3338/3338	---M--	200	added ('OK')	image/png	etag:%22d0a-592ab2a29d200%22	http://10.10.10.171/icons/ubuntu-logo.png	10.10.10.171/icons/ubuntu-logo.png	(from http://10.10.10.171/)
+22:50:44	274/274	---M--	404	error ('Not%20Found')	text/html	date:Tue,%2026%20May%202020%2005:51:32%20GMT	http://10.10.10.171/manual	10.10.10.171/manual	(from http://10.10.10.171/)
