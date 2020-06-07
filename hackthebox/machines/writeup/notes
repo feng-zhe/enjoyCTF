@@ -1,0 +1,73 @@
+# Init
+## Nmap
+### Comm Tcp
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.4p1 Debian 10+deb9u6 (protocol 2.0)
+| ssh-hostkey:
+|   2048 dd:53:10:70:0b:d0:47:0a:e2:7e:4a:b6:42:98:23:c7 (RSA)
+|   256 37:2e:14:68:ae:b9:c2:34:2b:6e:d9:92:bc:bf:bd:28 (ECDSA)
+|_  256 93:ea:a8:40:42:c1:a8:33:85:b3:56:00:62:1c:a0:ab (ED25519)
+80/tcp open  http    Apache httpd 2.4.25 ((Debian))
+| http-robots.txt: 1 disallowed entry
+|_/writeup/
+|_http-title: Nothing here yet.
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+### All Tcp
+same
+
+# Enum
+## 80 HTTP
+########################################################################
+#                                                                      #
+#           *** NEWS *** NEWS *** NEWS *** NEWS *** NEWS ***           #
+#                                                                      #
+#   Not yet live and already under attack. I found an   ,~~--~~-.      #
+#   Eeyore DoS protection script that is in place and   +      | |\    #
+#   watches for Apache 40x errors and bans bad IPs.     || |~ |`,/-\   #
+#   Hope you do not get hit by false-positive drops!    *\_) \_) `-'   #
+#                                                                      #
+#   If you know where to download the proper Donkey DoS protection     #
+#   please let me know via mail to jkr@writeup.htb - thanks!           #
+#                                                                      #
+########################################################################
+
+### dir traversal
+as he said, blocked me.
+
+luckily, tried robots.txt => /writeup
+
+#### /writeup
+there is cookie CMSSESSID9d372ef93962=40e43m8trtpa9lph9ft2db9kh6
+
+cookie => CMS Made Simple => find exploits in exploit.db, but I am not certain about the version of CMS made simple.
+
+download its source code and install in a docker => grep -ir 2.2.14 (the version i downloaded) => find doc/CHANGELOG.txt
+=> version 2.2.9.1 and other plugin versions
+=> find only exploit:
+CMS Made Simple < 2.2.10 - SQL Injection | exploits/php/webapps/46635.py
+
+use the script => extracted info: (remember use rockyou.txt and '-c' option, not '-c true').
+[+] Salt for password found: 5a599ef579066807
+[+] Username found: jkr
+[+] Email found: jkr@writeup.htb
+[+] Password found: 62def4866937f08cc13bab43bb14e6f7
+[+] Password cracked: raykayjay9
+
+### Mentioned Script
+search "ban apache 40x" => fail2ban script => no exploit found
+
+# Foothold
+
+tried the password with `ssh jkr@10.10.10.138` => get foothold.
+
+# priv esc
+linpeas.sh=>
+/etc/apache2/passwords:$apr1$zXpnkbX6$LPzyE8Wa0d1yNQ4/F8aQa.
+john cannot crack it.
+
+okay ... our user is in group 'staff', we can do something: (from google):
+Allows users to add local modifications to the system (/usr/local) without needing root privileges (note that executables in /usr/local/bin are in the PATH variable of any user, and they may "override" the executables in /bin and /usr/bin with the same name). Compare with group "adm", which is more related to monitoring/security. 
+
+Use pspy and ssh jkr in to see the run-parts command is not full path quoted. => replace one in /usr/local/bin and get root.
+(The /usr/local/bin cannot be read but can be written to! Linux file basic privileges!)
