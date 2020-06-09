@@ -1,0 +1,11 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-07 08:23 PDT
+Nmap scan report for 10.10.10.115
+Host is up (0.089s latency).
+Not shown: 65532 filtered ports
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.4 (protocol 2.0)
+80/tcp   open  http    nginx 1.12.2
+9200/tcp open  http    nginx 1.12.2
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 249.74 seconds

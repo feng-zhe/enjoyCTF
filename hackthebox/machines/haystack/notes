@@ -1,0 +1,85 @@
+# Recon
+## Nmap
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.4 (protocol 2.0)
+| ssh-hostkey:
+|   2048 2a:8d:e2:92:8b:14:b6:3f:e4:2f:3a:47:43:23:8b:2b (RSA)
+|   256 e7:5a:3a:97:8e:8e:72:87:69:a3:0d:d1:00:bc:1f:09 (ECDSA)
+|_  256 01:d2:59:b2:66:0a:97:49:20:5f:1c:84:eb:81:ed:95 (ED25519)
+80/tcp   open  http    nginx 1.12.2
+|_http-server-header: nginx/1.12.2
+|_http-title: Site doesn't have a title (text/html).
+9200/tcp open  http    nginx 1.12.2
+| http-methods:
+|_  Potentially risky methods: DELETE
+|_http-server-header: nginx/1.12.2
+|_http-title: Site doesn't have a title (application/json; charset=UTF-8).
+
+# Enum
+## 80 http
+just a needle picture. Nothing found via binwalk/steghide/exiftoo.
+gobuster => nothing
+
+## 9200 http
+{
+    "name" : "iQEYHgS",
+        "cluster_name" : "elasticsearch",
+        "cluster_uuid" : "pjrX7V_gSFmJY-DxP4tCQg",
+        "version" : {
+            "number" : "6.4.2",
+            "build_flavor" : "default",
+            "build_type" : "rpm",
+            "build_hash" : "04711c2",
+            "build_date" : "2018-09-26T13:34:09.098244Z",
+            "build_snapshot" : false,
+            "lucene_version" : "7.4.0",
+            "minimum_wire_compatibility_version" : "5.6.0",
+            "minimum_index_compatibility_version" : "5.0.0"
+        },
+        "tagline" : "You Know, for Search"
+}
+
+returns json data => clustername "elasticsearch" and other information => it is using elasticsearch.
+
+msf indice enum => .kibana, bank, quotes (we can also get this via curl -X GET http://haystack.htb:9200/_cat/indices?v)
+gobuster => /quotes, /bank, manually tried /.kibana, works
+
+find our old friend [hacktricks](https://book.hacktricks.xyz/pentesting/9200-pentesting-elasticsearch)
+
+wget 'http://haystack.htb:9200/quotes/_search?pretty=true&size=1000' -O quotes
+=> find:
+{                                                                                                                                                                                                            
+    "_index" : "quotes",                                                                                                                                                                                       
+    "_type" : "quote",                                                                                                                                                                                         
+    "_id" : "2",                                                                                                                                                                                               
+    "_score" : 1.0,                                                                                                                                                                                            
+    "_source" : {                                                                                                                                                                                              
+        "quote" : "There's a needle in this haystack, you have to search for it"                                                                                                                                    }                                                                                                                                                                                                          }
+
+(Get hint) need to translate the spanish.
+cat quotes | jq '.hits .hits[] ._source .quote'
+
+use google translate to do that, find needles:
+(Sigh... we can use python to do all of this.)
+=>
+"This key can not miss, I keep it here: cGFzczogc3BhbmlzaC5pcy5rZXk =" => then read the original spanish one, it should be cGFzczogc3BhbmlzaC5pcy5rZXk=
+"I have to save the key for the machine: dXNlcjogc2VjdXJpdHkg"
+
+base64 decode:
+cGFzczogc3BhbmlzaC5pcy5rZXk= => pass: spanish.is.key
+user: security => user: security
+get foothold
+
+# Priv Esc
+# User kibana
+find port 5601, port forward it => it is kibana page.
+
+with version 6.4.2, find an exploit => get user kibana
+
+# root
+See the files that user/group is kibana, also check the root processes => logstash
+read its doc and inject command => get root
+
+# Summary
+New tools:
+- jq: process the json data.

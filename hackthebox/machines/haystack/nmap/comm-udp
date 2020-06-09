@@ -1,0 +1,6 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-07 08:23 PDT
+Nmap scan report for 10.10.10.118
+Host is up (2.2s latency).
+All 1000 scanned ports on 10.10.10.118 are filtered
+
+Nmap done: 1 IP address (1 host up) scanned in 1130.94 seconds

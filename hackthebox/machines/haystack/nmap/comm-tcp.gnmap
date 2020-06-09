@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Sun Jun  7 08:22:27 2020 as: nmap -Pn -sC -sV -oA nmap/comm-tcp 10.10.10.115
+Host: 10.10.10.115 ()	Status: Up
+Host: 10.10.10.115 ()	Ports: 22/open/tcp//ssh//OpenSSH 7.4 (protocol 2.0)/, 80/open/tcp//http//nginx 1.12.2/, 9200/open/tcp//http//nginx 1.12.2/	Ignored State: filtered (997)
+# Nmap done at Sun Jun  7 08:22:57 2020 -- 1 IP address (1 host up) scanned in 29.89 seconds
