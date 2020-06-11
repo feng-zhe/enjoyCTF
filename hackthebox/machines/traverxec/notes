@@ -1,0 +1,53 @@
+# recon
+## nmap comm tcp
+22/tcp open  ssh     OpenSSH 7.9p1 Debian 10+deb10u1 (protocol 2.0)
+| ssh-hostkey:
+|   2048 aa:99:a8:16:68:cd:41:cc:f9:6c:84:01:c7:59:09:5c (RSA)
+|   256 93:dd:1a:23:ee:d7:1f:08:6b:58:47:09:73:a3:88:cc (ECDSA)
+|_  256 9d:d6:62:1e:7a:fb:8f:56:92:e6:37:f1:10:db:9b:ce (ED25519)
+80/tcp open  http    nostromo 1.9.6
+|_http-server-header: nostromo 1.9.6
+|_http-title: TRAVERXEC
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+all tcp => same
+
+# Enum
+## 80 http
+server is nostromo 1.9.6 
+=>searchsploit and has one exact match.
+
+David White
+RTFSC => used TemplateMag
+
+gobuster=>
+/empty.html => "No mail sent. Not yet finished. Please come back soon! "
+/lib => gives me a list of libraries:
+bootstrap   Sat, 03 Nov 2018 23:19:24 EDT   4096
+hover   Sat, 03 Nov 2018 23:19:24 EDT   4096
+ionicons    Sat, 03 Nov 2018 23:19:24 EDT   4096
+isotope Sat, 03 Nov 2018 23:19:24 EDT   4096
+jquery  Sat, 03 Nov 2018 23:19:24 EDT   4096
+php-mail-form   Sat, 03 Nov 2018 23:19:24 EDT   4096
+prettyphoto Sat, 03 Nov 2018 23:19:24 EDT   4096
+
+the nmap vuln scan also find the form stuffy => the mail is from the index.php page
+
+# Foothold
+use the nostromo exploit => get user www-data
+
+## migrate to David
+/var/nostromo/.htpasswd => david:$1$e7NfNpNi$A6nCwOTqrNR2oDuIKirRZ/
+=> john cracks it => Nowonly4me  (david)
+tried ssh, su, sudo as www-data, no dice.
+
+/home/david has x bit set, which means we can enter but cannot list files.
+ehh, just read https://www.gsp.com/cgi-bin/man.cgi?section=8&topic=nhttpd and figure out the options
+=> read the right directory in /home/david => find backuped ssh files.
+
+use uc to download it, tar xvf it, john it => passpharse "hunter"
+=> get in
+
+## migrate to root
+find the files in /home/david/bin, find we can run journalctl by sudo, but parameters are limit, only 5 lines
+The gtfobin tells me it can apply to less. So I just shrink the terminal window size and enter !/bin/bash => root.

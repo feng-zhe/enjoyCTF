@@ -1,0 +1,25 @@
+HTTrack3.49-2 launched on Mon, 08 Jun 2020 22:14:39 at http://traverxec.htb
+(httrack http://traverxec.htb -O ./output-httrack/ )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+22:15:09	Warning: 	Unexpected socket error during pre-loop
+22:16:35	Warning: 	Retry after error -4 (Receive Error) at link traverxec.htb/img/portfolio/portfolio_05.jpg (from traverxec.htb/)
+22:16:53	Warning: 	File not parsed, looks like binary: traverxec.htb/lib/bootstrap/fonts/glyphicons-halflings-regular.eot
+22:16:53	Warning: 	File not parsed, looks like binary: traverxec.htb/lib/bootstrap/fonts/glyphicons-halflings-regular.eot?
+22:16:53	Warning: 	File not parsed, looks like binary: traverxec.htb/lib/bootstrap/fonts/glyphicons-halflings-regular.woff2
+22:16:53	Warning: 	File not parsed, looks like binary: traverxec.htb/lib/bootstrap/fonts/glyphicons-halflings-regular.woff
+22:16:53	Warning: 	File not parsed, looks like binary: traverxec.htb/lib/bootstrap/fonts/glyphicons-halflings-regular.ttf
+22:16:53	Warning: 	File not parsed, looks like binary: traverxec.htb/lib/ionicons/fonts/ionicons.eot?v=1.5.2
+22:16:53	Warning: 	File not parsed, looks like binary: traverxec.htb/lib/ionicons/fonts/ionicons.ttf?v=1.5.2
+22:16:53	Warning: 	File not parsed, looks like binary: traverxec.htb/lib/ionicons/fonts/ionicons.woff?v=1.5.2
+22:16:53	Error: 	"Not Found" (404) at link traverxec.htb/lib/images/nav.png (from traverxec.htb/lib/hover/hoverex-all.css)
+22:18:37	Error: 	"Not Implemented" (501) at link traverxec.htb/Popover requires tooltip.js (from traverxec.htb/lib/bootstrap/js/bootstrap.min.js)
+22:18:37	Error: 	"Not Found" (404) at link traverxec.htb/contactform/contactform.php (from traverxec.htb/lib/php-mail-form/validate.js)
+22:18:37	Error: 	"Not Found" (404) at link traverxec.htb/youtu.be/ (from traverxec.htb/lib/prettyphoto/js/prettyphoto.js)
+
+HTTrack Website Copier/3.49-2 mirror complete in 3 minutes 58 seconds : 78 links scanned, 72 files written (3882195 bytes overall) [3901329 bytes received at 16392 bytes/sec], 5.5 requests per connection
+(4 errors, 10 warnings, 0 messages)

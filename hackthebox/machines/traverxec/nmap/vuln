@@ -1,0 +1,39 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-08 21:24 PDT
+Nmap scan report for 10.10.10.165
+Host is up (0.084s latency).
+Not shown: 998 filtered ports
+PORT   STATE SERVICE
+22/tcp open  ssh
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+80/tcp open  http
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+| http-csrf: 
+| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=10.10.10.165
+|   Found the following possible CSRF vulnerabilities: 
+|     
+|     Path: http://10.10.10.165:80/
+|     Form id: contact-name
+|_    Form action: empty.html
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+| http-enum: 
+|   /css/: Potentially interesting folder w/ directory listing
+|   /icons/: Potentially interesting folder w/ directory listing
+|   /img/: Potentially interesting folder w/ directory listing
+|   /js/: Potentially interesting folder w/ directory listing
+|_  /lib/: Potentially interesting folder w/ directory listing
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+| http-vuln-cve2011-3192: 
+|   VULNERABLE:
+|   Apache byterange filter DoS
+|     State: VULNERABLE
+|     IDs:  BID:49303  CVE:CVE-2011-3192
+|       The Apache web server is vulnerable to a denial of service attack when numerous
+|       overlapping byte ranges are requested.
+|     Disclosure date: 2011-08-19
+|     References:
+|       https://seclists.org/fulldisclosure/2011/Aug/175
+|       https://www.tenable.com/plugins/nessus/55976
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-3192
+|_      https://www.securityfocus.com/bid/49303
+
+Nmap done: 1 IP address (1 host up) scanned in 474.85 seconds
