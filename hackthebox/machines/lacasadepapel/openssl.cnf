@@ -1,0 +1,16 @@
+[ req ]
+distinguished_name = req_distinguished_name
+req_extensions = v3_req
+
+[ req_distinguished_name ]
+
+[ v3_req ]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+subjectAltName = @san
+
+[ san ]
+DNS.1 = www.example.com
+DNS.2 = shop.example.com
+DNS.3 = foo.example.com
+DNS.4 = *.foo.com

@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Thu Jun 11 21:42:21 2020 as: nmap -sC -Pn -sV -oA nmap/comm-tcp 10.10.10.131
+Host: 10.10.10.131 ()	Status: Up
+Host: 10.10.10.131 ()	Ports: 21/open/tcp//ftp//vsftpd 2.3.4/, 22/open/tcp//ssh//OpenSSH 7.9 (protocol 2.0)/, 80/open/tcp//http//Node.js (Express middleware)/, 443/open/tcp//ssl|http//Node.js Express framework/	Ignored State: closed (996)
+# Nmap done at Thu Jun 11 21:43:27 2020 -- 1 IP address (1 host up) scanned in 66.18 seconds
