@@ -1,0 +1,58 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-13 20:05 PDT
+Nmap scan report for 10.10.10.147
+Host is up (0.10s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE
+22/tcp open  ssh
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+80/tcp open  http
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+| http-csrf: 
+| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=10.10.10.147
+|   Found the following possible CSRF vulnerabilities: 
+|     
+|     Path: http://10.10.10.147:80/manual/tr/index.html
+|     Form id: 
+|     Form action: http://www.google.com/search
+|     
+|     Path: http://10.10.10.147:80/manual/ko/index.html
+|     Form id: 
+|     Form action: http://www.google.com/search
+|     
+|     Path: http://10.10.10.147:80/manual/da/index.html
+|     Form id: 
+|     Form action: http://www.google.com/search
+|     
+|     Path: http://10.10.10.147:80/manual/fr/index.html
+|     Form id: 
+|     Form action: http://www.google.com/search
+|     
+|     Path: http://10.10.10.147:80/manual/ja/index.html
+|     Form id: 
+|     Form action: http://www.google.com/search
+|     
+|     Path: http://10.10.10.147:80/manual/pt-br/index.html
+|     Form id: 
+|     Form action: http://www.google.com/search
+|     
+|     Path: http://10.10.10.147:80/manual/zh-cn/index.html
+|     Form id: 
+|     Form action: http://www.google.com/search
+|     
+|     Path: http://10.10.10.147:80/manual/en/index.html
+|     Form id: 
+|     Form action: http://www.google.com/search
+|     
+|     Path: http://10.10.10.147:80/manual/de/index.html
+|     Form id: 
+|     Form action: http://www.google.com/search
+|     
+|     Path: http://10.10.10.147:80/manual/es/index.html
+|     Form id: 
+|_    Form action: http://www.google.com/search
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+| http-enum: 
+|_  /manual/: Potentially interesting folder
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+
+Nmap done: 1 IP address (1 host up) scanned in 67.68 seconds
