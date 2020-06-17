@@ -1,0 +1,32 @@
+Impacket v0.9.20 - Copyright 2019 SecureAuth Corporation
+
+[*] Querying 10.10.10.169 for information about domain.
+Name                  Email                           PasswordLastSet      LastLogon           
+--------------------  ------------------------------  -------------------  -------------------
+Administrator                                         2020-06-15 23:51:03.307297  2020-06-15 22:24:55.453390 
+Guest                                                 <never>              <never>             
+DefaultAccount                                        <never>              <never>             
+krbtgt                                                2019-09-25 06:29:12.154667  <never>             
+ryan                                                  2020-06-15 23:51:02.635400  <never>             
+marko                                                 2019-09-27 06:17:14.569061  <never>             
+sunita                                                2019-12-03 13:26:29.108327  <never>             
+abigail                                               2019-12-03 13:27:30.936946  <never>             
+marcus                                                2019-12-03 13:27:59.256272  <never>             
+sally                                                 2019-12-03 13:28:29.622615  <never>             
+fred                                                  2019-12-03 13:29:01.882442  <never>             
+angela                                                2019-12-03 13:29:43.451148  <never>             
+felicia                                               2019-12-03 13:30:53.545222  <never>             
+gustavo                                               2019-12-03 13:31:42.082567  <never>             
+ulf                                                   2019-12-03 13:32:19.957565  <never>             
+stevie                                                2019-12-03 13:33:13.438134  <never>             
+claire                                                2019-12-03 13:33:44.808450  <never>             
+paulo                                                 2019-12-03 13:34:46.745427  <never>             
+steve                                                 2019-12-03 13:35:25.125917  <never>             
+annette                                               2019-12-03 13:36:55.592358  <never>             
+annika                                                2019-12-03 13:37:23.666378  <never>             
+per                                                   2019-12-03 13:38:12.278673  <never>             
+claude                                                2019-12-03 13:39:56.407621  <never>             
+melanie                                               2020-06-15 23:51:03.291637  <never>             
+zach                                                  2019-12-04 02:39:27.835093  <never>             
+simon                                                 2019-12-04 02:39:58.563443  <never>             
+naoki                                                 2019-12-04 02:40:44.342485  <never>             

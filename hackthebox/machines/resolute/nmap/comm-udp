@@ -1,0 +1,31 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 22:45 PDT
+Warning: 10.10.10.169 giving up on port because retransmission cap hit (10).
+Nmap scan report for 10.10.10.169
+Host is up (0.20s latency).
+Not shown: 977 closed ports
+PORT      STATE         SERVICE
+53/udp    open          domain
+88/udp    open|filtered kerberos-sec
+123/udp   open          ntp
+137/udp   open|filtered netbios-ns
+138/udp   open|filtered netbios-dgm
+389/udp   open          ldap
+464/udp   open|filtered kpasswd5
+500/udp   open|filtered isakmp
+4500/udp  open|filtered nat-t-ike
+5353/udp  open|filtered zeroconf
+5355/udp  open|filtered llmnr
+49170/udp open          unknown
+49181/udp open          unknown
+49211/udp open          unknown
+49360/udp open          unknown
+54925/udp open          unknown
+55043/udp open|filtered unknown
+56141/udp open          unknown
+57843/udp open          unknown
+57977/udp open          unknown
+58419/udp open          unknown
+59846/udp open          unknown
+60381/udp open|filtered unknown
+
+Nmap done: 1 IP address (1 host up) scanned in 1292.74 seconds

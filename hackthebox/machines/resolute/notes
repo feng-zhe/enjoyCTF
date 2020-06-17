@@ -1,0 +1,101 @@
+# Recon
+## comm tcp
+# Nmap 7.80 scan initiated Mon Jun 15 22:45:03 2020 as: nmap -sC -Pn -sV -oA nmap/comm-tcp 10.10.10.169
+Nmap scan report for 10.10.10.169
+Host is up (0.16s latency).
+Not shown: 989 closed ports
+PORT     STATE SERVICE      VERSION
+53/tcp   open  domain?
+88/tcp   open  kerberos-sec Microsoft Windows Kerberos (server time: 2020-06-16 05:53:31Z)
+135/tcp  open  msrpc        Microsoft Windows RPC
+139/tcp  open  netbios-ssn  Microsoft Windows netbios-ssn
+389/tcp  open  ldap         Microsoft Windows Active Directory LDAP (Domain: megabank.local, Site: Default-First-Site-Name)
+445/tcp  open  microsoft-ds Windows Server 2016 Standard 14393 microsoft-ds (workgroup: MEGABANK)
+464/tcp  open  kpasswd5?
+593/tcp  open  ncacn_http   Microsoft Windows RPC over HTTP 1.0
+636/tcp  open  tcpwrapped
+3268/tcp open  ldap         Microsoft Windows Active Directory LDAP (Domain: megabank.local, Site: Default-First-Site-Name)
+3269/tcp open  tcpwrapped
+Service Info: Host: RESOLUTE; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: 2h28m01s, deviation: 4h02m32s, median: 7m59s
+| smb-os-discovery:
+|   OS: Windows Server 2016 Standard 14393 (Windows Server 2016 Standard 6.3)
+|   Computer name: Resolute
+|   NetBIOS computer name: RESOLUTE\x00
+|   Domain name: megabank.local
+|   Forest name: megabank.local
+|   FQDN: Resolute.megabank.local
+|_  System time: 2020-06-15T22:54:12-07:00
+| smb-security-mode:
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: required
+| smb2-security-mode:
+|   2.02:
+|_    Message signing enabled and required
+| smb2-time:
+|   date: 2020-06-16T05:54:09
+|_  start_date: 2020-06-16T05:23:33
+
+## all tcp
+has extra:
+5985/tcp  open  http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+9389/tcp  open  mc-nmf       .NET Message Framing
+47001/tcp open  http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+49664/tcp open  msrpc        Microsoft Windows RPC
+49665/tcp open  msrpc        Microsoft Windows RPC
+49666/tcp open  msrpc        Microsoft Windows RPC
+49667/tcp open  msrpc        Microsoft Windows RPC
+49671/tcp open  msrpc        Microsoft Windows RPC
+49676/tcp open  ncacn_http   Microsoft Windows RPC over HTTP 1.0
+49677/tcp open  msrpc        Microsoft Windows RPC
+49688/tcp open  msrpc        Microsoft Windows RPC
+49712/tcp open  msrpc        Microsoft Windows RPC
+52318/tcp open  tcpwrapped
+
+Note the 5985 is the WinRM service, could give use foothold.
+
+# Enum
+## 53 DNS
+dig axfr @10.10.10.169 resolute.htb => nothing
+
+## 135,139,445 smb/nbt
+smbclient, smbmap, nbtscan => nothing
+enum4linux => tons of information, such as:
+index: 0x10a9 RID: 0x457 acb: 0x00000210 Account: marko Name: Marko Novak       Desc: Account created. Password set to Welcome123!
+
+tried with psexec and smbexec, no dice.
+
+## 636, 3269 tcpwrapped
+use nc but connection closes immediately.
+
+## 389 3268 AD
+nmap -n -sV --script "ldap* and not brute" 10.10.10.169 => tons of information, but nothing interesting found yet.
+
+same user info can be retrieved by `./GetADUsers.py -all -dc-ip 10.10.10.169 MEGABANK.LOCAL/`
+GetNPUsers.py => nothing
+GetUserSPNs.py => nothing
+
+Tried the password with all users I can found => melanie is ok
+
+# Priv Esc
+(Use command to list files by `ls -force`!!!!!)
+find a txt under C:\pstranscripts\20191203:
+cmd /c net use X: \\fs01\backups ryan Serv3r4Admin4cc123!
+=> become ryan
+
+## Root
+whoami /all => ryan is dnsadmin.
+google and found this https://ired.team/offensive-security-experiments/active-directory-kerberos-abuse/from-dnsadmins-to-system-to-domain-compromise
+=> DNSadmin to root => done.
+
+Note that the msfvenom payload option "EXITFUNC" doesn't work.
+
+
+
+
+## 88,464,593
+
