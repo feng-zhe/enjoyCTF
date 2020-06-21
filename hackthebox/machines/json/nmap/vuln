@@ -1,0 +1,55 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-17 08:16 PDT
+Nmap scan report for 10.10.10.158
+Host is up (0.26s latency).
+Not shown: 988 closed ports
+PORT      STATE SERVICE
+21/tcp    open  ftp
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+|_sslv2-drown: 
+80/tcp    open  http
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+|_http-csrf: Couldn't find any CSRF vulnerabilities.
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+| http-enum: 
+|_  /login.html: Possible admin folder
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+| http-vuln-cve2015-1635: 
+|   VULNERABLE:
+|   Remote Code Execution in HTTP.sys (MS15-034)
+|     State: VULNERABLE
+|     IDs:  CVE:CVE-2015-1635
+|       A remote code execution vulnerability exists in the HTTP protocol stack (HTTP.sys) that is
+|       caused when HTTP.sys improperly parses specially crafted HTTP requests. An attacker who
+|       successfully exploited this vulnerability could execute arbitrary code in the context of the System account.
+|           
+|     Disclosure date: 2015-04-14
+|     References:
+|       https://technet.microsoft.com/en-us/library/security/ms15-034.aspx
+|_      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-1635
+135/tcp   open  msrpc
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+139/tcp   open  netbios-ssn
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+445/tcp   open  microsoft-ds
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+49152/tcp open  unknown
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+49153/tcp open  unknown
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+49154/tcp open  unknown
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+49155/tcp open  unknown
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+49156/tcp open  unknown
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+49157/tcp open  unknown
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+49158/tcp open  unknown
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+
+Host script results:
+|_samba-vuln-cve-2012-1182: No accounts left to try
+|_smb-vuln-ms10-054: false
+|_smb-vuln-ms10-061: ERROR: Script execution failed (use -d to debug)
+
+Nmap done: 1 IP address (1 host up) scanned in 1010.19 seconds

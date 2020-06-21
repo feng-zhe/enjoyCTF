@@ -1,0 +1,21 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-20 13:22 PDT
+Nmap scan report for json.htb (10.10.10.158)
+Host is up (0.083s latency).
+Not shown: 65521 closed ports
+PORT      STATE SERVICE
+21/tcp    open  ftp
+80/tcp    open  http
+135/tcp   open  msrpc
+139/tcp   open  netbios-ssn
+445/tcp   open  microsoft-ds
+5985/tcp  open  wsman
+47001/tcp open  winrm
+49152/tcp open  unknown
+49153/tcp open  unknown
+49154/tcp open  unknown
+49155/tcp open  unknown
+49156/tcp open  unknown
+49157/tcp open  unknown
+49158/tcp open  unknown
+
+Nmap done: 1 IP address (1 host up) scanned in 683.90 seconds

