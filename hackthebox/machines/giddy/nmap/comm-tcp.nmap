@@ -1,0 +1,42 @@
+# Nmap 7.80 scan initiated Tue Jun 23 22:31:43 2020 as: nmap -sC -Pn -sV -oA nmap/comm-tcp 10.10.10.104
+Nmap scan report for 10.10.10.104
+Host is up (0.49s latency).
+Not shown: 997 filtered ports
+PORT     STATE SERVICE       VERSION
+80/tcp   open  http          Microsoft IIS httpd 10.0
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: IIS Windows Server
+443/tcp  open  ssl/http      Microsoft IIS httpd 10.0
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: IIS Windows Server
+| ssl-cert: Subject: commonName=PowerShellWebAccessTestWebSite
+| Not valid before: 2018-06-16T21:28:55
+|_Not valid after:  2018-09-14T21:28:55
+|_ssl-date: 2020-06-24T05:33:59+00:00; +1m07s from scanner time.
+| tls-alpn: 
+|   h2
+|_  http/1.1
+3389/tcp open  ms-wbt-server Microsoft Terminal Services
+| rdp-ntlm-info: 
+|   Target_Name: GIDDY
+|   NetBIOS_Domain_Name: GIDDY
+|   NetBIOS_Computer_Name: GIDDY
+|   DNS_Domain_Name: Giddy
+|   DNS_Computer_Name: Giddy
+|   Product_Version: 10.0.14393
+|_  System_Time: 2020-06-24T05:33:46+00:00
+| ssl-cert: Subject: commonName=Giddy
+| Not valid before: 2020-06-23T05:28:00
+|_Not valid after:  2020-12-23T05:28:00
+|_ssl-date: 2020-06-24T05:33:59+00:00; +1m07s from scanner time.
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: 1m06s, deviation: 0s, median: 1m06s
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Tue Jun 23 22:32:53 2020 -- 1 IP address (1 host up) scanned in 69.88 seconds
