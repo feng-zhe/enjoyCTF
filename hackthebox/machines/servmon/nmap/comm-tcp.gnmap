@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Fri Jun 26 22:17:18 2020 as: nmap -sC -Pn -sV -oA nmap/comm-tcp 10.10.10.184
+Host: 10.10.10.184 ()	Status: Up
+Host: 10.10.10.184 ()	Ports: 21/open/tcp//ftp//Microsoft ftpd/, 22/open/tcp//ssh//OpenSSH for_Windows_7.7 (protocol 2.0)/, 80/open/tcp//http///, 135/open/tcp//msrpc//Microsoft Windows RPC/, 139/open/tcp//netbios-ssn//Microsoft Windows netbios-ssn/, 445/open/tcp//microsoft-ds?///, 5666/open/tcp//tcpwrapped///, 6699/open/tcp//napster?///, 8443/open/tcp//ssl|https-alt///	Ignored State: closed (991)
+# Nmap done at Fri Jun 26 22:20:44 2020 -- 1 IP address (1 host up) scanned in 206.21 seconds

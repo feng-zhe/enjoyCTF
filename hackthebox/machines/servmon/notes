@@ -1,0 +1,109 @@
+# Recon
+21/tcp   open  ftp           Microsoft ftpd
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+|_01-18-20  12:05PM       <DIR>          Users
+| ftp-syst:
+|_  SYST: Windows_NT
+22/tcp   open  ssh           OpenSSH for_Windows_7.7 (protocol 2.0)
+| ssh-hostkey:
+|   2048 b9:89:04:ae:b6:26:07:3f:61:89:75:cf:10:29:28:83 (RSA)
+|   256 71:4e:6c:c0:d3:6e:57:4f:06:b8:95:3d:c7:75:57:53 (ECDSA)
+|_  256 15:38:bd:75:06:71:67:7a:01:17:9c:5c:ed:4c:de:0e (ED25519)
+80/tcp   open  http
+| fingerprint-strings:
+|   FourOhFourRequest:
+|     HTTP/1.1 404 Not Found
+|     Content-type: text/html
+|     Content-Length: 0
+|     Connection: close
+|     AuthInfo:
+|   GetRequest, HTTPOptions, RTSPRequest:
+|     HTTP/1.1 200 OK
+|     Content-type: text/html
+|     Content-Length: 340
+|     Connection: close
+|     AuthInfo:
+|     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+|     <html xmlns="http://www.w3.org/1999/xhtml">
+|     <head>
+|     <title></title>
+|     <script type="text/javascript">
+|     window.location.href = "Pages/login.htm";
+|     </script>
+|     </head>
+|     <body>
+|     </body>
+|_    </html>
+|_http-title: Site doesn't have a title (text/html).
+135/tcp  open  msrpc         Microsoft Windows RPC
+139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp  open  microsoft-ds?
+5666/tcp open  tcpwrapped
+6699/tcp open  napster?
+8443/tcp open  ssl/https-alt
+| fingerprint-strings:
+|   FourOhFourRequest, HTTPOptions, SIPOptions:
+|     HTTP/1.1 404
+|     Content-Length: 18
+|     Document not found
+|   GetRequest:
+|     HTTP/1.1 302
+|     Content-Length: 0
+|_    Location: /index.html
+| http-title: NSClient++
+|_Requested resource was /index.html
+| ssl-cert: Subject: commonName=localhost
+| Not valid before: 2020-01-14T13:24:20
+|_Not valid after:  2021-01-13T13:24:20
+
+# Enum
+## smb/netbios
+netbios, nothing.
+smbclient, enum4linux, nothing.
+
+## 5666, 6699
+nc, not sure (?)
+https://docs.nsclient.org/howto/nrpe/ => 5666 is nsclient++'s listening port.
+But once connect to it, the connection dies.
+nmap nrpe-enum, nothing.
+
+## ftp
+anonymous is ok.
+Nadine/Confidential.txt
+=> 
+1) Change the password for NVMS - Complete
+2) Lock down the NSClient Access - Complete
+3) Upload the passwords
+4) Remove public access to NVMS
+5) Place the secret files in SharePoint
+
+Nathan/Notes to do.txt
+=>
+Nathan,
+
+I left your Passwords.txt file on your Desktop.  Please remove this once you have edited it yourself and place it back into the secure folder.
+
+Regards
+
+Nadine
+
+## 80 http
+cannot gobuster, everything return 200. Maybe wfuzz can do it (?)
+open url and it is a webpage saying "nvms-1000".
+google exploit, directory traversal. 
+Tried http://servmon.htb/Windows/system.ini, no error, blank, maybe true?
+tried users/Nathan/Desktop/Passwords.txt and Nadien, nothing.
+tried Users/Nadine/Confidential.txt, nothing.
+tried default password of NVMS, no dice, as the notes saied, it has been changed.
+=> tried, looks like it bans any file with extension such as ".xxx".
+(!!!!!!) use burp suite! Somehow the request sent by browser removes the "/../../" part.
+Use burp suite and it works.
+/../../../../../../../../../../../../../../windows/win.ini => got some text.
+/../../../../../../../../../../../../../../users/nathan/desktop/passwords.txt
+=> got the passwords!
+
+
+## 8443 https
+webpage "NSClient++"
+google exploit => NSClient++ 0.5.2.35 - Privilege Escalation.
+not sure if it will be used (?)
