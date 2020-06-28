@@ -1,0 +1,39 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-27 20:38 PDT
+Nmap scan report for 10.10.10.172
+Host is up (0.24s latency).
+Not shown: 989 filtered ports
+PORT     STATE SERVICE
+53/tcp   open  domain
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+88/tcp   open  kerberos-sec
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+135/tcp  open  msrpc
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+139/tcp  open  netbios-ssn
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+389/tcp  open  ldap
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+|_sslv2-drown: 
+445/tcp  open  microsoft-ds
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+464/tcp  open  kpasswd5
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+593/tcp  open  http-rpc-epmap
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+636/tcp  open  ldapssl
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+|_ssl-ccs-injection: No reply from server (TIMEOUT)
+|_sslv2-drown: 
+3268/tcp open  globalcatLDAP
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+3269/tcp open  globalcatLDAPssl
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+|_ssl-ccs-injection: No reply from server (TIMEOUT)
+|_sslv2-drown: 
+
+Host script results:
+|_samba-vuln-cve-2012-1182: Could not negotiate a connection:SMB: Failed to receive bytes: ERROR
+|_smb-vuln-ms10-054: false
+|_smb-vuln-ms10-061: Could not negotiate a connection:SMB: Failed to receive bytes: ERROR
+
+Nmap done: 1 IP address (1 host up) scanned in 156.88 seconds
