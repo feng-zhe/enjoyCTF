@@ -102,8 +102,31 @@ Use burp suite and it works.
 /../../../../../../../../../../../../../../users/nathan/desktop/passwords.txt
 => got the passwords!
 
-
 ## 8443 https
 webpage "NSClient++"
 google exploit => NSClient++ 0.5.2.35 - Privilege Escalation.
 not sure if it will be used (?)
+
+# Foothold
+crackmapexec smb -u user.txt -p pass.txt --shares 10.10.10.184  --continue-on-success
+=> SMB         10.10.10.184    445    SERVMON          [+] SERVMON\nadine:L1k3B1gBut7s@W0rk 
+but crashed soon. Maybe there is a password which has bad chars.
+and somehow the ssh crashed in the same way. And manually set users one by one, one failuer looks strange:
+=> nadine:L1k3B1gBut7s@W0rk argument should be integer or bytes-like object, not 'str'
+=> manually tried it => success.
+
+# Priv Esc
+Tried to use nishang's reverse shell => AV blocks it.
+whoami /all => in group NT AUTHORITY\NETWORK
+
+remember the found exploit:
+https://www.exploit-db.com/exploits/46802
+
+; Undocumented key
+password = ew2x6SsGTxjRwXOT 
+
+used port forwarding and visit local 8443 => the nsclient page is ok now.
+password is right.
+
+found a automated tool for this https://www.exploit-db.com/exploits/48360
+=> done.
