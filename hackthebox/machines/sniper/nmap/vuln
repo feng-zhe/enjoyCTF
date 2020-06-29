@@ -1,0 +1,41 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-28 16:24 PDT
+Nmap scan report for 10.10.10.151
+Host is up (0.12s latency).
+Not shown: 996 filtered ports
+PORT    STATE SERVICE
+80/tcp  open  http
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+| http-csrf: 
+| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=10.10.10.151
+|   Found the following possible CSRF vulnerabilities: 
+|     
+|     Path: http://10.10.10.151:80/user/index.php
+|     Form id: 
+|     Form action: 
+|     
+|     Path: http://10.10.10.151:80/user/registration.php
+|     Form id: 
+|_    Form action: 
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+| http-enum: 
+|_  /blog/: Blog
+| http-fileupload-exploiter: 
+|   
+|     Couldn't find a file-type field.
+|   
+|_    Couldn't find a file-type field.
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+|_http-vuln-cve2017-1001000: ERROR: Script execution failed (use -d to debug)
+135/tcp open  msrpc
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+139/tcp open  netbios-ssn
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+445/tcp open  microsoft-ds
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+
+Host script results:
+|_samba-vuln-cve-2012-1182: Could not negotiate a connection:SMB: Failed to receive bytes: ERROR
+|_smb-vuln-ms10-054: false
+|_smb-vuln-ms10-061: Could not negotiate a connection:SMB: Failed to receive bytes: ERROR
+
+Nmap done: 1 IP address (1 host up) scanned in 405.44 seconds
