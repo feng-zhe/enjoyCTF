@@ -1,0 +1,12 @@
+# 80
+/login.php
+/management => ok with Derry:rZ86wwLvx7jUxtch
+/management/login.php
+
+- the /management/login.php looks same as /login.php
+
+# 3000
+/login => ok with admin:Zk6heYCyv6ZE9Xcg
+
+# 8000
+/ => ok with root:KpMasng6S5EtTy9Z

@@ -1,0 +1,8 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-30 20:04 PDT
+Nmap scan report for 10.10.10.137
+Host is up (0.100s latency).
+Not shown: 999 closed ports
+PORT    STATE         SERVICE
+514/udp open|filtered syslog
+
+Nmap done: 1 IP address (1 host up) scanned in 14.12 seconds

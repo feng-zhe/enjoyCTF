@@ -1,0 +1,5 @@
+/member/ (Status: 200)
+/management/ (Status: 401)
+/css/ (Status: 200)
+/js/ (Status: 200)
+/vendor/ (Status: 200)

