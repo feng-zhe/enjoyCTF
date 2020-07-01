@@ -1,0 +1,70 @@
+# Recon
+## comm tcp
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   2048 2e:93:41:04:23:ed:30:50:8d:0d:58:23:de:7f:2c:15 (RSA)
+|   256 4f:d5:d3:29:40:52:9e:62:58:36:11:06:72:85:1b:df (ECDSA)
+|_  256 21:64:d0:c0:ff:1a:b4:29:0b:49:e1:11:81:b6:73:66 (ED25519)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Apache2 Ubuntu Default Page: It works
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+## all tcp
+same
+
+## comm udp
+none
+
+# Enum
+## 80 http
+gobuster=>
+/icons/ (Status: 403)
+/aa.php (Status: 200)
+/monitoring/ (Status: 401)
+/panel.php (Status: 200)
+
+### /aa.php
+"1"
+wfuzz => nothing (change dict?)
+takes post requests but no difference.
+
+### /monitoring/
+"Protected area by the admin"
+http basic auth
+bf with darkweb-top1000, failed.
+(Get hint) Why on earth I didn't try post on this? I tried on others!
+post => (note, use should /monitoring/, not /monitor.
+<h1>This page is not ready yet !</h1>
+<h2>We should redirect you to the required page !</h2>
+<
+### /panel.php
+"Just a test for php file !"
+wfuzz => nothing (change dict?)
+tmeta http-equiv="refresh" content="0; URL='/centreon'" />
+
+### /centreon
+webpage, login, => 19.04
+find exact match exploit exploits/php/webapps/47069.py
+need auth. tried several, no luck, no lock.
+tried default cred admin:centreon, tried, no
+
+not sure why, but when I use burp suite to brute force the login page, somehow i can login to it in wegpage. But this will not be true if the phpsession id is different. Weird. Maybe a concurrent issue.
+
+read the exploit and manually execute command, failed, says "you don't permission to access /centreon/main.get.php"
+
+find this https://gist.github.com/sinfulz/ef49270e245df050af59cc3dd3eefa6b => do it manually and wget my rev_445.php and visit it via browser => get foothold.
+akes post requests but no difference.
+
+# Priv Esc
+in /etc/centreon/centreon.config.php =>
+$conf_centreon['user'] = "centreon";
+$conf_centreon['password'] = 'FKASdm312350.asd';
+$conf_centreon['db'] = "centreon";
+
+/var/www/html.zip, by root
+/home/shelby/html.zip, by shelby
+
+find /etc/.htpasswd:$apr1$7hIqRwgr$.QPU0yknBQRTf3WW9jfFp. => cannot crack.
+
+find screen 4.5.0 => search and find a priv esc sh => exploits/linux/local/41154.sh => root
