@@ -1,0 +1,51 @@
+# Recon
+## Comm Tcp
+22/tcp   open     ssh            OpenSSH 7.5 (protocol 2.0)
+| ssh-hostkey:
+|   2048 c4:ff:81:aa:ac:df:66:9e:da:e1:c8:78:00:ab:32:9e (RSA)
+|   256 b3:e7:54:6a:16:bd:c9:29:1f:4a:8c:cd:4c:01:24:27 (ECDSA)
+|_  256 38:64:ac:57:56:44:d5:69:de:74:a8:88:dc:a0:b4:fd (ED25519)
+80/tcp   open     http           nginx 1.12.2
+|_http-server-header: nginx/1.12.2
+| http-title: List Manager
+|_Requested resource was /list.html
+|_http-trane-info: Problem with XML parsing of /evox/about
+8888/tcp filtered sun-answerbook
+## all tcp
+same
+
+# Enum
+## 80 http
+by network, find post to dirRead.php, 
+play with the buttons, find fileDelete.php, fileWrite.php and post requests to them.
+read source code => fileRead.php
+### dirRead.php
+set path=.., can see html and localhost folder.
+### fileRead.php
+use this to read php files. Sadly, no ../../../ works.
+=>
+"payloads all the thing" is you best friend! (So is google ;))
+https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Directory%20Traversal#bypass--replaced-by-
+use "..././" to replace "../" => get dir/file read rights.
+=> find ssh key
+file=..././..././..././home/nobody/.ssh/.monitor
+replace newline "\n" and remove the "\" => get priv key => ssh in
+
+# Priv Esc
+find port 9000 open, 8888 is listening but cannot connect, it is set from /etc/ssh/ssh_config.
+
+waldo:/etc/nginx$ grep -ir '9000' . 2>/dev/null
+./nginx.conf:        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+./nginx.conf:            fastcgi_pass  127.0.0.1:9000;
+
+(!Get hint!)  netstats shows we actually ssh via 8888, although we used 22.
+We are in a docker container, thus it is possible that the port 22 is connecting to other machine, like the host.
+read the .ssh/authorized_keys, it shows the user is actually called monitor@waldo.htb.
+=> try in target: ssh moniotr@localhost -i ./.monitor
+
+find logMonitor in app-dev
+echo $PATH => /home/monitor/bin:/home/monitor/app-dev:/home/monitor/app-dev/v0.1
+(get hint) use red logMonitor to overwrite the logMonitor to /bin/bash, then execute it.
+(get hint) the linux capability in /usr/bin/tac can let us read files with no permission check.
+
+=> read root.txt
