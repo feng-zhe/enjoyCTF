@@ -1,0 +1,68 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-02 13:26 PDT
+Nmap scan report for 10.10.10.114
+Host is up (0.091s latency).
+Not shown: 998 filtered ports
+PORT   STATE SERVICE
+22/tcp open  ssh
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+80/tcp open  http
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+| http-csrf: 
+| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=10.10.10.114
+|   Found the following possible CSRF vulnerabilities: 
+|     
+|     Path: http://10.10.10.114:80/explore
+|     Form id: search
+|     Form action: /search
+|     
+|     Path: http://10.10.10.114:80/explore
+|     Form id: project-filter-form
+|     Form action: /explore?
+|     
+|     Path: http://10.10.10.114:80/explore/snippets
+|     Form id: search
+|_    Form action: /search
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+|_http-majordomo2-dir-traversal: ERROR: Script execution failed (use -d to debug)
+| http-slowloris-check: 
+|   VULNERABLE:
+|   Slowloris DOS attack
+|     State: LIKELY VULNERABLE
+|     IDs:  CVE:CVE-2007-6750
+|       Slowloris tries to keep many connections to the target web server open and hold
+|       them open as long as possible.  It accomplishes this by opening connections to
+|       the target web server and sending a partial request. By doing so, it starves
+|       the http server's resources causing Denial Of Service.
+|       
+|     Disclosure date: 2009-09-17
+|     References:
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-6750
+|_      http://ha.ckers.org/slowloris/
+| http-sql-injection: 
+|   Possible sqli for queries:
+|     http://10.10.10.114:80/help/?C=D%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=N%3bO%3dD%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=S%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=M%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=N%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=S%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=D%3bO%3dD%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=M%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=N%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=S%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=D%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=M%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=S%3bO%3dD%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=N%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=D%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=M%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=D%3bO%3dA%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=M%3bO%3dD%27%20OR%20sqlspider
+|     http://10.10.10.114:80/help/?C=N%3bO%3dA%27%20OR%20sqlspider
+|_    http://10.10.10.114:80/help/?C=S%3bO%3dA%27%20OR%20sqlspider
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+| http-vuln-cve2010-0738: 
+|_  /jmx-console/: Authentication was not required
+|_http-vuln-cve2017-1001000: ERROR: Script execution failed (use -d to debug)
+
+Nmap done: 1 IP address (1 host up) scanned in 86.99 seconds
