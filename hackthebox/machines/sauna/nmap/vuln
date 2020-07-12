@@ -1,0 +1,68 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-11 00:54 PDT
+Nmap scan report for 10.10.10.175
+Host is up (0.082s latency).
+Not shown: 988 filtered ports
+PORT     STATE SERVICE
+53/tcp   open  domain
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+80/tcp   open  http
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+| http-csrf: 
+| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=10.10.10.175
+|   Found the following possible CSRF vulnerabilities: 
+|     
+|     Path: http://10.10.10.175:80/
+|     Form id: email
+|     Form action: #
+|     
+|     Path: http://10.10.10.175:80/index.html
+|     Form id: email
+|     Form action: #
+|     
+|     Path: http://10.10.10.175:80/single.html
+|     Form id: 
+|     Form action: #
+|     
+|     Path: http://10.10.10.175:80/single.html
+|     Form id: 
+|     Form action: #
+|     
+|     Path: http://10.10.10.175:80/contact.html
+|     Form id: 
+|     Form action: #
+|     
+|     Path: http://10.10.10.175:80/about.html
+|     Form id: email
+|_    Form action: #
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+88/tcp   open  kerberos-sec
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+135/tcp  open  msrpc
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+139/tcp  open  netbios-ssn
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+389/tcp  open  ldap
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+|_sslv2-drown: 
+445/tcp  open  microsoft-ds
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+464/tcp  open  kpasswd5
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+593/tcp  open  http-rpc-epmap
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+636/tcp  open  ldapssl
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+|_sslv2-drown: 
+3268/tcp open  globalcatLDAP
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+3269/tcp open  globalcatLDAPssl
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+|_sslv2-drown: 
+
+Host script results:
+|_samba-vuln-cve-2012-1182: Could not negotiate a connection:SMB: Failed to receive bytes: ERROR
+|_smb-vuln-ms10-054: false
+|_smb-vuln-ms10-061: Could not negotiate a connection:SMB: Failed to receive bytes: ERROR
+
+Nmap done: 1 IP address (1 host up) scanned in 39084.93 seconds
