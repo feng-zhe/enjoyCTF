@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Sat Jul 18 12:08:19 2020 as: nmap -sC -Pn -sV -oA nmap/comm-tcp 10.10.10.198
+Host: 10.10.10.198 ()	Status: Up
+Host: 10.10.10.198 ()	Ports: 8080/open/tcp//http//Apache httpd 2.4.43 ((Win64) OpenSSL|1.1.1g PHP|7.4.6)/	Ignored State: filtered (999)
+# Nmap done at Sat Jul 18 12:09:16 2020 -- 1 IP address (1 host up) scanned in 56.36 seconds
