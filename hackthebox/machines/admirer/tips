@@ -1,0 +1,9 @@
+# Users
+Always buster the dirs. The source code you have might be outdated.
+
+# Root
+don't be obsessed with options in sudo. Try other way.
+
+# Important
+create user 'test'@'%' identified by 'test';
+grant all privileges on * . * TO 'test'@'%';
