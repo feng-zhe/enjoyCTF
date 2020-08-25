@@ -1,0 +1,10 @@
+# User
+What are the high ports? Google them. Google "xx exploit".
+
+# User&root
+Always the basics! Find interesting files by powershell's get-childitem command.
+Some files might be hidden.
+PSCredential by default can only be decrypted by the user who exported it.
+
+# Important
+Download a specific binary to get reverse shell. It has windows version. Use the 64bit version.
