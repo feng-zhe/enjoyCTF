@@ -1,0 +1,18 @@
+===============================================================
+Gobuster v3.0.1
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@_FireFart_)
+===============================================================
+[+] Url:            http://enterprise.htb:443
+[+] Threads:        10
+[+] Wordlist:       /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt
+[+] Status codes:   200,204,301,302,307,401,403
+[+] User Agent:     gobuster/3.0.1
+[+] Extensions:     txt,html,php
+[+] Add Slash:      true
+[+] Timeout:        10s
+===============================================================
+2020/09/05 14:01:40 Starting gobuster
+===============================================================
+===============================================================
+2020/09/05 14:39:16 Finished
+===============================================================

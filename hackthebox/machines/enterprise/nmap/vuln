@@ -1,0 +1,56 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-09-04 21:18 PDT
+Nmap scan report for 10.10.10.61
+Host is up (0.093s latency).
+Not shown: 996 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+80/tcp   open  http
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+|_http-csrf: Couldn't find any CSRF vulnerabilities.
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+| http-enum: 
+|   /wp-login.php: Possible admin folder
+|   /readme.html: Wordpress version: 2 
+|   /: WordPress version: 4.8.1
+|   /wp-includes/images/rss.png: Wordpress version 2.2 found.
+|   /wp-includes/js/jquery/suggest.js: Wordpress version 2.5 found.
+|   /wp-includes/images/blank.gif: Wordpress version 2.6 found.
+|   /wp-includes/js/comment-reply.js: Wordpress version 2.7 found.
+|   /wp-login.php: Wordpress login page.
+|   /wp-admin/upgrade.php: Wordpress login page.
+|_  /readme.html: Interesting, a readme.
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+443/tcp  open  https
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+|_http-csrf: Couldn't find any CSRF vulnerabilities.
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+|_sslv2-drown: 
+8080/tcp open  http-proxy
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+| http-enum: 
+|   /administrator/: Possible admin folder
+|   /administrator/index.php: Possible admin folder
+|   /1.sql: Possible database backup
+|   /robots.txt: Robots file
+|   /administrator/manifests/files/joomla.xml: Joomla version 3.7.5
+|   /language/en-GB/en-GB.xml: Joomla version 3.7.5
+|   /htaccess.txt: Joomla!
+|   /README.txt: Interesting, a readme.
+|   /0/: Potentially interesting folder
+|   /1/: Potentially interesting folder
+|   /2/: Potentially interesting folder
+|   /bin/: Potentially interesting folder
+|   /cache/: Potentially interesting folder
+|   /home/: Potentially interesting folder
+|   /images/: Potentially interesting folder
+|   /includes/: Potentially interesting folder
+|   /libraries/: Potentially interesting folder
+|   /modules/: Potentially interesting folder
+|   /templates/: Potentially interesting folder
+|_  /tmp/: Potentially interesting folder
+| http-internal-ip-disclosure: 
+|_  Internal IP Leaked: 172.17.0.4
+
+Nmap done: 1 IP address (1 host up) scanned in 636.69 seconds

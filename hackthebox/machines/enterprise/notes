@@ -1,0 +1,26 @@
+# Recon
+## 80, 443, 8080
+80,443 is using different version of apache.
+
+### 80 => wordpress
+wpscan => william.riker
+
+### 443
+E = jeanlucpicard@enterprise.local
+CN = enterprise.local
+OU = Bridge
+O = USS Enterprise
+L = Earth
+ST = United Federation of Planets
+C = UK
+
+### 8080
+another website
+"Joomla! - Open Source Content Management"
+joomscan => 3.7.5
+find this https://blog.ripstech.com/2017/joomla-takeover-in-20-seconds-with-ldap-injection-cve-2017-14596/
+but it needs the joomla! to use LDAP.
+
+## 32812
+32812 => a custom application. "LCARS", asking briage access code.
+Maybe bf it (?)
