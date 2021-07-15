@@ -1,0 +1,31 @@
+# Recon
+## Nmap
+nmap results:
+- target is linux
+- port 22, 5000
+22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   3072 3c:65:6b:c2:df:b9:9d:62:74:27:a7:b8:a9:d3:25:2c (RSA)
+|   256 b9:a1:78:5d:3c:1b:25:e0:3c:ef:67:8d:71:d3:a3:ec (ECDSA)
+|_  256 8b:cf:41:82:c6:ac:ef:91:80:37:7c:c9:45:11:e8:43 (ED25519)
+5000/tcp open  http    Werkzeug httpd 0.16.1 (Python 3.8.5)
+|_http-server-header: Werkzeug/0.16.1 Python/3.8.5
+|_http-title: k1d'5 h4ck3r t00l5
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+# Gobuster
+nothing.
+
+# Exp
+searchsploit werkzeug => find one python script. Also a MSF module.
+try the python module. => didn't work out of box. Need target enable the debugging feature. The msf module also depends on that.
+
+searchsploit msfvenom => find one APK template command injection.
+=> get in
+
+# Priv Esc
+Find other users's interesting files. Could use pspy to find it too but you need to hit the website to trigger the defense.
+sudo -l
+
+!!! Note: try curl to test if command injection works before try real rev shell script !!!!
+!!! `curl | bash` is your good buddy !!!
