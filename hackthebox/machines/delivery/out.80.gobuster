@@ -1,0 +1,23 @@
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://delivery.htb
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Extensions:              php,txt,html
+[+] Add Slash:               true
+[+] Timeout:                 10s
+===============================================================
+2021/10/16 10:31:05 Starting gobuster in directory enumeration mode
+===============================================================
+/images/              (Status: 403) [Size: 169]
+/assets/              (Status: 403) [Size: 169]
+/error/               (Status: 200) [Size: 1398]
+/index.html           (Status: 200) [Size: 10850]
+===============================================================
+2021/10/16 10:47:36 Finished
+===============================================================

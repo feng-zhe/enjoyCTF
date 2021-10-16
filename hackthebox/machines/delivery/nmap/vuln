@@ -1,0 +1,33 @@
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-10-15 22:11 PDT
+Nmap scan report for 10.10.10.222
+Host is up (0.088s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+| http-csrf: 
+| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=10.10.10.222
+|   Found the following possible CSRF vulnerabilities: 
+|     
+|     Path: http://10.10.10.222:80/
+|     Form id: demo-name
+|_    Form action: #
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+| http-enum: 
+|_  /error/: Potentially interesting folder
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+| http-vuln-cve2011-3192: 
+|   VULNERABLE:
+|   Apache byterange filter DoS
+|     State: VULNERABLE
+|     IDs:  CVE:CVE-2011-3192  BID:49303
+|       The Apache web server is vulnerable to a denial of service attack when numerous
+|       overlapping byte ranges are requested.
+|     Disclosure date: 2011-08-19
+|     References:
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-3192
+|       https://seclists.org/fulldisclosure/2011/Aug/175
+|       https://www.tenable.com/plugins/nessus/55976
+|_      https://www.securityfocus.com/bid/49303
+
+Nmap done: 1 IP address (1 host up) scanned in 213.51 seconds

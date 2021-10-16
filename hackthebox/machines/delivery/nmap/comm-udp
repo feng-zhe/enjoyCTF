@@ -1,0 +1,24 @@
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-10-15 22:11 PDT
+Nmap scan report for 10.10.10.222
+Host is up (0.084s latency).
+Not shown: 983 closed ports
+PORT      STATE         SERVICE
+517/udp   open|filtered talk
+631/udp   open|filtered ipp
+5353/udp  open|filtered zeroconf
+17332/udp open|filtered unknown
+17423/udp open|filtered unknown
+17580/udp open|filtered unknown
+20411/udp open|filtered unknown
+20425/udp open|filtered unknown
+20791/udp open|filtered unknown
+21476/udp open|filtered unknown
+21923/udp open|filtered unknown
+29256/udp open|filtered unknown
+32775/udp open|filtered sometimes-rpc14
+40622/udp open|filtered unknown
+45818/udp open|filtered unknown
+49187/udp open|filtered unknown
+49350/udp open|filtered unknown
+
+Nmap done: 1 IP address (1 host up) scanned in 1193.68 seconds

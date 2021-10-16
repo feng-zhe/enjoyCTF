@@ -1,0 +1,150 @@
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://helpdesk.delivery.htb
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Extensions:              php,txt,html
+[+] Add Slash:               true
+[+] Timeout:                 10s
+===============================================================
+2021/10/16 11:48:48 Starting gobuster in directory enumeration mode
+===============================================================
+/includes/            (Status: 403) [Size: 169]
+/images/              (Status: 403) [Size: 169]
+/includes.txt         (Status: 403) [Size: 169]
+/includes.html        (Status: 403) [Size: 169]
+/js/                  (Status: 403) [Size: 169]
+/includes.php         (Status: 403) [Size: 169]
+/css/                 (Status: 403) [Size: 169]
+/logout.php           (Status: 302) [Size: 13] [--> index.php]
+/login.php            (Status: 422) [Size: 5181]              
+/include/             (Status: 403) [Size: 169]               
+/include.php          (Status: 403) [Size: 169]               
+/include.txt          (Status: 403) [Size: 169]               
+/include.html         (Status: 403) [Size: 169]               
+/api/                 (Status: 302) [Size: 0] [--> ../]       
+/assets/              (Status: 403) [Size: 169]               
+/ajax.php             (Status: 400) [Size: 17]                
+/account.php          (Status: 200) [Size: 37319]             
+/profile.php          (Status: 422) [Size: 5181]              
+/index.php            (Status: 200) [Size: 4933]              
+/view.php             (Status: 200) [Size: 5263]              
+/apps/                (Status: 403) [Size: 169]               
+/manage.php           (Status: 200) [Size: 63]                
+/captcha.php          (Status: 200) [Size: 4939]              
+/logo.php             (Status: 302) [Size: 0] [--> /assets/default/images/logo.png]
+/kb/                  (Status: 302) [Size: 0] [--> ../]                            
+/tickets.php          (Status: 422) [Size: 5181]                                   
+/avatar.php           (Status: 400) [Size: 40]                                     
+/offline.php          (Status: 302) [Size: 0] [--> index.php]                      
+/open.php             (Status: 200) [Size: 8133]                                   
+/includes2/           (Status: 403) [Size: 169]                                    
+/includes2.php        (Status: 403) [Size: 169]                                    
+/includes2.txt        (Status: 403) [Size: 169]                                    
+/includes2.html       (Status: 403) [Size: 169]                                    
+/included/            (Status: 403) [Size: 169]                                    
+/included.php         (Status: 403) [Size: 169]                                    
+/included.txt         (Status: 403) [Size: 169]                                    
+/included.html        (Status: 403) [Size: 169]                                    
+/include2.php         (Status: 403) [Size: 169]                                    
+/include_files/       (Status: 403) [Size: 169]                                    
+/include2.txt         (Status: 403) [Size: 169]                                    
+/include_files.php    (Status: 403) [Size: 169]                                    
+/include2.html        (Status: 403) [Size: 169]                                    
+/include_files.txt    (Status: 403) [Size: 169]                                    
+/include2/            (Status: 403) [Size: 169]                                    
+/include_files.html   (Status: 403) [Size: 169]                                    
+/includefiles/        (Status: 403) [Size: 169]                                    
+/includefiles.php     (Status: 403) [Size: 169]                                    
+/includefiles.txt     (Status: 403) [Size: 169]                                    
+/includefiles.html    (Status: 403) [Size: 169]                                    
+/include_top/         (Status: 403) [Size: 169]                                    
+/include_top.php      (Status: 403) [Size: 169]                                    
+/include_top.txt      (Status: 403) [Size: 169]                                    
+/include_top.html     (Status: 403) [Size: 169]                                    
+/scp/                 (Status: 302) [Size: 13] [--> /scp/login.php]                
+/pwreset.php          (Status: 200) [Size: 4793]                                   
+/include1/            (Status: 403) [Size: 169]                                    
+/include1.php         (Status: 403) [Size: 169]                                    
+/include1.txt         (Status: 403) [Size: 169]                                    
+/include1.html        (Status: 403) [Size: 169]                                    
+/includeFiles.html    (Status: 403) [Size: 169]                                    
+/includeFiles/        (Status: 403) [Size: 169]                                    
+/include_mds.html     (Status: 403) [Size: 169]                                    
+/include_old.php      (Status: 403) [Size: 169]                                    
+/includeFiles.php     (Status: 403) [Size: 169]                                    
+/includedfiles/       (Status: 403) [Size: 169]                                    
+/includelocal.php     (Status: 403) [Size: 169]                                    
+/includes_c.php       (Status: 403) [Size: 169]                                    
+/include_mds/         (Status: 403) [Size: 169]                                    
+/include_old.txt      (Status: 403) [Size: 169]                                    
+/includes_common.html (Status: 403) [Size: 169]                                    
+/includes_css/        (Status: 403) [Size: 169]                                    
+/includeFiles.txt     (Status: 403) [Size: 169]                                    
+/includedfiles.php    (Status: 403) [Size: 169]                                    
+/includelocal.txt     (Status: 403) [Size: 169]                                    
+/includes_c.txt       (Status: 403) [Size: 169]                                    
+/include_mds.php      (Status: 403) [Size: 169]                                    
+/include_old.html     (Status: 403) [Size: 169]                                    
+/includes_php.php     (Status: 403) [Size: 169]                                    
+/includes_common/     (Status: 403) [Size: 169]                                    
+/includesd/           (Status: 403) [Size: 169]                                    
+/includes_css.php     (Status: 403) [Size: 169]                                    
+/includesm.php        (Status: 403) [Size: 169]                                    
+/includedfiles.txt    (Status: 403) [Size: 169]                                    
+/includelocal.html    (Status: 403) [Size: 169]                                    
+/includes_c.html      (Status: 403) [Size: 169]                                    
+/include_mds.txt      (Status: 403) [Size: 169]                                    
+/include_old/         (Status: 403) [Size: 169]                                    
+/includes_php.txt     (Status: 403) [Size: 169]                                    
+/includes_common.php  (Status: 403) [Size: 169]                                    
+/includesd.php        (Status: 403) [Size: 169]                                    
+/includes_css.txt     (Status: 403) [Size: 169]                                    
+/includesm.txt        (Status: 403) [Size: 169]                                    
+/includedfiles.html   (Status: 403) [Size: 169]                                    
+/includelocal/        (Status: 403) [Size: 169]                                    
+/includes_c/          (Status: 403) [Size: 169]                                    
+/includespml.html     (Status: 403) [Size: 169]                                    
+/includesrtl/         (Status: 403) [Size: 169]                                    
+/includes_php.html    (Status: 403) [Size: 169]                                    
+/includes_common.txt  (Status: 403) [Size: 169]                                    
+/includesd.txt        (Status: 403) [Size: 169]                                    
+/includes_css.html    (Status: 403) [Size: 169]                                    
+/includesm.html       (Status: 403) [Size: 169]                                    
+/includestv2/         (Status: 403) [Size: 169]                                    
+/includeswap.txt      (Status: 403) [Size: 169]                                    
+/includesx/           (Status: 403) [Size: 169]                                    
+/includespml/         (Status: 403) [Size: 169]                                    
+/includesrtl.php      (Status: 403) [Size: 169]                                    
+/includes_php/        (Status: 403) [Size: 169]                                    
+/includesxmg.php      (Status: 403) [Size: 169]                                    
+/includesd.html       (Status: 403) [Size: 169]                                    
+/includesm/           (Status: 403) [Size: 169]                                    
+/includestv2.php      (Status: 403) [Size: 169]                                    
+/includeswap.html     (Status: 403) [Size: 169]                                    
+/includesx.php        (Status: 403) [Size: 169]                                    
+/includespml.php      (Status: 403) [Size: 169]                                    
+/includesrtl.txt      (Status: 403) [Size: 169]                                    
+/includesxmg.txt      (Status: 403) [Size: 169]                                    
+/includestv2.txt      (Status: 403) [Size: 169]                                    
+/includeswap/         (Status: 403) [Size: 169]                                    
+/includesx.txt        (Status: 403) [Size: 169]                                    
+/includespml.txt      (Status: 403) [Size: 169]                                    
+/includesrtl.html     (Status: 403) [Size: 169]                                    
+/includesxmg.html     (Status: 403) [Size: 169]                                    
+/includestv2.html     (Status: 403) [Size: 169]                                    
+/includeswap.php      (Status: 403) [Size: 169]                                    
+/includesx.html       (Status: 403) [Size: 169]                                    
+/includesxmg/         (Status: 403) [Size: 169]                                    
+/include_/            (Status: 403) [Size: 169]                                    
+/include_.php         (Status: 403) [Size: 169]                                    
+/include_.txt         (Status: 403) [Size: 169]                                    
+/include_.html        (Status: 403) [Size: 169]                                    
+===============================================================
+2021/10/16 12:05:29 Finished
+===============================================================
