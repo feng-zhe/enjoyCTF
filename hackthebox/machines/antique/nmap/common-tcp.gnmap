@@ -1,0 +1,4 @@
+# Nmap 7.91 scan initiated Thu Oct 21 03:23:21 2021 as: nmap -Pn -sV -sC -oA nmap/common-tcp 10.10.11.107
+Host: 10.10.11.107 ()	Status: Up
+Host: 10.10.11.107 ()	Ports: 23/open/tcp//telnet?///	Ignored State: closed (999)
+# Nmap done at Thu Oct 21 03:26:09 2021 -- 1 IP address (1 host up) scanned in 167.84 seconds
