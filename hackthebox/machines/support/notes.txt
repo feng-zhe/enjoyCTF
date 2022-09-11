@@ -1,0 +1,9 @@
+(Only hints because the box is not retired yet.)
+
+# foothold
+smb + dnSpy + ldap
+Note: pay attention to the ldap enum output! Don't overthink!
+
+# priv esc
+Classic s4u
+Use bloodhound + impacket => root (didn't try Rubeus yet because forum threads told me so ...)
