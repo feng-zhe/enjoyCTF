@@ -1,0 +1,9 @@
+Hard "easy" box
+
+hints:
+# Foothold
+- virtual host
+- real world case, client-side attack
+
+# Root
+I rooted it with an exploit discovered in 2021. But this box is created in 2020. So I should do it again.
