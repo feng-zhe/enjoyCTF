@@ -1,0 +1,29 @@
+# Init
+## comm tcp
+21/tcp open  ftp     vsftpd 3.0.3
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    gunicorn
+
+# Enum
+## 21 ftp
+vsftpd 3.0.3 => only a DoS attack exploit
+tried to login with no pass, failed.
+
+## 80 http
+looks like a dashboard to monitor something.
+found user name "Nathan"
+the "ipconfig" and "network status" looks like a command result.
+gobuster brute force the commands => no
+gobuster brute force dir name =>
+/data                 (Status: 302) [Size: 208] [--> http://cap.htb/]
+/ip                   (Status: 200) [Size: 17448]
+/capture              (Status: 302) [Size: 220] [--> http://cap.htb/data/2]
+nothing new.
+
+But combine with 21 ftp failed login attempt, the /capture can return some data.
+The URL is /data/4, tried other numbers, found /data/0 is big. The IP addresses are different. Not me.
+But the FTP data, user nathan, password Buck3tH4TF0RM3!
+ssh => foohold
+
+# Priv Esc
+linpeas.sh => priv esc exploit => try the first one => root
