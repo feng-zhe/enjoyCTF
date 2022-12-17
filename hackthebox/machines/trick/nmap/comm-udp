@@ -1,0 +1,13 @@
+Starting Nmap 7.93 ( https://nmap.org ) at 2022-11-04 01:42 EDT
+Nmap scan report for 10.10.11.166
+Host is up (0.085s latency).
+Not shown: 996 closed udp ports (port-unreach)
+PORT     STATE         SERVICE  VERSION
+53/udp   open          domain   ISC BIND 9.11.5-P4-5.1+deb10u7 (Debian Linux)
+68/udp   open|filtered dhcpc
+631/udp  open|filtered ipp
+5353/udp open|filtered zeroconf
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 3024001.75 seconds

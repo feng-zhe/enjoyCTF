@@ -1,0 +1,20 @@
+===============================================================
+Gobuster v3.2.0-dev
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://trick.htb
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /opt/SecLists/Discovery/Web-Content/raft-medium-files.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.2.0-dev
+[+] Extensions:              php,txt,html
+[+] Timeout:                 10s
+===============================================================
+2022/12/09 00:46:48 Starting gobuster in directory enumeration mode
+===============================================================
+[2K/index.html           (Status: 200) [Size: 5480]
+[2K/.                    (Status: 301) [Size: 185] [--> http://trick.htb/./]
+===============================================================
+2022/12/09 00:56:44 Finished
+===============================================================

