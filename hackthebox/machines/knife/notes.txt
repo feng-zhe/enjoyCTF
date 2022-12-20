@@ -1,0 +1,26 @@
+# Initial Contact
+## comm tcp
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   3072 be549ca367c315c364717f6a534a4c21 (RSA)
+|   256 bf8a3fd406e92e874ec97eab220ec0ee (ECDSA)
+|_  256 1adea1cc37ce53bb1bfb2b0badb3f684 (ED25519)
+80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+|_http-title:  Emergent Medical Idea
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+# Remote Enum
+## 80
+RTFSC => nothing
+apache version => found https://www.exploit-db.com/ghdb/7688 but not sure how to use it.
+gobuster => ing
+
+burp => response has "PHP/8.1.0-dev" => found https://www.exploit-db.com/exploits/49933
+=> execute it => got user shell
+
+# Local Enum
+sudo -l => /usr/bin/knife
+
+# Priv Esc
+GTFOBIN and search knife => boom!

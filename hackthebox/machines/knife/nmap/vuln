@@ -1,0 +1,15 @@
+Starting Nmap 7.93 ( https://nmap.org ) at 2022-12-20 11:52 EST
+Nmap scan report for 10.10.10.242
+Host is up (0.086s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+|_http-vuln-cve2017-1001000: ERROR: Script execution failed (use -d to debug)
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+| http-enum: 
+|_  /icons/: Potentially interesting folder
+|_http-csrf: Couldn't find any CSRF vulnerabilities.
+
+Nmap done: 1 IP address (1 host up) scanned in 35.52 seconds
