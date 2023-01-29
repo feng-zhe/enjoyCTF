@@ -1,0 +1,19 @@
+# Nmap 7.93 scan initiated Sat Jan 28 13:12:07 2023 as: nmap -Pn -sV -sC -oA nmap/comm-tcp 10.129.214.175
+Nmap scan report for 10.129.214.175
+Host is up (0.077s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   3072 4c73a025f5fe817b822b3649a54dc85e (RSA)
+|   256 e1c056d052042f3cac9ae7b1792bbb13 (ECDSA)
+|_  256 523147140dc38e1573e3c424a23a1277 (ED25519)
+80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+|_http-title: Welcome to GetSimple! - gettingstarted
+| http-robots.txt: 1 disallowed entry 
+|_/admin/
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sat Jan 28 13:12:21 2023 -- 1 IP address (1 host up) scanned in 14.06 seconds

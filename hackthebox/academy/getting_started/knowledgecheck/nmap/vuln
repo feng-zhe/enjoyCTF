@@ -1,0 +1,19 @@
+Starting Nmap 7.93 ( https://nmap.org ) at 2023-01-28 13:12 EST
+Nmap scan report for 10.129.214.175
+Host is up (0.085s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+| http-enum: 
+|   /admin/: Possible admin folder
+|   /admin/index.php: Possible admin folder
+|   /backups/: Backup folder w/ directory listing
+|   /robots.txt: Robots file
+|_  /data/: Potentially interesting directory w/ listing on 'apache/2.4.41 (ubuntu)'
+|_http-csrf: Couldn't find any CSRF vulnerabilities.
+|_http-vuln-cve2017-1001000: ERROR: Script execution failed (use -d to debug)
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+
+Nmap done: 1 IP address (1 host up) scanned in 33.90 seconds

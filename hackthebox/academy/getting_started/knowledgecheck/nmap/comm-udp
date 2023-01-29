@@ -1,0 +1,19 @@
+Starting Nmap 7.93 ( https://nmap.org ) at 2023-01-28 13:12 EST
+Nmap scan report for 10.129.214.175
+Host is up (0.084s latency).
+Not shown: 989 closed udp ports (port-unreach)
+PORT      STATE         SERVICE VERSION
+68/udp    open|filtered dhcpc
+1027/udp  open|filtered unknown
+1047/udp  open|filtered neod1
+18818/udp open|filtered unknown
+19600/udp open|filtered unknown
+21742/udp open|filtered unknown
+25240/udp open|filtered unknown
+30718/udp open|filtered unknown
+49171/udp open|filtered unknown
+49201/udp open|filtered unknown
+61685/udp open|filtered unknown
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 1166.97 seconds
