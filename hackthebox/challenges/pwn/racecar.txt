@@ -1,0 +1,1 @@
+ghidra -> printf with raw user input -> %X to read values on stacks.
