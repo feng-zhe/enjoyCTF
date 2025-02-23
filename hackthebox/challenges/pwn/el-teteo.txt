@@ -1,0 +1,1 @@
+ghidra -> it executes whatever we give it, local gdb can confirm that -> search "31-byte b4-bit shellcode" -> https://www.exploit-db.com/exploits/42126 -> confirm it with local binary -> then remote
