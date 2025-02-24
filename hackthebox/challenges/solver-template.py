@@ -16,6 +16,7 @@ os.system('clear')
 if LOCAL:
   print('Running solver locally..\n')
   r    = process(fname)
+  # r = gdb.debug(fname, gdbscript='break main\ncontinue'
 else:
   IP   = str(sys.argv[1]) if len(sys.argv) >= 2 else '0.0.0.0'
   PORT = int(sys.argv[2]) if len(sys.argv) >= 3 else 1337
