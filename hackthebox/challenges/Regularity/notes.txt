@@ -1,0 +1,8 @@
+TL;DR: stackoverflow + pwntools. Use pwntools if possible.
+
+gdb checksec => all sec features are off.
+file => the binary statically linked the libraries. Maybe all code has fixed addresses.
+in gdb, used `run < <(python -c 'print("A"*256 + "\x4b\x10\x40\x00\x00\x00\x00\x00" + "A"*8)')` and redirected to the `read()` again.
+=> second thought, since NX is off, we can just redirect to the stack and fill the stack with shellcode.
+
+=> read the walkthrough. Looks like we should use pwntools first to avoid some weird "char-manipulation" issue we may hit with `python print + pipe` (just a guess yet).
