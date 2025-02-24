@@ -1,0 +1,1 @@
+ghidra -> one byte overwrite -> null string comparison is always equal.
