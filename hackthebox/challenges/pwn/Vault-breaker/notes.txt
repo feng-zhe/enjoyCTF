@@ -1,0 +1,4 @@
+strcpy() will overwrite the last char to null (\x00)
+=> this XOR the flag is an no-op, for that position
+=> We can keep triggering the "new key generation" func to overwrite the whole random key to null's by doing that from 31 key-length, 30 key-length, ... 0 length.
+=> then we just run "secure the password" to let it do the XOR and show us the password.
