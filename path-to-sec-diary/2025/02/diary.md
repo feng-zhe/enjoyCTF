@@ -27,15 +27,31 @@ failed. Some failed in a funny way :) :
   that, I noticed that the program actualy required "your manager to keep your
   headcount in your team". My manager told me "that wouldn't work for the team".
   So I end up finding the next team in one week. Good news is that the new team
-  is a sec team of a cloud product. The bad news is that I am still a SWE so I just code for security features. Not the sec job I want. But I need a job to put food on my table.
-  - I enrolled the OSCE during this time, however, I finished the course but didn't take the exam. I am not ready. And I am not sure pen tester is what I want to do
+  is a sec team of a cloud product. The bad news is that I am still a SWE so I
+  just code for security features. Not the sec job I want. But I need a job to
+  put food on my table.
+  - I enrolled the OSCE during this time, however, I finished the course but
+    didn't take the exam. I am not ready. And I am not sure pen tester is what I
+    want to do
 
-Well, that is about it. I want to keep a diary so that I can push myself and remind myself daily. I am 33-year old now. I feel this will be my last chance to pursuit my dream. Later, the burden of life may not give me the luxury to try again.
+Well, that is about it. I want to keep a diary so that I can push myself and
+remind myself daily. I am 33-year old now. I feel this will be my last chance to
+pursuit my dream. Later, the burden of life may not give me the luxury to try
+again.
 
-So the current plan is to prepare some CVEs on my resume. Then I can seek for related jobs. I feel I am more interested in CVEs like CVE-2024-1086 because of its impact and complexity. However, I cannot understand its post https://pwning.tech/nftables/. I feel I need to get some solid fundations first.
+So the current plan is to prepare some CVEs on my resume. Then I can seek for
+related jobs. I feel I am more interested in CVEs like CVE-2024-1086 because of
+its impact and complexity. However, I cannot understand its post
+https://pwning.tech/nftables/. I feel I need to get some solid fundations first.
 
-A bonus of trying to read above CVE blogpost is that I noticed the author is also playing HTB, likely for some practicing or learning. This is already what I am doing. Yeah.
+A bonus of trying to read above CVE blogpost is that I noticed the author is
+also playing HTB, likely for some practicing or learning. This is already what I
+am doing. Yeah.
 
-So my current goal is to finish all pwn challeges in HTB challenges. I've finished all leetcode problems when I prepare for Google interview. I am not afraid of this.
+So my current goal is to finish all pwn challeges in HTB challenges. I've
+finished all leetcode problems when I prepare for Google interview. I am not
+afraid of this.
 
-The next step could be start reviewing easier but same-type CVEs and see if I can duplicate the vuln/process/workflow and find vulns on other places. However, this will be something to worry about later.
+The next step could be start reviewing easier but same-type CVEs and see if I
+can duplicate the vuln/process/workflow and find vulns on other places. However,
+this will be something to worry about later.
