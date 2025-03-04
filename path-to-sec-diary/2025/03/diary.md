@@ -7,3 +7,12 @@ interesting yet. Only a 7-byte overflow thing. Now sure how we will use it to
 read the flag.
 
 Will see how it goes tomorrow.
+
+# 2025-03-02, 2025-03-03
+
+Struggling with the "very easy" challenge "Sacred Scrolls: Revenge". Looks like
+I forgot all things about the ret2libc. Learned a lot from this challenge.
+Unfortunately, the challenge itself has an issue so that I cannot finish it.
+
+Will adjust my goal to finish all the pwn up to the medium difficulty. And then
+start to find CVEs among the well-known public softwares. I can do this!

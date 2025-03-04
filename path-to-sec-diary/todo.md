@@ -1,2 +1,4 @@
+- finish the pwn challenges all the way to the medium.
+- find CVEs in well-known public software, no need to be pwn.
 - understand the https://yanglingxi1993.github.io/dirty_pagetable/dirty_pagetable.html for dirty_pagetable technique
 - understand the CVE-2024-1086 author's blogpost https://pwning.tech/nftables/
