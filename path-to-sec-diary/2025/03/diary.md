@@ -16,3 +16,7 @@ Unfortunately, the challenge itself has an issue so that I cannot finish it.
 
 Will adjust my goal to finish all the pwn up to the medium difficulty. And then
 start to find CVEs among the well-known public softwares. I can do this!
+
+# 2025-03-05
+
+finished the pwn challenge "Entity". Very easy. First-time coding the solver.py with pwn totally alone.
