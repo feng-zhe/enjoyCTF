@@ -19,4 +19,11 @@ start to find CVEs among the well-known public softwares. I can do this!
 
 # 2025-03-05
 
-finished the pwn challenge "Entity". Very easy. First-time coding the solver.py with pwn totally alone.
+finished the pwn challenge "Entity". Very easy. First-time coding the solver.py
+with pwn totally alone.
+
+# 2025-03-07
+
+Finished the Space-pirate-Going-Deeper pwn challenge. Wasted some time trying to
+bypass the param123 checks. Then I realized I can jump to the right place by
+overwriting one-byte of the return address since the binary has PIE disabled.
