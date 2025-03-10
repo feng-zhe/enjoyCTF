@@ -1,6 +1,6 @@
 # checklist:
 
-- unprotected string format
+- unprotected format string
 - stack overflow
 - ret2lib
 
