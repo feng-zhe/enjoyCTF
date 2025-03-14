@@ -1,0 +1,25 @@
+# Initial Contact
+
+> pwn checksec sp_retribution
+[*] '/root/projects/tmp/challenge/sp_retribution'
+    Arch:       amd64-64-little
+    RELRO:      Full RELRO
+    Stack:      No canary found
+    NX:         NX enabled
+    PIE:        PIE enabled
+    RUNPATH:    b'./glibc/'
+    Stripped:   No
+=> stack overflow allowed.
+
+# BF
+A buffer overflow issue is in the missle_launcher(). => after it asks for verification, it calls `read(0,&local_58,0x84)` while the local_58 is just an `undefined8`.
+=> ROP may work
+
+pwn cyclic 500 =. pwn cyclic -l 0x6161617861616177 => 88 
+
+# Find GLIBC Base Address
+
+Ran the binary several times and looks like the system() address is fixed. Weird. But we can try. Perhaps the glibc has some speical settings, or just my computer settings.
+
+Noticed that after we enter the coordinates, it prints out some random data. This is because it doesn't clean the buffer before read.
+=> This may leak glibc base address.
