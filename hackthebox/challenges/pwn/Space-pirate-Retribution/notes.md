@@ -1,3 +1,5 @@
+TL;DR: just return-to-main and ret2lib
+
 # Initial Contact
 
 > pwn checksec sp_retribution
@@ -23,3 +25,13 @@ Ran the binary several times and looks like the system() address is fixed. Weird
 
 Noticed that after we enter the coordinates, it prints out some random data. This is because it doesn't clean the buffer before read.
 => This may leak glibc base address.
+
+Test:
+- glibc base 0x00007ffff7800000
+- the values on the stack doesn't start with 0x7ffff ...
+
+Checking the values on the stack, they are like `0x0000555555400d68`.
+=> the value is among the binary's main code. Perhaps we can call system@plt directly?
+=> negative, there is no such plt entry because the binary doesn't call it.
+
+TODO: tips: since we can get the binary base address, we can jump back to the missle_launcher and get more chances of buffer overflow.
