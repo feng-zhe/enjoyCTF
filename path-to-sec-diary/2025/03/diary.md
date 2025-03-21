@@ -27,3 +27,15 @@ with pwn totally alone.
 Finished the Space-pirate-Going-Deeper pwn challenge. Wasted some time trying to
 bypass the param123 checks. Then I realized I can jump to the right place by
 overwriting one-byte of the return address since the binary has PIE disabled.
+
+# 2025-03-20
+
+Well, this is awkward. I wish I have taking hacker diary as frequently as my
+fishing diary :)
+
+I've finished all very-easy level pwn challenges. I have to adjust my plan: I
+should only solve all easy challenges and then start seaking the
+vulnerabilities. Not saying I will not continue doing the harder problems. I
+just want to get hands dirty quickly and see what I lack so that I can learn
+something with a purpose. In my current situation, time is very precious. I have
+to spend it wisely.
