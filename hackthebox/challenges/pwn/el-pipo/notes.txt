@@ -1,1 +1,1 @@
-just ghidra and stack overflow to overwrite the target var.
+just ghidra and buffer overflow to overwrite the target var.

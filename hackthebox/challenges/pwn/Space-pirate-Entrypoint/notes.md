@@ -1,6 +1,6 @@
 TL;DR: unprotected format string. Use the `%100d%7$hn` to overwrite the value pointed by the 7th argument to 100.
 
-ghidra => RTFSC => on obvious vuln found. All read() reads less bytes than the buffer size.
+ghidra => RTFSC => no obvious vuln found. All read() reads less bytes than the buffer size.
 
 Actually the canary was found, so no stuck overflow:
 pwn checksec sp_entrypoint =>
