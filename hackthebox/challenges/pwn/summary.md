@@ -3,6 +3,7 @@
 - unprotected format string (e.g. `%100d%7$hn`)
 - stack overflow
 - ret2lib
+- overwrite GOT
 - execve (syscall with 59)
 - ROP
 - SROP
