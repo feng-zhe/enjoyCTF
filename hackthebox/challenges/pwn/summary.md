@@ -1,12 +1,14 @@
 # checklist:
 
 - unprotected format string (e.g. `%100d%7$hn`)
-- stack overflow
+- buffer overflow
+- jmp rsi to shellcode
 - ret2lib
 - overwrite GOT
 - execve (syscall with 59)
 - ROP
-- SROP
+- SROP (e.g. HTB laconic)
+- read again  (e.g. HTB assemblers-avenge)
 
 # tips:
 
