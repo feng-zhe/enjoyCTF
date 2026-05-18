@@ -8,6 +8,7 @@ from pwn import *
 
 context.binary = {bin_name}
 context.terminal = ['tmux', 'split', '-h']
+# context.log_level = 'debug'
 
 
 def conn():
@@ -16,7 +17,7 @@ def conn():
         r = process([e.path], stdin=process.PTY, stdout=process.PTY)
     elif args.GDB:
         r = gdb.debug([e.path], '''
-                      b *(main+0x30)
+                      b *(main)
                       c
                       ''', stdin=process.PTY, stdout=process.PTY)
     elif args.REMOTE:
