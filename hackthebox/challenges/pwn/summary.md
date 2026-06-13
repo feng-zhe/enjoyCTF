@@ -15,6 +15,7 @@
 - stack pivot (e.g. HTB crossbow)
 - mprotect to change NX (e.g. HTB crossbow)
 - leverage fix-address sections (e.g. .bss)
+- one gadget (e.g. HTB spooky-time)
 
 # tips:
 

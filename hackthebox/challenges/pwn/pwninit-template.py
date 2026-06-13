@@ -20,6 +20,12 @@ def conn():
                       b *(main)
                       c
                       ''', stdin=process.PTY, stdout=process.PTY)
+    elif args.GDB_ATTACH:
+        r = process([e.path], stdin=process.PTY, stdout=process.PTY)
+        gdb.attach(r, gdbscript='''
+                      b *(main)
+                      c
+                   ''')
     elif args.REMOTE:
         ip, port = args.REMOTE.split(':')
         r = remote(ip, port)
