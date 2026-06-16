@@ -5,6 +5,7 @@
 - jmp rsi to shellcode
 - ret2libc
 - ret2plt (e.g. HTB finale)
+- ret2dlresolve (e.g. HTB void)
 - libc identification (e.g. HTB shooting star)
 - overwrite GOT
 - execve (syscall with 59)
