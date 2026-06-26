@@ -1,0 +1,19 @@
+Delta of (ret_addr - buffer) = 0x348
+Delta of (pbuff_var_addr - buffer) = 0x2e0
+
+Buffer Pointers:
+0x00007ffcea364230
+0x00007ffeae644030
+0x00007ffde35a9930
+
+0x00007ffc017628c0
+0x00007ffcb54cb6c0
+0x00007ffebbfe1320
+0x00007ffd28ba0820
+0x00007fffc5803420
+0x00007ffd94c43380
+0x00007ffe42a74190
+0x00007fff27fbb9f0
+0x00007fff50d61060
+
+=> looks like there are more 0x30 endings. Choose 0x030, then the ret_addr is at 0x378.
