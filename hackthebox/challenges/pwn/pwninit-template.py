@@ -3,7 +3,6 @@
 from pwn import *
 
 {bindings}
-# libc = ELF('./libc.so.6')
 # rop = ROP({bin_name})
 
 context.binary = {bin_name}

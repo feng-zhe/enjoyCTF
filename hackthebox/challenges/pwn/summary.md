@@ -30,3 +30,4 @@
 - To use .bss as the place to read/write data, you are likely need to use (.bss + 0x20) or with more offset otherwise you may overwrite the stdin/out/err address and cause puts() to have no output.
 - The overwrite content may come cross some variables like the buffer pointer which affects the overwriting itself. e.g. HTB abyss, snow-scan.
 - For canary, either skip overwriting it or read it from somewhere and write it during BF or Out-Of-Bound writes.
+- The rop.chain() may use some gadgets from non-executable segments. If this happens, we should use .search(asm('...'), executable=True) instead.
