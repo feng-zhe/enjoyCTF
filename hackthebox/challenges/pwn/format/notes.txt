@@ -1,0 +1,17 @@
+ret addr to libc: 0x00007fff668d48f8
+when in echo, the rsp: 0x00007fff668d47c0
+delta: 0x138
+0x138 / 8 = 39
+
+%6$p will read the $rsp
+So in theory, the %45$p should show the ret address in the libc
+=> confirmed
+
+Overwriting the main() or echo() return addresses doesn't help because the while-loop never ends. We may need to overwrite the printf()'s own return address.
+
+In printf,
+the return address, main's rbp
+0x00007fff0ddb64b8, 0x7fff0ddb65f0
+0x00007ffdc5a82608, 0x7ffdc5a82740
+0x00007ffed55e8038, 0x7ffed55e8170
+The delta is always 0x138. Thus we can calculate it.
