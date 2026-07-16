@@ -1,6 +1,8 @@
 # checklist:
 
-- unprotected format string (e.g. `%100d%7$hn`)
+- FSB (Format String Bug) (e.g. `%100d%7$hn`, HTB format)
+    - reads: leak binary base/libc function/libc base addresses
+    - writes: any location writes
 - buffer overflow
 - jmp rsi to shellcode
 - ret2libc
@@ -21,6 +23,7 @@
 - use rop gadget like `mov qword ptr[rdi], rsi` to write content to places like .bss.
 - partial overwrite (e.g. HTB snow-scan)
 - skip overwriting canary (e.g. HTB bad-grades)
+- libc.__malloc_hook overwriting (e.g. HTB format) (only works for glibc <= 2.31)
 
 # tips:
 
