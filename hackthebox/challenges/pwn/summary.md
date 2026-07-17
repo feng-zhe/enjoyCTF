@@ -12,12 +12,12 @@
 - overwrite GOT
 - execve (syscall with 59)
 - ROP
-- SROP (e.g. HTB laconic)
+- SROP (e.g. HTB laconic, sick-rop)
 - staged shellcode (i.e. read part2 shellcode later) (e.g. HTB assemblers-avenge, crossbow)
 - shellcode compression (e.g. HTB assemblers-avenge)
 - Out-Of-Bound(OOB) write (e.g. HTB crossbow)
 - stack pivot (e.g. HTB crossbow)
-- mprotect to change NX (e.g. HTB crossbow)
+- mprotect to change memory to RWX (e.g. HTB crossbow)
 - leverage fix-address sections (e.g. .bss, See tips)
 - one gadget (e.g. HTB spooky-time)
 - use rop gadget like `mov qword ptr[rdi], rsi` to write content to places like .bss.
