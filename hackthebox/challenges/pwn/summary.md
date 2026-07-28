@@ -3,7 +3,9 @@
 - FSB (Format String Bug) (e.g. `%100d%7$hn`, HTB format)
     - reads: leak binary base/libc function/libc base addresses
     - writes: any location writes
+- Out-Of-Bound(OOB) write (e.g. HTB crossbow)
 - buffer overflow
+- one-byte overwrite to counter PIE (e.g. superfast)
 - jmp rsi to shellcode
 - ret2libc
 - ret2plt (e.g. HTB finale)
@@ -15,7 +17,6 @@
 - SROP (e.g. HTB laconic, sick-rop)
 - staged shellcode (i.e. read part2 shellcode later) (e.g. HTB assemblers-avenge, crossbow)
 - shellcode compression (e.g. HTB assemblers-avenge)
-- Out-Of-Bound(OOB) write (e.g. HTB crossbow)
 - stack pivot (e.g. HTB crossbow)
 - mprotect to change memory to RWX (e.g. HTB crossbow)
 - leverage fix-address sections (e.g. .bss, See tips)
@@ -24,6 +25,7 @@
 - partial overwrite (e.g. HTB snow-scan)
 - skip overwriting canary (e.g. HTB bad-grades)
 - libc.__malloc_hook overwriting (e.g. HTB format) (only works for glibc <= 2.31)
+- dup2() to redirect IO
 
 # tips:
 
